@@ -1,0 +1,30 @@
+<mat-card>
+    <mat-card-title>Iniciar sesión</mat-card-title>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Servidor</mat-label>
+        <mat-select formControlName="server" (selectionChange)="onServerChange()">
+          <mat-option *ngFor="let server of servers" [value]="server.server_id">{{ server.server_name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Base de Datos</mat-label>
+        <mat-select formControlName="database">
+          <mat-option *ngFor="let db of databases" [value]="db.sy_company">{{ db.sy_company_descr }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="username" />
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" />
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Ingresar</button>
+    </form>
+  </mat-card>

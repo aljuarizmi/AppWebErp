@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { MenuComponent } from './components/menu/menu.component';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { LoginComponent } from './components/login/login.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,MenuComponent,CommonModule],
+  imports: [RouterOutlet,CommonModule,LoginComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
