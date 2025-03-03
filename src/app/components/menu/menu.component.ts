@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import {MenuItem} from '../../models/menu.model'
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -14,7 +15,7 @@ export class MenuComponent implements OnInit{
   /*toggle(item: MenuItem) {
     item.expanded = !item.expanded;
   }*/
-  constructor(private menuService: MenuService) {}
+  constructor(private menuService: MenuService,private authService: AuthService) {}
 
   /*ngOnInit(): void {
     this.menuService.getMenu().subscribe((data) => {
@@ -22,7 +23,7 @@ export class MenuComponent implements OnInit{
     });
   }*/
     ngOnInit() {
-      this.menuService.getMenu().subscribe((data: MenuItem[]) => {
+      this.authService.getMenu().subscribe((data: MenuItem[]) => {
         this.menu = this.setExpandedProperty(data);
       });
     }

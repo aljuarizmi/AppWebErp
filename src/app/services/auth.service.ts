@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable,catchError,throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { tap } from 'rxjs/operators';
+
 
 interface Server {
   server_id: number;
@@ -57,5 +59,32 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
+  }
+
+  getMenu(): Observable<any> {
+    const token = this.getToken();
+    console.log('Token enviado:', token); // 🔍 Verifica si el token existe
+  
+    if (!token) {
+      return throwError(() => new Error('No hay token disponible'));
+    }
+  
+    return this.http.get('https://localhost:7113/api/configurations/menu', {
+      headers: { Authorization: `Bearer ${token}` }
+    }).pipe(
+      tap(menu => {
+        console.log('Menú recibido:', menu); // 🔍 Verifica qué devuelve el API
+        localStorage.setItem('menu', JSON.stringify(menu));
+      }),
+      catchError((error) => {
+        console.error('Error en getMenu():', error);
+        this.snackBar.open('Error al cargar el menú', 'Cerrar', { duration: 3000 });
+        return throwError(() => new Error('Error al cargar el menú'));
+      })
+    );
+  }
+  
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('token');
   }
 }
