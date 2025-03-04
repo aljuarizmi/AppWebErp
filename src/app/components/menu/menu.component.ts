@@ -3,6 +3,7 @@ import { MenuService } from '../../services/menu.service';
 import {MenuItem} from '../../models/menu.model'
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -15,7 +16,7 @@ export class MenuComponent implements OnInit{
   /*toggle(item: MenuItem) {
     item.expanded = !item.expanded;
   }*/
-  constructor(private menuService: MenuService,private authService: AuthService) {}
+  constructor(private menuService: MenuService,private authService: AuthService,private router: Router) {}
 
   /*ngOnInit(): void {
     this.menuService.getMenu().subscribe((data) => {
@@ -38,5 +39,8 @@ export class MenuComponent implements OnInit{
     toggle(item: any) {
       item.expanded = !item.expanded;
     }
-    
+    navigateTo(route: string) {
+      this.router.navigate([route],{skipLocationChange:true}).catch(error => {
+        console.error('Error al navegar:', error);});
+    }
 }

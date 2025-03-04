@@ -5,5 +5,6 @@ export interface MenuItem  {
     syMenuLevel: number;
     syOpcActive: string;
     children: MenuItem[] | null;
+    syUrl:string;
     expanded?: boolean; // Agregamos la propiedad opcional
 }
