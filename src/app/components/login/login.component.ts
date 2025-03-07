@@ -68,9 +68,15 @@ export class LoginComponent {
       
       this.authService.login(credentials).subscribe(
         (response) => {
+          //console.log('Token recibido:', response.token); // <-- PRUEBA SI SE RECIBE TOKEN
           this.authService.saveToken(response.token);
+          console.log('Token guardado:', this.authService.getToken()); // <-- PRUEBA SI SE GUARDA
           this.snackBar.open('Login exitoso', 'Cerrar', { duration: 2000 });
-          this.router.navigate(['/principal']);
+          //this.router.navigate(['/principal']);
+          this.router.navigate(['/principal']).then(() => {
+            console.log('Redirigiendo a principal...');
+            //window.location.reload();
+          });
         },
         (error: HttpErrorResponse) => {
           const errorMsg = error.error?.message || 'Error en login';

@@ -1,1 +1,18 @@
-<p>m00s01n01 works!, FUNCIONA!</p>
+<!-- Input pequeño usando la clase form-control-sm de Bootstrap -->
+<div class="form-group">
+    <label for="username">Usuario</label>
+    <input type="text" class="form-control form-control-sm" id="username" [(ngModel)]="username">
+
+    <app-buscador>
+      [SearchID]="'AR-CUSTOMER'"
+      [TamanioCodigo]="15"
+      [TamanioDescripcion]="50"
+      [CodigoPrincipal]="'cus_no'"
+      [CampoDescripcion]="'cus_name'"
+      [DescripcionVisible]="true"
+      [Enabled]="true"
+      [MaxLength]="15"
+      (busquedaExitosa)="onBusquedaExitosa($event)">
+    </app-buscador>
+  </div>
+  

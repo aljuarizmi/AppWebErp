@@ -3,6 +3,7 @@
         <app-menu></app-menu> <!-- Aquí se carga el menú -->
     </div>
     <div class="content">
+        <button mat-button color="warn" class="logout-btn" (click)="logout()">Cerrar Sesión</button>
         <router-outlet></router-outlet> <!-- Aquí se cargará la página seleccionada del menú -->
     </div>
 </div>

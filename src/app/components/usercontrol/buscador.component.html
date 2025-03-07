@@ -1,0 +1,108 @@
+<!-- <div class="buscador">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td align="left">
+          <input
+            type="text"
+            [(ngModel)]="codigo"
+            class="stlTextBox"
+            maxlength="15"
+            autocomplete="off"
+          />
+        </td>
+        <td align="left" style="padding-left: 3px; padding-right: 3px">
+          <button (click)="buscar()" tabindex="-1">
+            <img src="assets/images/buscar.png" alt="Buscar" />
+          </button>
+        </td>
+        <td align="left">
+          <input
+            type="text"
+            [value]="descripcion"
+            class="stlTextBoxOutput"
+            disabled
+            tabindex="-1"
+            width="38px"
+          />
+        </td>
+      </tr>
+    </table>
+  
+    <span style="display: none;">
+      <input type="hidden" [(ngModel)]="codigoHidden" />
+      <input type="hidden" [(ngModel)]="filtro" />
+    </span>
+  </div> -->
+  
+
+  <!-- <div class="card p-4">
+    <div class="row">
+        <div class="col-md-4 mb-3">
+        <label for="codigo" class="form-label">Código</label>
+        <input [(ngModel)]="codigo" id="codigo" class="form-control" type="text" placeholder="Ingrese el código" />
+      </div>
+  
+      <div class="col-md-4 mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <input [(ngModel)]="descripcion" id="descripcion" class="form-control" type="text" placeholder="Descripción..." readonly />
+      </div>
+  
+      <div class="col-md-4 d-flex align-items-end">
+        <button class="btn btn-primary me-2" (click)="buscar()">Buscar</button>
+        <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+      </div>
+    </div>
+  </div> -->
+  
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- Campo de código -->
+      <div class="col-auto">
+        <input
+          type="text"
+          #txt_codigo
+          [id]="id+'_txt_codigo'"
+          [(ngModel)]="txt_codigo"
+          (change)="onCodigoChange($event)" 
+          (keypress)="onCodigoKeyPress($event)"    
+          class="form-control"
+          [maxlength]="TamanioCodigo"
+          (input)="onInput($event)"
+          [placeholder]="'Código'"
+          [disabled]="!Enabled"
+          [attr.maxlength]="MaxLength"
+        />
+      </div>
+  
+      <!-- Botón de búsqueda -->
+      <div class="col-auto">
+        <button class="btn btn-light" [id]="id+'_btnBuscar'" #btnBuscar (click)="buscar()" tabindex="-1" [disabled]="!Enabled">
+          <img src="assets/images/buscar.png" alt="Buscar" />
+        </button>
+      </div>
+  
+      <!-- Campo de descripción -->
+      <div class="col-auto" *ngIf="DescripcionVisible">
+        <input
+          type="text"
+          #txt_descripcion
+          [id]="id+'_txt_descripcion'"
+          [(ngModel)]="txt_descripcion"
+          class="form-control-plaintext"
+          disabled
+          tabindex="-1"
+          style="width: 150px;"
+          placeholder="Descripción"
+        />
+      </div>
+    </div>
+  
+    <!-- Inputs ocultos -->
+    <span style="display: none;">
+      <input type="hidden" [id]="id+'_hidCodigo'" #codigoHidden [(ngModel)]="hidCodigo" />
+      <input type="hidden" [id]="id+'_hid_SearchFiltro'" [(ngModel)]="hid_SearchFiltro" />
+      <button hidden [id]="id+'_btnLimpiar'" (click)="onClickLimpiar()">Oculto pero funcional</button>
+      <!-- <input type="hidden" [(ngModel)]="FiltrosAdicionales" /> -->
+    </span>
+  </div>
+  
