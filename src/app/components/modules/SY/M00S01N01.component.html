@@ -2,8 +2,7 @@
 <div class="form-group">
     <label for="username">Usuario</label>
     <input type="text" class="form-control form-control-sm" id="username" [(ngModel)]="username">
-
-    <app-buscador>
+    <app-buscador 
       [SearchID]="'AR-CUSTOMER'"
       [TamanioCodigo]="15"
       [TamanioDescripcion]="50"
@@ -12,7 +11,8 @@
       [DescripcionVisible]="true"
       [Enabled]="true"
       [MaxLength]="15"
-      (busquedaExitosa)="onBusquedaExitosa($event)">
+      (busquedaExitosa)="onBusquedaExitosa($event)"
+      [FiltrosAdicionales]="''">
     </app-buscador>
   </div>
   

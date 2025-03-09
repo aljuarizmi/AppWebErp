@@ -70,11 +70,11 @@ export class LoginComponent {
         (response) => {
           //console.log('Token recibido:', response.token); // <-- PRUEBA SI SE RECIBE TOKEN
           this.authService.saveToken(response.token);
-          console.log('Token guardado:', this.authService.getToken()); // <-- PRUEBA SI SE GUARDA
+          //console.log('Token guardado:', this.authService.getToken()); // <-- PRUEBA SI SE GUARDA
           this.snackBar.open('Login exitoso', 'Cerrar', { duration: 2000 });
           //this.router.navigate(['/principal']);
           this.router.navigate(['/principal']).then(() => {
-            console.log('Redirigiendo a principal...');
+            //console.log('Redirigiendo a principal...');
             //window.location.reload();
           });
         },

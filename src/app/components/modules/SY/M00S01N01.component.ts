@@ -20,4 +20,5 @@ export class M00S01N01Component {
 
   selectedOption: string = '';  // Para el comboBox
   username: string = '';        // Para el input de usuario
+  onBusquedaExitosa(event:any){}
 }

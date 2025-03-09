@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
@@ -15,7 +15,7 @@ interface BusquedaExitosaEvent {
   templateUrl: './buscador.component.html',
   styleUrl: './buscador.component.css'
 })
-export class BuscadorComponent {
+export class BuscadorComponent implements OnInit {
   @Input() id: string = ''; // Se puede sobrescribir al usar el componente
   codigo: string = '';
   descripcion: string = '';
@@ -53,7 +53,9 @@ export class BuscadorComponent {
   @Output() busquedaExitosa: EventEmitter<BusquedaExitosaEvent> = new EventEmitter<BusquedaExitosaEvent>(); // Usar el tipo personalizado
   
   constructor(private dialog:MatDialog){
-  
+  }
+  ngOnInit(): void {
+    console.log("Propiedades: "+this.SearchID);
   }
   txt_codigo: string = '';
   txt_descripcion: string = '';
@@ -67,7 +69,7 @@ export class BuscadorComponent {
     const btnBuscar = document.getElementById(this.id + '_btnBuscar') as HTMLButtonElement;
     const hid_SearchFiltro = document.getElementById(this.id + '_hid_SearchFiltro') as HTMLInputElement;
     //HTMLInputElement
-    this.F_BuscarDatos_Control(btnBuscar,this.FuncionPreviaValidacion,this.FiltrosAdicionales,hid_SearchFiltro);
+    //this.F_BuscarDatos_Control(btnBuscar,this.FuncionPreviaValidacion,this.FiltrosAdicionales,hid_SearchFiltro);
   }
 
   // Maneja el evento keypress en el campo 'codigo'
@@ -77,7 +79,7 @@ export class BuscadorComponent {
     const hidBusqueda = document.getElementById(this.id + '_hidCodigo') as HTMLInputElement;
     const btnLimpiar = document.getElementById(this.id + '_btnLimpiar') as HTMLButtonElement;
     const hid_SearchFiltro = document.getElementById(this.id + '_hid_SearchFiltro') as HTMLInputElement;
-    this.onKeyPressBusqueda_Control(event,txtBusqueda,hidBusqueda,btnLimpiar,this.FuncionPreviaValidacion,this.FiltrosAdicionales,hid_SearchFiltro);
+    //this.onKeyPressBusqueda_Control(event,txtBusqueda,hidBusqueda,btnLimpiar,this.FuncionPreviaValidacion,this.FiltrosAdicionales,hid_SearchFiltro);
     if (this.SoloNumeros && !/^[0-9]$/.test(event.key)) {
       event.preventDefault();  // Si solo se permiten números, previene otras teclas
     }
@@ -221,16 +223,17 @@ export class BuscadorComponent {
       closeOnNavigation:false,
       maxWidth: 'none',
       //position:{top:'30px'},
-      //width:'1200px',
+      width:'900px',
       //maxHeight: '90vh', // Máximo 90% de la altura de la pantalla
       data:{
-        //searchFieldId:'AR-CUSTOMER',
-        //sqlfilter:''
+        SearchID:this.SearchID,
+        CodigoPrincipal:this.CodigoPrincipal,
+        CampoDescripcion:this.CampoDescripcion,
+        FiltrosAdicionales:this.FiltrosAdicionales
       }
     });//codigo que abre la ventana modal
     dialogRef.afterClosed().subscribe(result => {
-      //console.log('Dialog result: ${result}');
-      //this.LeerTodo();
+
     });
   }
 }
