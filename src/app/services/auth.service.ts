@@ -142,8 +142,15 @@ export class AuthService {
   }*/
 
   obtenerDatosBuscador<T>(body: any): Observable<T> {
+    //console.log(body);
     const token = this.getToken();
     return this.http.post<T>('https://localhost:7113/api/sy/managment/search', body, { headers: { Authorization: `Bearer ${token}` } });
+  }
+
+  obtenerBuscadores<T>(body: any): Observable<T> {
+    //console.log(body);
+    const token = this.getToken();
+    return this.http.post<T>('https://localhost:7113/api/sy/managment/searchers', body, { headers: { Authorization: `Bearer ${token}` } });
   }
 
   isAuthenticated(): boolean {

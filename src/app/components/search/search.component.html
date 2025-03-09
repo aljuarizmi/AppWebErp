@@ -182,7 +182,7 @@
 <div class="search-container" [formGroup]="searchForm">
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Buscador</mat-label>
-    <mat-select formControlName="searchType">
+    <mat-select formControlName="searchType" (selectionChange)="obtenerDatosBuscador('NO')">
       <mat-option *ngFor="let option of searchOptions" [value]="option.id">{{ option.name }}</mat-option>
     </mat-select>
   </mat-form-field>
@@ -194,7 +194,7 @@
     </mat-select>
   </mat-form-field>
 
-  <button mat-raised-button color="primary" (click)="search()">Buscar</button>
+  <button mat-raised-button color="primary" (click)="obtenerDatosBuscador('SI')">Buscar</button>
   <div class="table-container">
     <table mat-table [dataSource]="filteredData" class="mat-elevation-z8 full-width compact-rows" *ngIf="columns.length">
       <ng-container *ngFor="let col of columns" [matColumnDef]="col.key">

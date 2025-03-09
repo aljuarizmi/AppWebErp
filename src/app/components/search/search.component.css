@@ -121,3 +121,7 @@ tr.mat-footer-row {
   font-weight: bold;
   height: 5px !important;
 }
+
+.hover-cursor .mat-row {
+  cursor: pointer;
+}
