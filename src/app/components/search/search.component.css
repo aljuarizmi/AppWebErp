@@ -1,100 +1,44 @@
-/*
-.mat-dialog-container {
-    max-width: none !important;
-    width: 1200px !important;
-  }
-  */
-/*
-  .search-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px;
-    max-width: 600px;
-    margin: auto;
-  }
-  
-  .full-width {
-    width: 100%;
-  }
-  
-  .header-cell {
-    text-align: center;
-  }
-  
-  .filter-input {
-    width: 90%;
-    margin-top: 5px;
-  }
-  
-  .actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-  }
-
-
-.mat-row, .mat-header-row {
-  height: 30px !important; 
-}
-
-.mat-cell, .mat-header-cell {
-  padding: 4px 8px !important; 
-  font-size: 12px; 
-}
-
-.filter-input {
-  width: 85%;
-  font-size: 12px;
-  padding: 2px 4px;
-}
-.data-row:hover {
-  background-color: #f1f1f1; 
-}
-
-.selected {
-  background-color: #90caf9 !important; 
-}
-
-.compact-rows .mat-row, .compact-rows .mat-header-row {
-  height: 24px !important;
-  font-size: 12px;
-}
-*/
 
 .search-container {
-  display: flex;
-  flex-direction: column;
+  /*display: flex;*/
+  /*flex-direction: column;*/
   gap: 10px;
   padding: 20px;
-  max-width: 600px;
+  max-width: 900px;
   margin: auto;
 }
 
-.full-width {
+/*.full-width {
   width: 100%;
-}
-
-.header-cell {
-  text-align: center;
-}
+}*/
 
 .filter-input {
-  width: 90%;
-  margin-top: 5px;
+  font-size: 12px !important;
+  height: 20px !important;
+  padding: 2px !important;
 }
 
 .actions {
-  display: flex;
+  /*display: flex;*/
   justify-content: center;
   gap: 10px;
   margin-top: 20px;
 }
 
-.compact-rows .mat-row, .compact-rows .mat-header-row {
-  height: 10px !important;
-  font-size: 10px;
+.compact-rows mat-row, 
+.compact-rows mat-header-row, 
+.compact-rows td, 
+.compact-rows th {
+  height: 24px !important;
+  min-height: 24px !important;
+  line-height: 1 !important;
+  padding: 0px 8px !important;
+}
+
+.compact-rows td, 
+.compact-rows th {
+  font-size: 12px !important;
+  vertical-align: middle !important;
 }
 
 .data-row:hover {
@@ -125,3 +69,40 @@ tr.mat-footer-row {
 .hover-cursor .mat-row {
   cursor: pointer;
 }
+
+/* Asegurar que la tabla ocupa su contenedor sin sobresalir */
+.table-container {
+  overflow: auto;
+  max-height: 500px; /* Ajusta según el tamaño deseado */
+  height: 500px;
+  border: 2px solid #ccc; /* Ajusta el grosor y color según necesites */
+  border-collapse: collapse; /* Asegura que los bordes no se dupliquen */
+  /*max-width: 1200px;*/
+}
+
+/* Ajuste extra para celdas */
+.compact-rows td,
+.compact-rows th {
+  font-size: 12px !important;
+  vertical-align: middle !important;
+  /*white-space: nowrap; /* Evita que el texto se expanda */
+}
+
+.compact-rows th {
+  border: 1px solid #ccc !important; /* Color y grosor del borde */
+  background-color: #f8f8f8; /* Color de fondo opcional */
+  text-align: center;
+}
+
+/* Ajustar select para que no ocupe mucho espacio */
+.small-select .mat-select-trigger {
+  min-height: 28px !important;
+  font-size: 12px;
+  padding: 2px 8px !important;
+}
+
+/* Mejorar visibilidad de la selección */
+.selected {
+  background-color: #90caf9 !important;
+}
+

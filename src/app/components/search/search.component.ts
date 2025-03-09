@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
   searchForm: FormGroup;
   searchOptions = [{ id: 1, name: '1 A/P Ship Via' }];
   //searchOptions = [{ key: 'sy_terms_cd', label: 'Código' }, { key: 'ship_via_desc', label: 'Descripción' }];
-  rowLimits = [10, 50, 100];
+  rowLimits = [5, 10, 50, 100];
   columns = [{ key: 'sy_terms_cd', label: 'Código' }, { key: 'ship_via_desc', label: 'Descripción' }];
   //columns: { key: string; label: string }[] = [];
   data = new MatTableDataSource<any>([]);
@@ -53,7 +53,7 @@ export class SearchComponent implements OnInit {
   constructor(private fb: FormBuilder,private authService: AuthService) {
     this.searchForm = this.fb.group({
       searchType: [1],
-      rowLimit: [10]
+      rowLimit: [5]
     });
   }
 
@@ -74,7 +74,7 @@ export class SearchComponent implements OnInit {
     this.obtenerDatosBuscador('NO');
   }
   obtenerBuscadores():void{
-    const body = {searchFieldId: 'AP-VENDOR'};
+    const body = {searchFieldId: this.SearchID};
     this.authService.obtenerBuscadores<{ SEARCH_NO: number; SEARCH_TITLE: string }[]>(body).subscribe(response => {
       this.searchOptions = response.map(item => ({
         id: item.SEARCH_NO,
@@ -104,7 +104,7 @@ export class SearchComponent implements OnInit {
       listFiltroTipoBuscar:this.listFiltroTipoBuscar,
       listColumnas:this.listColumnas,
     };
-    console.log("registros: "+this.searchForm.get('rowLimit')?.value);
+    //console.log("registros: "+this.searchForm.get('rowLimit')?.value);
     //Reemplazamos ApiResponse por any
     this.authService.obtenerDatosBuscador<any>(body).subscribe(
       (data) => {
@@ -152,7 +152,7 @@ export class SearchComponent implements OnInit {
         this.listFiltroDatoBuscar.push(filterValue);
       }
     });
-    console.log("listFiltroDatoBuscar: "+this.listFiltroDatoBuscar);
+    //console.log("listFiltroDatoBuscar: "+this.listFiltroDatoBuscar);
     if (this.listFiltroDatoBuscar.length === 0){
       this.filteredData.data = this.data.data;
       return;

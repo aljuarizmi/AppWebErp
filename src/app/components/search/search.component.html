@@ -27,8 +27,8 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selectRow(row)" [class.selected]="selectedRow === row" class="data-row" ></tr>
     </table>
   </div>
-  <div class="actions">
-    <button mat-raised-button color="accent" (click)="confirmSelection()">OK</button>
+  <div >
+    <button mat-raised-button color="primary" (click)="confirmSelection()">OK</button>
     <button mat-raised-button color="warn" (click)="cancel()">Cancelar</button>
   </div>
 </div>

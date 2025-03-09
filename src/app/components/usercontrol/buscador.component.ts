@@ -55,7 +55,7 @@ export class BuscadorComponent implements OnInit {
   constructor(private dialog:MatDialog){
   }
   ngOnInit(): void {
-    console.log("Propiedades: "+this.SearchID);
+    //console.log("Propiedades: "+this.SearchID);
   }
   txt_codigo: string = '';
   txt_descripcion: string = '';
