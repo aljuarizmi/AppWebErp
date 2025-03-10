@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 
 // Define un tipo para el evento
 interface BusquedaExitosaEvent {
@@ -11,7 +12,7 @@ interface BusquedaExitosaEvent {
 
 @Component({
   selector: 'app-buscador',
-  imports: [FormsModule],
+  imports: [FormsModule,CommonModule],
   templateUrl: './buscador.component.html',
   styleUrl: './buscador.component.css'
 })
@@ -48,7 +49,7 @@ export class BuscadorComponent implements OnInit {
   @Input() UseCatalog: boolean = false;
   @Input() Ancho: number = 300;
   @Input() Alto: number = 40;
-
+  @Input() txt_codigo: string ="";
   //@Output() busquedaExitosa: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() busquedaExitosa: EventEmitter<BusquedaExitosaEvent> = new EventEmitter<BusquedaExitosaEvent>(); // Usar el tipo personalizado
   
@@ -57,7 +58,7 @@ export class BuscadorComponent implements OnInit {
   ngOnInit(): void {
     //console.log("Propiedades: "+this.SearchID);
   }
-  txt_codigo: string = '';
+  //txt_codigo: string = '';
   txt_descripcion: string = '';
   hidCodigo:string='';
   hid_SearchFiltro:string='';
@@ -65,6 +66,7 @@ export class BuscadorComponent implements OnInit {
   // Maneja el cambio de valor en el campo 'codigo'
   onCodigoChange(event: any) {
     //console.log('Cambio en el campo código:', value);
+    this.txt_codigo = this.txt_codigo.trim();
     // Aquí puedes agregar cualquier lógica adicional para el cambio
     const btnBuscar = document.getElementById(this.id + '_btnBuscar') as HTMLButtonElement;
     const hid_SearchFiltro = document.getElementById(this.id + '_hid_SearchFiltro') as HTMLInputElement;
@@ -217,7 +219,7 @@ export class BuscadorComponent implements OnInit {
 
   ModalDialogSearch(){
     const dialogRef = this.dialog.open(SearchComponent,{
-      disableClose:false,
+      disableClose:true,
       autoFocus:true,
       closeOnNavigation:false,
       maxWidth: 'none',
@@ -232,7 +234,12 @@ export class BuscadorComponent implements OnInit {
       }
     });//codigo que abre la ventana modal
     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
         alert("Se escogió un registro");
+        console.log('Dato seleccionado:', result);
+      } else {
+        console.log('El usuario canceló la selección.',result);
+      }
     });
   }
 }

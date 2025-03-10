@@ -35,8 +35,8 @@ export class SearchComponent implements OnInit {
   searchOptions = [{ id: 1, name: '1 A/P Ship Via' }];
   //searchOptions = [{ key: 'sy_terms_cd', label: 'Código' }, { key: 'ship_via_desc', label: 'Descripción' }];
   rowLimits = [10, 50, 100];
-  columns = [{ key: 'sy_terms_cd', label: 'Código' }, { key: 'ship_via_desc', label: 'Descripción' }];
-  //columns: { key: string; label: string }[] = [];
+  //columns = [{ key: 'sy_terms_cd', label: 'Código' }, { key: 'ship_via_desc', label: 'Descripción' }];
+  columns: { key: string; label: string }[] = [];
   data = new MatTableDataSource<any>([]);
   dataPadre = inject(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<SearchComponent>);
@@ -53,18 +53,27 @@ export class SearchComponent implements OnInit {
   FiltrosAdicionales:string="";
   isLoading: boolean = false; // Inicialmente en false
   previousFilters: { [key: string]: string } = {}; // Almacena los filtros previos
+  filterTypeControls: { [key: string]: FormControl } = {};
+  filterTypes = [
+    { value: '0', label: 'Empieza con' },
+    { value: '1', label: 'Es igual a' },
+    { value: '2', label: 'Contiene' }
+  ];
+  selectedData: any;
   //listaVacia:string[]=[];
 
   constructor(private fb: FormBuilder,private authService: AuthService) {
     this.searchForm = this.fb.group({
       searchType: [1],
-      rowLimit: [10]
+      rowLimit: [10],
+      typeFilter: ['0']
     });
   }
 
   ngOnInit(): void {
     this.columns.forEach(col => {
       this.filterControls[col.key] = new FormControl('');
+      this.filterTypeControls[col.key] = new FormControl('0');
     });
     this.SearchID=this.dataPadre.SearchID;
     this.CodigoPrincipal=this.dataPadre.CodigoPrincipal;
@@ -127,6 +136,7 @@ export class SearchComponent implements OnInit {
           //this.filterControls[col.key] = new FormControl('');
           if (!this.filterControls[col.key]) {
             this.filterControls[col.key] = new FormControl('');
+            //this.filterTypeControls[col.key] = new FormControl('Contiene');
           }
         });
         this.isLoading = false; // Desactivar cuando los datos llegan
@@ -204,7 +214,9 @@ export class SearchComponent implements OnInit {
 
   confirmSelection(): void {
     if (this.selectedRow) {
-      console.log('Seleccionado:', this.selectedRow);
+      this.selectedData=this.selectedRow;
+      this.dialogRef.close(this.selectedData);
+      //console.log('Seleccionado:', this.selectedRow);
     }
   }
 

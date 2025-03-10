@@ -16,6 +16,59 @@
   font-size: 12px !important;
   height: 20px !important;
   padding: 2px !important;
+  width: 100% !important;
+}
+
+/*
+.filter-select {
+  width: 100% !important; 
+  max-width: 80px !important;
+  font-size: 12px !important;
+  height: 20px !important;
+  padding: 2px !important;
+  line-height: 20px !important;
+}
+
+.filter-select .mat-select-trigger {
+  height: 20px !important;
+  line-height: 20px !important;
+  font-size: 12px !important;
+  display: flex;
+  align-items: center;
+  padding: 0 2px !important;
+}*/
+
+/* Reducir la altura del mat-form-field del select */
+.small-filter {
+  /*width: 80%;*/
+  height: 24px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ajustar el espacio interno del mat-form-field */
+.small-filter .mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+  margin: 0 !important;
+}
+
+/* Ajustar la altura del mat-select para que coincida con el input */
+.filter-select {
+  font-size: 12px !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  padding: 0px !important;
+  line-height: 20px !important;
+}
+
+/* Ajustar la altura interna del mat-select */
+.filter-select .mat-select-trigger {
+  height: 20px !important;
+  min-height: 20px !important;
+  font-size: 12px !important;
+  display: flex;
+  align-items: center;
+  padding: 0px !important;
 }
 
 .actions {
@@ -44,15 +97,18 @@
 .data-row:hover {
   background-color: #f1f1f1;
 }
-
+.mat-row:hover {
+  background-color: #e0f7fa !important; /* Azul claro */
+  cursor: pointer;
+}
 .selected {
   background-color: #90caf9 !important;
 }
 
 .small-select .mat-select-trigger {
-  min-height: 30px !important;
+  min-height: 20px !important;
   font-size: 12px;
-  padding: 2px 8px !important;
+  padding: 2px 2px !important;
 }
 
 .mat-cell, .mat-header-cell {
@@ -73,11 +129,11 @@ tr.mat-footer-row {
 /* Asegurar que la tabla ocupa su contenedor sin sobresalir */
 .table-container {
   overflow: auto;
-  max-height: 500px; /* Ajusta según el tamaño deseado */
-  height: 500px;
+  max-height: 480px; /* Ajusta según el tamaño deseado */
+  height: 480px;
   border: 2px solid #ccc; /* Ajusta el grosor y color según necesites */
   border-collapse: collapse; /* Asegura que los bordes no se dupliquen */
-  /*max-width: 1200px;*/
+  /*max-width: 1000px;*/
 }
 
 /* Ajuste extra para celdas */
@@ -95,11 +151,11 @@ tr.mat-footer-row {
 }
 
 /* Ajustar select para que no ocupe mucho espacio */
-.small-select .mat-select-trigger {
+/*.small-select .mat-select-trigger {
   min-height: 28px !important;
   font-size: 12px;
   padding: 2px 8px !important;
-}
+}*/
 
 /* Mejorar visibilidad de la selección */
 .selected {
@@ -107,7 +163,7 @@ tr.mat-footer-row {
 }
 
 .table-row {
-  height: 40px !important;
+  height: 30px !important;
 }
 
 .loading-overlay {
@@ -121,4 +177,39 @@ tr.mat-footer-row {
   justify-content: center;
   background: rgba(255, 255, 255, 0.7); /* Fondo semitransparente */
   z-index: 10;
+}
+
+.custom-height {
+  height: 30px;
+  /* Set the height you desire */
+}
+
+:host ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 0%;
+  margin-bottom: -15%;
+  /*width: 100%;*/
+}
+
+:host ::ng-deep .mat-mdc-form-field:not(.mat-form-field-disabled) .mat-mdc-floating-label.mdc-floating-label {
+  top: 50%;
+}
+
+:host ::ng-deep .mdc-floating-label--float-above {
+  top: 80% !important;
+}
+
+:host ::ng-deep .mat-mdc-select-trigger {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+:host ::ng-deep .mat-mdc-select-value-text {
+  font-size: 14px;
+  display: flex;
+  align-items: center; /* Alinea el texto verticalmente */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  height: 100%; /* Asegura que ocupe toda la altura */
 }
