@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { BuscadorComponent } from '../../usercontrol/buscador.component';
 @Component({
   selector: 'app-m00-s01-n01',
-  imports: [MatFormField,MatLabel,MatSelect,MatCheckboxModule,MatOption,MatButtonModule,MatSelectModule,MatFormFieldModule,MatInputModule,CommonModule,FormsModule,BuscadorComponent],
+  imports: [/*MatFormField,MatLabel,MatSelect,*/MatCheckboxModule,/*MatOption,*/MatButtonModule,MatSelectModule,MatFormFieldModule,MatInputModule,CommonModule,FormsModule,BuscadorComponent],
   templateUrl: './M00S01N01.component.html',
   styleUrl: './M00S01N01.component.css'
 })

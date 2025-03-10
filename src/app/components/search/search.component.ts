@@ -52,6 +52,7 @@ export class SearchComponent implements OnInit {
   CampoDescripcion:string="";
   FiltrosAdicionales:string="";
   isLoading: boolean = false; // Inicialmente en false
+  previousFilters: { [key: string]: string } = {}; // Almacena los filtros previos
   //listaVacia:string[]=[];
 
   constructor(private fb: FormBuilder,private authService: AuthService) {
@@ -123,10 +124,13 @@ export class SearchComponent implements OnInit {
         this.displayedColumns = this.columns.map(c => c.key);
 
         this.columns.forEach(col => {
-          this.filterControls[col.key] = new FormControl('');
+          //this.filterControls[col.key] = new FormControl('');
+          if (!this.filterControls[col.key]) {
+            this.filterControls[col.key] = new FormControl('');
+          }
         });
         this.isLoading = false; // Desactivar cuando los datos llegan
-        //console.log("Se obtuvo datos")
+        console.log("Se obtuvo datos")
       },
       (error) => {
         this.isLoading = false; // Desactivar incluso si hay error
@@ -134,26 +138,16 @@ export class SearchComponent implements OnInit {
       }
     );
   }
-  search(): void {
-    // Simulación de consulta a la BD
-    this.data.data = [
-      { sy_terms_cd: 'AER', ship_via_desc: 'AEREO' },
-      { sy_terms_cd: 'MAR', ship_via_desc: 'MARITIMO' },
-      { sy_terms_cd: 'TAR', ship_via_desc: 'TERRESTRE' },
-      { sy_terms_cd: 'TER', ship_via_desc: 'TERRESTRE' },
-      { sy_terms_cd: 'TIR', ship_via_desc: 'TERRESTRE' },
-      { sy_terms_cd: 'TOR', ship_via_desc: 'TERRESTRE' },
-      { sy_terms_cd: 'TUR', ship_via_desc: 'TERRESTRE' }
-    ];
-    this.filteredData.data = this.data.data;
-  }
 
   applyFilters(): void {
     let filtered = this.data.data;
-    this.listCampos=[];
-    this.listFiltroDatoBuscar=[];
+    let newFilters: { [key: string]: string } = {};
+    let listFiltroDatoTmp: string[] =this.listFiltroDatoBuscar;
+    this.listCampos=[];//contiene el nombre del campo sobre el cual se va buscar el dato
+    this.listFiltroDatoBuscar=[];//contiene el dato a buscar
     this.columns.forEach(col => {
-      const filterValue = this.filterControls[col.key].value?.toLowerCase();
+      const filterValue = this.filterControls[col.key].value?.toString().trim().toLowerCase()||'';
+      newFilters[col.key] = filterValue; 
       if (filterValue) {
         this.listCampos.push(col.key);
         this.listFiltroDatoBuscar.push(filterValue);
@@ -172,6 +166,15 @@ export class SearchComponent implements OnInit {
         row[campo] && row[campo].toString().toLowerCase().includes(this.listFiltroDatoBuscar[index])
       );
     });
+
+    // ✅ COMPARAR FILTROS IGNORANDO MAYÚSCULAS, ESPACIOS Y NÚMEROS
+  if (this.areFiltersSame(this.previousFilters, newFilters)) {
+    console.log("Filtros iguales, no se llama a la API.");
+    return;
+  }
+
+  this.previousFilters = { ...newFilters };
+
     //console.log("listCampos: "+this.listCampos);
     if (this.listCampos.length > 0) {
       //this.getFilteredData({ listCampos, listFiltroDatoBuscar });
@@ -180,6 +183,19 @@ export class SearchComponent implements OnInit {
       // Si no hay filtros, mostrar todos los datos sin llamar a la API
       this.filteredData.data = this.data.data;
     }
+  }
+
+  areFiltersSame(filters1: { [key: string]: any }, filters2: { [key: string]: any }): boolean {
+    const keys1 = Object.keys(filters1);
+    const keys2 = Object.keys(filters2);
+  
+    if (keys1.length !== keys2.length) return false;
+  
+    return keys1.every(key => {
+      const value1 = (filters1[key] ?? '').toString().trim().toLowerCase();
+      const value2 = (filters2[key] ?? '').toString().trim().toLowerCase();
+      return value1 === value2;
+    });
   }
 
   selectRow(row: any): void {

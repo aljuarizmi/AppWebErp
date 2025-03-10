@@ -138,7 +138,7 @@ export class BuscadorComponent implements OnInit {
   ): boolean {
     let bolResult = true;
     if (FuncionPrevia !== '') {
-      bolResult = eval(FuncionPrevia); // ⚠️ No recomendado por seguridad
+      //bolResult = eval(FuncionPrevia); // ⚠️ No recomendado por seguridad
     }
     
     if (!bolResult) {
