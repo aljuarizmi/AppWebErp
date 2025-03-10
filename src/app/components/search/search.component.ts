@@ -3,7 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
-import { MatDialogModule,MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule,MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -13,6 +13,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { AuthService } from '../../services/auth.service';
 import { stringify } from 'querystring';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 interface ApiResponse {
   listFiltroDatoBuscar: string[];
@@ -23,7 +25,7 @@ interface ApiResponse {
 
 @Component({
   selector: 'app-search',
-  imports: [MatDialogModule,MatButtonModule,MatRadioModule,MatFormFieldModule,MatInputModule,MatIconModule,MatSlideToggleModule,ReactiveFormsModule,MatTableModule,MatOption,CommonModule,MatSelectModule],
+  imports: [MatDialogModule,MatButtonModule,MatRadioModule,MatFormFieldModule,MatInputModule,MatIconModule,MatSlideToggleModule,ReactiveFormsModule,MatTableModule,MatOption,CommonModule,MatSelectModule,MatProgressSpinnerModule],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
@@ -32,11 +34,12 @@ export class SearchComponent implements OnInit {
   searchForm: FormGroup;
   searchOptions = [{ id: 1, name: '1 A/P Ship Via' }];
   //searchOptions = [{ key: 'sy_terms_cd', label: 'Código' }, { key: 'ship_via_desc', label: 'Descripción' }];
-  rowLimits = [5, 10, 50, 100];
+  rowLimits = [10, 50, 100];
   columns = [{ key: 'sy_terms_cd', label: 'Código' }, { key: 'ship_via_desc', label: 'Descripción' }];
   //columns: { key: string; label: string }[] = [];
   data = new MatTableDataSource<any>([]);
   dataPadre = inject(MAT_DIALOG_DATA);
+  readonly dialogRef = inject(MatDialogRef<SearchComponent>);
   filteredData = new MatTableDataSource<any>([]);
   filterControls: { [key: string]: FormControl } = {};
   selectedRow: any;
@@ -48,12 +51,13 @@ export class SearchComponent implements OnInit {
   CodigoPrincipal:string="";
   CampoDescripcion:string="";
   FiltrosAdicionales:string="";
+  isLoading: boolean = false; // Inicialmente en false
   //listaVacia:string[]=[];
 
   constructor(private fb: FormBuilder,private authService: AuthService) {
     this.searchForm = this.fb.group({
       searchType: [1],
-      rowLimit: [5]
+      rowLimit: [10]
     });
   }
 
@@ -90,6 +94,7 @@ export class SearchComponent implements OnInit {
   );
   }
   obtenerDatosBuscador(busquedaConFiltro:string):void{
+    this.isLoading = true; // Activar el indicador de carga
     const body = {
       searchFieldId: this.SearchID,
       searchNo: Number(this.searchForm.get('searchType')?.value.toString()),
@@ -120,9 +125,11 @@ export class SearchComponent implements OnInit {
         this.columns.forEach(col => {
           this.filterControls[col.key] = new FormControl('');
         });
+        this.isLoading = false; // Desactivar cuando los datos llegan
         //console.log("Se obtuvo datos")
       },
       (error) => {
+        this.isLoading = false; // Desactivar incluso si hay error
         console.error("Error al obtener datos:", error);
       }
     );
@@ -187,6 +194,7 @@ export class SearchComponent implements OnInit {
 
   cancel(): void {
     this.selectedRow = null;
-    console.log('Selección cancelada');
+    //console.log('Selección cancelada');
+    this.dialogRef.close();
   }
 }

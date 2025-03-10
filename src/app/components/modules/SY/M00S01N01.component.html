@@ -3,11 +3,11 @@
     <label for="username">Usuario</label>
     <input type="text" class="form-control form-control-sm" id="username" [(ngModel)]="username">
     <app-buscador 
-      [SearchID]="'IM-ITEM'"
+      [SearchID]="'AP-VENDOR'"
       [TamanioCodigo]="15"
       [TamanioDescripcion]="50"
-      [CodigoPrincipal]="'item_no'"
-      [CampoDescripcion]="'item_desc'"
+      [CodigoPrincipal]="'vend_no'"
+      [CampoDescripcion]="'vend_name'"
       [DescripcionVisible]="true"
       [Enabled]="true"
       [MaxLength]="15"

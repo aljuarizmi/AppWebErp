@@ -17,7 +17,6 @@ import { BuscadorComponent } from '../../usercontrol/buscador.component';
 })
 export class M00S01N01Component {
   checkboxValue: boolean = false;  // Inicializa en false o en true, según lo que desees
-
   selectedOption: string = '';  // Para el comboBox
   username: string = '';        // Para el input de usuario
   onBusquedaExitosa(event:any){}

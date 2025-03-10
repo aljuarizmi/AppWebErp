@@ -216,7 +216,6 @@ export class BuscadorComponent implements OnInit {
   }
 
   ModalDialogSearch(){
-
     const dialogRef = this.dialog.open(SearchComponent,{
       disableClose:false,
       autoFocus:true,
@@ -233,7 +232,7 @@ export class BuscadorComponent implements OnInit {
       }
     });//codigo que abre la ventana modal
     dialogRef.afterClosed().subscribe(result => {
-
+        alert("Se escogió un registro");
     });
   }
 }

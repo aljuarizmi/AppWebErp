@@ -13,7 +13,7 @@
           (input)="onInput($event)"
           [placeholder]="'Código'"
           [disabled]="!Enabled"
-          [attr.maxlength]="MaxLength"/>
+          [attr.maxlength]="MaxLength" value=""/>
     </div>
     <div class="col-auto">
       <button class="btn btn-light" [id]="id+'_btnBuscar'" #btnBuscar (click)="buscar()" tabindex="-1" [disabled]="!Enabled">
