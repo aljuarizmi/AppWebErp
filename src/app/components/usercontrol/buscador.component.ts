@@ -233,10 +233,10 @@ export class BuscadorComponent implements OnInit {
     });//codigo que abre la ventana modal
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        alert("Se escogió un registro");
-        console.log('Dato seleccionado:', result);
+        //alert("Se escogió un registro");
+        //console.log('Dato seleccionado:', result);
       } else {
-        console.log('El usuario canceló la selección.',result);
+        //console.log('El usuario canceló la selección.',result);
       }
     });
   }

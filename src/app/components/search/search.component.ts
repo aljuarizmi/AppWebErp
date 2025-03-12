@@ -139,7 +139,7 @@ export class SearchComponent implements OnInit {
           }
         });
         this.isLoading = false; // Desactivar cuando los datos llegan
-        console.log("Se obtuvo datos")
+        console.log("Se obtuvo datos:");
       },
       (error) => {
         this.isLoading = false; // Desactivar incluso si hay error

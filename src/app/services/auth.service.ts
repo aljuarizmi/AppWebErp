@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmdialogComponent } from '../components/login/confirmdialog.component';
+import { ConfigService } from './config.service';
 
 
 interface Server {
@@ -23,14 +24,28 @@ interface Database {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:7113/api/auth/login';
-  private serversUrl = 'https://localhost:7113/api/servers';
-  private databasesUrl = 'https://localhost:7113/api/servers/companies';
+  //private apiURL='http://webapprest:8080/api';
+  private loginUrl = '';//this.apiURL+'/auth/login';
+  private serversUrl = '';//this.apiURL+'/servers';
+  private databasesUrl = '';//this.apiURL+'/servers/companies';
+  private menuUrl='';//this.apiURL+'/sy/access';
+  private menuSearch='';//this.apiURL+'/sy/managment/search';
+  private menuSearchers='';//this.apiURL+'/sy/managment/searchers';
+  private urlPrueba='';
 
-  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar,private dialog: MatDialog) {}
-  
+  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar,private dialog: MatDialog,private configService: ConfigService) {
+    this.loginUrl=this.configService.getEndpoint('auth','login');
+    this.serversUrl=this.configService.getEndpoint('configuration','getServers');
+    this.databasesUrl=this.configService.getEndpoint('configuration','getCompanies');
+    this.menuUrl=this.configService.getEndpoint('systemAdmin','getMenu');
+    this.menuSearch=this.configService.getEndpoint('systemAdmin','getSearch');
+    this.menuSearchers=this.configService.getEndpoint('systemAdmin','getSearchers');
+  }
+  /*getPrueba(){
+    return this.configService.getEndpoint('auth','login');
+  }*/
   login(credentials: { syUser: string; bizGrpId: number; serverName: string; dataBase: string; syUserPsc: string }): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(this.apiUrl, credentials);
+    return this.http.post<{ token: string }>(this.loginUrl, credentials);
   }
 
   getServers(): Observable<Server[]> {
@@ -41,11 +56,6 @@ export class AuthService {
         this.snackBar.open(errorMsg, 'Cerrar', { duration: 3000 });
         return throwError(() => new Error(errorMsg));
       })
-      /*catchError(error  => {
-        const errorMsg = error.error?.message || 'No se pudo conectar al API para cargar servidores';
-        this.snackBar.open('No se pudo conectar al API para cargar servidores', 'Cerrar', { duration: 3000 });
-        return throwError(() => new Error(errorMsg));
-      })*/
     );
   }
   
@@ -67,13 +77,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    /*if (typeof localStorage !== 'undefined') {
-      //return localStorage.getItem('token');
-      const token = localStorage.getItem('token');
-      console.log('Token obtenido:', token);
-    }*/
     return localStorage.getItem('token');
-    //return null;
   }
 
   logout(): void {
@@ -81,34 +85,17 @@ export class AuthService {
     this.router.navigate(['/login']).then(() => {
       window.location.reload();
     });
-
-    /*const dialogRef = this.dialog.open(ConfirmdialogComponent, {
-      width: '350px',
-      data: { message: '¿Estás seguro de que deseas cerrar sesión?' }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        localStorage.removeItem('token');
-        this.router.navigate(['/login']);
-        this.snackBar.open('Sesión cerrada', 'Cerrar', { duration: 2000 });
-      }
-    });*/
   }
 
   getMenu(): Observable<any> {
     const token = this.getToken();
-    //console.log('Token enviado:', token); // 🔍 Verifica si el token existe
-  
     if (!token) {
       return throwError(() => new Error('No hay token disponible'));
     }
-  
-    return this.http.get('https://localhost:7113/api/sy/access', {
+    return this.http.get(this.menuUrl, {
       headers: { Authorization: `Bearer ${token}` }
     }).pipe(
       tap(menu => {
-        //console.log('Menú recibido:', menu); // 🔍 Verifica qué devuelve el API
         localStorage.setItem('menu', JSON.stringify(menu));
       }),
       catchError((error) => {
@@ -119,38 +106,16 @@ export class AuthService {
     );
   }
   
-  /*Buscar(): Observable<any> {
-    const token = this.getToken();
-    if (!token) {
-      return throwError(() => new Error('No hay token disponible'));
-    }
-    const body = {
-      searchFieldId: 'AR-CUSTOMER',
-      searchNo: 0,
-      searchNumeroRegistros: '10',
-      sqlfilter: ''
-    };
-      return this.http.post<{table:string}>('https://localhost:7113/api/sy/managment/search',body, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).pipe(
-      catchError((error) => {
-        console.error('Error en getMenu():', error);
-        this.snackBar.open('Error al cargar el menú', 'Cerrar', { duration: 3000 });
-        return throwError(() => new Error('Error al cargar el menú'));
-      })
-    );
-  }*/
-
   obtenerDatosBuscador<T>(body: any): Observable<T> {
     //console.log(body);
     const token = this.getToken();
-    return this.http.post<T>('https://localhost:7113/api/sy/managment/search', body, { headers: { Authorization: `Bearer ${token}` } });
+    return this.http.post<T>(this.menuSearch, body, { headers: { Authorization: `Bearer ${token}` } });
   }
 
   obtenerBuscadores<T>(body: any): Observable<T> {
     //console.log(body);
     const token = this.getToken();
-    return this.http.post<T>('https://localhost:7113/api/sy/managment/searchers', body, { headers: { Authorization: `Bearer ${token}` } });
+    return this.http.post<T>(this.menuSearchers, body, { headers: { Authorization: `Bearer ${token}` } });
   }
 
   isAuthenticated(): boolean {
