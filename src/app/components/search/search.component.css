@@ -14,29 +14,10 @@
 
 .filter-input {
   font-size: 12px !important;
-  height: 20px !important;
+  height: 28px !important;
   padding: 2px !important;
   width: 100% !important;
 }
-
-/*
-.filter-select {
-  width: 100% !important; 
-  max-width: 80px !important;
-  font-size: 12px !important;
-  height: 20px !important;
-  padding: 2px !important;
-  line-height: 20px !important;
-}
-
-.filter-select .mat-select-trigger {
-  height: 20px !important;
-  line-height: 20px !important;
-  font-size: 12px !important;
-  display: flex;
-  align-items: center;
-  padding: 0 2px !important;
-}*/
 
 /* Reducir la altura del mat-form-field del select */
 .small-filter {
@@ -150,13 +131,6 @@ tr.mat-footer-row {
   text-align: center;
 }
 
-/* Ajustar select para que no ocupe mucho espacio */
-/*.small-select .mat-select-trigger {
-  min-height: 28px !important;
-  font-size: 12px;
-  padding: 2px 8px !important;
-}*/
-
 /* Mejorar visibilidad de la selección */
 .selected {
   background-color: #90caf9 !important;
@@ -220,7 +194,7 @@ tr.mat-footer-row {
   height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;*/
-  height: 17px !important; /* Ajusta según necesites */
+  height: 12px !important; /* Ajusta según necesites */
   margin-top: 2px !important;
   padding-top: 0 !important;
 }
