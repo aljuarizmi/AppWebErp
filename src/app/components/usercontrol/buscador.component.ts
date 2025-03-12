@@ -220,9 +220,11 @@ export class BuscadorComponent implements OnInit {
       disableClose:true,
       autoFocus:true,
       closeOnNavigation:false,
-      maxWidth: 'none',
+      maxWidth: '900px',
       //position:{top:'30px'},
-      width:'900px',
+      //width:'900px',
+      width: '80%',
+      height: 'auto',
       //maxHeight: '90vh', // Máximo 90% de la altura de la pantalla
       data:{
         SearchID:this.SearchID,
