@@ -169,7 +169,6 @@ export class BuscadorComponent implements OnInit {
   f_CrearFiltro(vSQLFilter: string): string  {
     const arrSqlFilter = vSQLFilter.split('|');
     let strFiltro = '';
-
     for (let i = 1; i < arrSqlFilter.length; i += 2) {
       if (isNaN(Number(arrSqlFilter[i]))) { 
         alert('¡Parámetro inválido!');
@@ -178,7 +177,6 @@ export class BuscadorComponent implements OnInit {
         strFiltro += this.F_CompletarCadena(arrSqlFilter[i - 1], Number(arrSqlFilter[i]));
       }
     }
-
     return strFiltro;
   }
 
@@ -230,7 +228,7 @@ export class BuscadorComponent implements OnInit {
         SearchID:this.SearchID,
         CodigoPrincipal:this.CodigoPrincipal,
         CampoDescripcion:this.CampoDescripcion,
-        FiltrosAdicionales:this.FiltrosAdicionales
+        FiltrosAdicionales:this.f_CrearFiltro(this.FiltrosAdicionales)
       }
     });//codigo que abre la ventana modal
     dialogRef.afterClosed().subscribe(result => {

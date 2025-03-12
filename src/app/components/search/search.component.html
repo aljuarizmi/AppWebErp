@@ -25,7 +25,8 @@
 
           <!-- Selector de tipo de filtro -->
         <mat-form-field appearance="outline"  >
-          <mat-select  formControlName="typeFilter">
+          <!-- <mat-select  formControlName="typeFilter"> -->
+          <mat-select  [formControl]="filterTypeControls[col.key+'_type']">
             <mat-option *ngFor="let type of filterTypes" [value]="type.value">{{ type.label }}</mat-option>
           </mat-select>
         </mat-form-field>

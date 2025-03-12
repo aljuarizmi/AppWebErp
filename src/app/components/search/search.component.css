@@ -213,3 +213,14 @@ tr.mat-footer-row {
   padding-bottom: 0 !important;
   height: 100%; /* Asegura que ocupe toda la altura */
 }
+
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  /*display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;*/
+  height: 5px !important; /* Ajusta según necesites */
+  margin-top: 2px !important;
+  padding-top: 0 !important;
+}

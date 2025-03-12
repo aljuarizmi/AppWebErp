@@ -32,11 +32,11 @@ interface ApiResponse {
 export class SearchComponent implements OnInit {
   displayedColumns: string[] = [];
   searchForm: FormGroup;
-  searchOptions = [{ id: 1, name: '1 A/P Ship Via' }];
-  //searchOptions = [{ key: 'sy_terms_cd', label: 'Código' }, { key: 'ship_via_desc', label: 'Descripción' }];
+  searchOptions : { id: number, name: string }[]=[];
+  //searchOptions = [{ id: 1, name: '1 A/P Ship Via' }];
   rowLimits = [10, 50, 100];
-  //columns = [{ key: 'sy_terms_cd', label: 'Código' }, { key: 'ship_via_desc', label: 'Descripción' }];
   columns: { key: string; label: string }[] = [];
+  tipos: { value: string/*; label: string*/ }[] = [];
   data = new MatTableDataSource<any>([]);
   dataPadre = inject(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<SearchComponent>);
@@ -53,7 +53,8 @@ export class SearchComponent implements OnInit {
   FiltrosAdicionales:string="";
   isLoading: boolean = false; // Inicialmente en false
   previousFilters: { [key: string]: string } = {}; // Almacena los filtros previos
-  filterTypeControls: { [key: string]: FormControl } = {};
+  //filterTypeControls: { [key: string]: FormControl } = {};
+  filterTypeControls: { [value: string]: FormControl } = {};
   filterTypes = [
     { value: '0', label: 'Empieza con' },
     { value: '1', label: 'Es igual a' },
@@ -61,10 +62,9 @@ export class SearchComponent implements OnInit {
   ];
   selectedData: any;
   //listaVacia:string[]=[];
-
   constructor(private fb: FormBuilder,private authService: AuthService) {
     this.searchForm = this.fb.group({
-      searchType: [1],
+      searchType: [null],
       rowLimit: [10],
       typeFilter: ['0']
     });
@@ -73,19 +73,15 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     this.columns.forEach(col => {
       this.filterControls[col.key] = new FormControl('');
-      this.filterTypeControls[col.key] = new FormControl('0');
+      this.filterTypeControls[col.key+'_type'] = new FormControl('0');
     });
     this.SearchID=this.dataPadre.SearchID;
     this.CodigoPrincipal=this.dataPadre.CodigoPrincipal;
     this.CampoDescripcion=this.dataPadre.CampoDescripcion;
     this.FiltrosAdicionales=this.dataPadre.FiltrosAdicionales;
-    /*this.columns.forEach(col => {
-      this.filterControls[col.key] = new FormControl('');
-    });*/
     // Inicializa las columnas para la tabla
     this.displayedColumns = this.columns.map(c => c.key);
     this.obtenerBuscadores();
-    this.obtenerDatosBuscador('NO');
   }
   obtenerBuscadores():void{
     const body = {searchFieldId: this.SearchID};
@@ -98,6 +94,7 @@ export class SearchComponent implements OnInit {
       if (this.searchOptions.length > 0) {
         this.searchForm.patchValue({ searchType: this.searchOptions[0].id });
       }
+      this.obtenerDatosBuscador('NO');
     },error => {
       console.error('Error al obtener buscadores:', error);
     }
@@ -118,25 +115,30 @@ export class SearchComponent implements OnInit {
       listFiltroDatoBuscar:this.listFiltroDatoBuscar,
       listFiltroTipoBuscar:this.listFiltroTipoBuscar,
       listColumnas:this.listColumnas,
+      listTipos:this.tipos
     };
-    //console.log("registros: "+this.searchForm.get('rowLimit')?.value);
     //Reemplazamos ApiResponse por any
     this.authService.obtenerDatosBuscador<any>(body).subscribe(
       (data) => {
         this.filteredData.data=data.data;
         this.data.data=data.data;
-        this.columns = data.listColumnas;
-        this.listColumnas = data.listColumnas;
+        this.columns=data.listColumnas;
+        this.listColumnas=data.listColumnas;
         this.listCampos=data.listCampos;
+        this.tipos=data.listTipos;
         this.listFiltroTipoBuscar=data.listFiltroTipoBuscar;
         this.listFiltroDatoBuscar=data.listFiltroDatoBuscar;
-        this.displayedColumns = this.columns.map(c => c.key);
-
+        this.displayedColumns=this.columns.map(c => c.key);
         this.columns.forEach(col => {
-          //this.filterControls[col.key] = new FormControl('');
           if (!this.filterControls[col.key]) {
+            //Aqui se llena el objeto filterControls con el nombre de los campos de la grilla
             this.filterControls[col.key] = new FormControl('');
-            //this.filterTypeControls[col.key] = new FormControl('Contiene');
+          }
+        });
+        this.columns.forEach(col => {
+          if (!this.filterTypeControls[col.key+'_type']) {
+            //Aqui se llena el objeto filterControls con el nombre de los campos de la grilla
+            this.filterTypeControls[col.key+'_type'] = new FormControl('0');
           }
         });
         this.isLoading = false; // Desactivar cuando los datos llegan
@@ -157,10 +159,23 @@ export class SearchComponent implements OnInit {
     this.listFiltroDatoBuscar=[];//contiene el dato a buscar
     this.columns.forEach(col => {
       const filterValue = this.filterControls[col.key].value?.toString().trim().toLowerCase()||'';
+      //const filterType = this.filterTypeControls[col.key].value || '2';
       newFilters[col.key] = filterValue; 
       if (filterValue) {
         this.listCampos.push(col.key);
         this.listFiltroDatoBuscar.push(filterValue);
+      }
+    });
+    this.listFiltroTipoBuscar=[];
+    this.columns.forEach(col => {
+      const filterValue = this.filterTypeControls[col.key+'_type'].value?.toString().trim().toLowerCase()||'';
+      //console.log("applyFilters=>filterTypeControls: "+this.filterTypeControls[col.key+'_type'].value);
+      //const filterType = this.filterTypeControls[col.key].value || '2';
+      //newFilters[col.key] = filterValue; 
+      if (filterValue) {
+        //console.log(filterValue);
+        //this.tipos.push({value:col.key});
+        this.listFiltroTipoBuscar.push(filterValue);
       }
     });
     //console.log("listFiltroDatoBuscar: "+this.listFiltroDatoBuscar);
@@ -169,7 +184,10 @@ export class SearchComponent implements OnInit {
       return;
     }
     // Asegurar que listFiltroTipoBuscar tenga el mismo tamaño que listCampos
-    this.listFiltroTipoBuscar = Array(this.listCampos.length).fill("2");
+    //El objeto listFiltroTipoBuscar debe tener el mismo tamaño que la cantidad de campos de la grilla
+    //Solo debe cambiar el valor seleccionado de cada select de cada filtro
+    //this.listFiltroTipoBuscar = Array(this.listCampos.length).fill("2");
+    //this.listFiltroTipoBuscar = this.listCampos.map(campo => this.filterTypeControls[campo].value);
     this.listCampos.forEach((campo, index) => {
       //console.log("campo:"+campo+",index:"+index+", listFiltroDatoBuscar:"+this.listFiltroDatoBuscar.length+", Dato:"+this.listFiltroDatoBuscar[index]+",campos:"+this.listCampos+",filtered:"+filtered+",data.data:"+this.data.data);
       filtered = filtered.filter(row => 
