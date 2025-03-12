@@ -1,0 +1,143 @@
+{
+    "apiUrl": "http://webapprest:8080/api",
+    "timeout": 5000,
+    "modules": {
+      "auth": {
+        "login": "/auth/login",
+        "logout": "/auth/logout"
+      },
+      "configuration": {
+        "getServers": "/servers",
+        "getCompanies": "/servers/companies"
+      },
+      "systemAdmin": {
+        "getSearch": "/sy/managment/search",
+        "getSearchers": "/sy/managment/searchers",
+        "getMenu": "/sy/access"
+      },
+      "fixedAssets": {
+        "getAssets": "/fixedAssets/assets",
+        "addAsset": "/fixedAssets/add"
+      },
+      "inventories": {
+        "getInventory": "/inventories",
+        "updateStock": "/inventories/update"
+      },
+      "currencies": {
+        "getExchangeRates": "/currencies/exchangeRates",
+        "updateCurrency": "/currencies/update"
+      },
+      "generalAccounting": {
+        "getAccounts": "/accounting/accounts",
+        "postTransaction": "/accounting/transactions"
+      },
+      "accountsReceivable": {
+        "getInvoices": "/accountsReceivable/invoices",
+        "postPayment": "/accountsReceivable/payment"
+      },
+      "accountsPayable": {
+        "getBills": "/accountsPayable/bills",
+        "postPayment": "/accountsPayable/payment"
+      },
+      "bankLedger": {
+        "getBankMovements": "/bankLedger/movements",
+        "addBankTransaction": "/bankLedger/transaction"
+      },
+      "billOfMaterials": {
+        "getMaterials": "/billOfMaterials/materials",
+        "addMaterial": "/billOfMaterials/add"
+      },
+      "productionOrders": {
+        "getOrders": "/productionOrders",
+        "createOrder": "/productionOrders/create"
+      },
+      "purchaseOrders": {
+        "getOrders": "/purchaseOrders",
+        "approveOrder": "/purchaseOrders/approve"
+      },
+      "ordersAndBilling": {
+        "getOrders": "/ordersBilling",
+        "invoiceOrder": "/ordersBilling/invoice"
+      },
+      "masterScheduling": {
+        "getSchedules": "/masterScheduling",
+        "updateSchedule": "/masterScheduling/update"
+      },
+      "mrp": {
+        "getRequirements": "/mrp/requirements",
+        "planProduction": "/mrp/plan"
+      },
+      "crp": {
+        "getCapacityPlan": "/crp/capacityPlan",
+        "updateCapacity": "/crp/update"
+      },
+      "manufacturingCost": {
+        "getCostDetails": "/manufacturingCost/details",
+        "updateCost": "/manufacturingCost/update"
+      },
+      "plantControl": {
+        "getOperations": "/plantControl/operations",
+        "updateOperation": "/plantControl/update"
+      },
+      "standardSchedulingRoute": {
+        "getRoutes": "/standardSchedulingRoute",
+        "addRoute": "/standardSchedulingRoute/add"
+      },
+      "psiProjection": {
+        "getProjections": "/psi/projections",
+        "updateProjection": "/psi/update"
+      },
+      "payroll": {
+        "getEmployees": "/payroll/employees",
+        "processPayroll": "/payroll/process"
+      },
+      "cashFlow": {
+        "getCashFlow": "/cashFlow",
+        "updateCashFlow": "/cashFlow/update"
+      },
+      "manufacturingGeneral": {
+        "getManufacturingData": "/manufacturingGeneral/data",
+        "updateManufacturing": "/manufacturingGeneral/update"
+      },
+      "requisitions": {
+        "getRequisitions": "/requisitions",
+        "approveRequisition": "/requisitions/approve"
+      },
+      "salesQuotations": {
+        "getQuotations": "/salesQuotations",
+        "approveQuotation": "/salesQuotations/approve"
+      },
+      "projects": {
+        "getProjects": "/projects",
+        "updateProject": "/projects/update"
+      },
+      "maintenancePlanning": {
+        "getMaintenance": "/maintenancePlanning",
+        "scheduleMaintenance": "/maintenancePlanning/schedule"
+      },
+      "qualityControl": {
+        "getInspections": "/qualityControl/inspections",
+        "approveInspection": "/qualityControl/approve"
+      },
+      "contracts": {
+        "getContracts": "/contracts",
+        "updateContract": "/contracts/update"
+      },
+      "massBilling": {
+        "generateMassInvoices": "/massBilling/generate",
+        "getMassInvoices": "/massBilling/invoices"
+      },
+      "helpDesk": {
+        "getTickets": "/helpDesk/tickets",
+        "resolveTicket": "/helpDesk/resolve"
+      },
+      "viewer": {
+        "getReports": "/viewer/reports"
+      },
+      "planning": {
+        "getPlans": "/planning",
+        "updatePlan": "/planning/update"
+      }
+    }
+    
+}

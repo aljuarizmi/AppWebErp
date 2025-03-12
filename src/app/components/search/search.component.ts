@@ -33,7 +33,6 @@ export class SearchComponent implements OnInit {
   displayedColumns: string[] = [];
   searchForm: FormGroup;
   searchOptions : { id: number, name: string }[]=[];
-  //searchOptions = [{ id: 1, name: '1 A/P Ship Via' }];
   rowLimits = [10, 50, 100];
   columns: { key: string; label: string }[] = [];
   tipos: { value: string/*; label: string*/ }[] = [];
@@ -53,7 +52,6 @@ export class SearchComponent implements OnInit {
   FiltrosAdicionales:string="";
   isLoading: boolean = false; // Inicialmente en false
   previousFilters: { [key: string]: string } = {}; // Almacena los filtros previos
-  //filterTypeControls: { [key: string]: FormControl } = {};
   filterTypeControls: { [value: string]: FormControl } = {};
   filterTypes = [
     { value: '0', label: 'Empieza con' },
@@ -61,7 +59,6 @@ export class SearchComponent implements OnInit {
     { value: '2', label: 'Contiene' }
   ];
   selectedData: any;
-  //listaVacia:string[]=[];
   constructor(private fb: FormBuilder,private authService: AuthService) {
     this.searchForm = this.fb.group({
       searchType: [null],
@@ -159,7 +156,6 @@ export class SearchComponent implements OnInit {
     this.listFiltroDatoBuscar=[];//contiene el dato a buscar
     this.columns.forEach(col => {
       const filterValue = this.filterControls[col.key].value?.toString().trim().toLowerCase()||'';
-      //const filterType = this.filterTypeControls[col.key].value || '2';
       newFilters[col.key] = filterValue; 
       if (filterValue) {
         this.listCampos.push(col.key);
@@ -169,43 +165,29 @@ export class SearchComponent implements OnInit {
     this.listFiltroTipoBuscar=[];
     this.columns.forEach(col => {
       const filterValue = this.filterTypeControls[col.key+'_type'].value?.toString().trim().toLowerCase()||'';
-      //console.log("applyFilters=>filterTypeControls: "+this.filterTypeControls[col.key+'_type'].value);
-      //const filterType = this.filterTypeControls[col.key].value || '2';
-      //newFilters[col.key] = filterValue; 
       if (filterValue) {
-        //console.log(filterValue);
-        //this.tipos.push({value:col.key});
         this.listFiltroTipoBuscar.push(filterValue);
       }
     });
-    //console.log("listFiltroDatoBuscar: "+this.listFiltroDatoBuscar);
     if (this.listFiltroDatoBuscar.length === 0){
       this.filteredData.data = this.data.data;
       return;
     }
     // Asegurar que listFiltroTipoBuscar tenga el mismo tamaño que listCampos
-    //El objeto listFiltroTipoBuscar debe tener el mismo tamaño que la cantidad de campos de la grilla
-    //Solo debe cambiar el valor seleccionado de cada select de cada filtro
-    //this.listFiltroTipoBuscar = Array(this.listCampos.length).fill("2");
-    //this.listFiltroTipoBuscar = this.listCampos.map(campo => this.filterTypeControls[campo].value);
     this.listCampos.forEach((campo, index) => {
-      //console.log("campo:"+campo+",index:"+index+", listFiltroDatoBuscar:"+this.listFiltroDatoBuscar.length+", Dato:"+this.listFiltroDatoBuscar[index]+",campos:"+this.listCampos+",filtered:"+filtered+",data.data:"+this.data.data);
       filtered = filtered.filter(row => 
         row[campo] && row[campo].toString().toLowerCase().includes(this.listFiltroDatoBuscar[index])
       );
     });
 
-    // ✅ COMPARAR FILTROS IGNORANDO MAYÚSCULAS, ESPACIOS Y NÚMEROS
+    //COMPARAR FILTROS IGNORANDO MAYÚSCULAS, ESPACIOS Y NÚMEROS
   if (this.areFiltersSame(this.previousFilters, newFilters)) {
     console.log("Filtros iguales, no se llama a la API.");
     return;
   }
 
-  this.previousFilters = { ...newFilters };
-
-    //console.log("listCampos: "+this.listCampos);
+    this.previousFilters = { ...newFilters };
     if (this.listCampos.length > 0) {
-      //this.getFilteredData({ listCampos, listFiltroDatoBuscar });
       this.obtenerDatosBuscador('SI');
     } else {
       // Si no hay filtros, mostrar todos los datos sin llamar a la API
@@ -216,9 +198,7 @@ export class SearchComponent implements OnInit {
   areFiltersSame(filters1: { [key: string]: any }, filters2: { [key: string]: any }): boolean {
     const keys1 = Object.keys(filters1);
     const keys2 = Object.keys(filters2);
-  
     if (keys1.length !== keys2.length) return false;
-  
     return keys1.every(key => {
       const value1 = (filters1[key] ?? '').toString().trim().toLowerCase();
       const value2 = (filters2[key] ?? '').toString().trim().toLowerCase();
@@ -234,13 +214,11 @@ export class SearchComponent implements OnInit {
     if (this.selectedRow) {
       this.selectedData=this.selectedRow;
       this.dialogRef.close(this.selectedData);
-      //console.log('Seleccionado:', this.selectedRow);
     }
   }
 
   cancel(): void {
     this.selectedRow = null;
-    //console.log('Selección cancelada');
     this.dialogRef.close();
   }
 }
