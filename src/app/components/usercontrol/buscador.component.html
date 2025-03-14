@@ -5,15 +5,17 @@
           type="text"
           #txt_codigo
           [id]="id+'_txt_codigo'"
-          [(ngModel)]="txt_codigo"
-          (change)="onCodigoChange($event)" 
-          (keypress)="onCodigoKeyPress($event)"    
+          (change)="onChange($event)" 
+          (keypress)="onKeyPress($event)"    
           class="form-control"
-          [maxlength]="TamanioCodigo"
           (input)="onInput($event)"
-          [placeholder]="'Código'"
           [disabled]="!Enabled"
-          [attr.maxlength]="MaxLength" value=""/>
+          [attr.maxlength]="MaxLength" value=""
+          [style.width.px]="TamanioCodigo"
+          [(ngModel)]="txt_codigo"
+          />
+          <!-- [(ngModel)]="txt_codigo"
+          [maxlength]="TamanioCodigo" -->
     </div>
     <div class="col-auto">
       <button class="btn btn-light" [id]="id+'_btnBuscar'" #btnBuscar (click)="buscar()" tabindex="-1" [disabled]="!Enabled">
@@ -25,18 +27,20 @@
           type="text"
           #txt_descripcion
           [id]="id+'_txt_descripcion'"
-          [(ngModel)]="txt_descripcion"
-          class="form-control-plaintext"
-          disabled
+          class="form-control"
           tabindex="-1"
           style="width: 150px;"
-          placeholder="Descripción"/>
+          placeholder=""
+          [disabled]="!HabilitarDescripcion"
+          [style.width.px]="TamanioDescripcion"
+          />
+          <!-- [(ngModel)]="txt_descripcion" -->
     </div>
   </div>
     <span style="display: none;">
       <input type="hidden" [id]="id+'_hidCodigo'" #codigoHidden [(ngModel)]="hidCodigo" />
       <input type="hidden" [id]="id+'_hid_SearchFiltro'" [(ngModel)]="hid_SearchFiltro" />
-      <button hidden [id]="id+'_btnLimpiar'" (click)="onClickLimpiar()">Oculto pero funcional</button>
+      <button hidden [id]="id+'_btnLimpiar'" (click)="onClickLimpiar()"></button>
     </span>
 </div>
   

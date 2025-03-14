@@ -1,5 +1,6 @@
 {
     "apiUrl": "http://webapprest:8080/api",
+    "apiTest": "https://localhost:7113/api",
     "timeout": 5000,
     "modules": {
       "auth": {
@@ -12,6 +13,7 @@
       },
       "systemAdmin": {
         "getSearch": "/sy/managment/search",
+        "getSearchCodigo": "/sy/managment/searchCodigo",
         "getSearchers": "/sy/managment/searchers",
         "getMenu": "/sy/access"
       },

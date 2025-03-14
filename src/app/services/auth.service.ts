@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable,catchError,throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -7,6 +7,7 @@ import { tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmdialogComponent } from '../components/login/confirmdialog.component';
 import { ConfigService } from './config.service';
+import { isPlatformBrowser } from '@angular/common';
 
 
 interface Server {
@@ -33,7 +34,12 @@ export class AuthService {
   private menuSearchers='';//this.apiURL+'/sy/managment/searchers';
   private urlPrueba='';
 
-  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar,private dialog: MatDialog,private configService: ConfigService) {
+  constructor(private http: HttpClient, 
+              private router: Router, 
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog,
+              private configService: ConfigService,
+              @Inject(PLATFORM_ID) private platformId: object) {
     this.loginUrl=this.configService.getEndpoint('auth','login');
     this.serversUrl=this.configService.getEndpoint('configuration','getServers');
     this.databasesUrl=this.configService.getEndpoint('configuration','getCompanies');
@@ -45,16 +51,34 @@ export class AuthService {
     return this.configService.getEndpoint('auth','login');
   }*/
   login(credentials: { syUser: string; bizGrpId: number; serverName: string; dataBase: string; syUserPsc: string }): Observable<{ token: string }> {
+    console.log("login: "+this.loginUrl);
     return this.http.post<{ token: string }>(this.loginUrl, credentials);
   }
 
   getServers(): Observable<Server[]> {
-    return this.http.get<Server[]>(this.serversUrl).pipe(
+    console.log("serversUrl:"+this.configService.getEndpoint('configuration','getServers'));
+    return this.http.get<Server[]>(this.configService.getEndpoint('configuration','getServers')).pipe(
       catchError(error => {
         console.error('Error en getServers():', error);
-        const errorMsg = error.error?.message || 'No se pudo conectar al API para cargar servidores';
+        const errorMsg = error.error?.message || 'No se pudo conectar al API para cargar servidores: '+this.serversUrl+'.';
         this.snackBar.open(errorMsg, 'Cerrar', { duration: 3000 });
         return throwError(() => new Error(errorMsg));
+
+      /*
+        if (err instanceof HttpErrorResponse) {
+          console.error("Error HTTP:", err.status, err.message);
+        } else if (err instanceof TypeError) {
+          console.error("Error de red: No se pudo conectar a la API.");
+        } else if (err.name === "TimeoutError") {
+          console.error("Error: La petición tardó demasiado en responder.");
+        } else if (err instanceof SyntaxError) {
+          console.error("Error en el formato JSON.");
+        } else {
+          console.error("Error desconocido:", err);
+        }
+        return throwError(() => err);
+      */
+
       })
     );
   }
@@ -76,8 +100,11 @@ export class AuthService {
     localStorage.setItem('token', token);
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
+  getToken(): string {
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('token')||'';
+    }
+    return '';
   }
 
   logout(): void {
@@ -107,17 +134,23 @@ export class AuthService {
   }
   
   obtenerDatosBuscador<T>(body: any): Observable<T> {
-    //console.log(body);
+    console.log(body);
+    console.log(this.menuSearch+", menuSearch");
     const token = this.getToken();
     return this.http.post<T>(this.menuSearch, body, { headers: { Authorization: `Bearer ${token}` } });
   }
 
   obtenerBuscadores<T>(body: any): Observable<T> {
-    //console.log(body);
+    console.log("obtenerBuscadores: "+this.menuSearchers+", datos");
+    console.log(this.menuSearchers+", datos");
     const token = this.getToken();
     return this.http.post<T>(this.menuSearchers, body, { headers: { Authorization: `Bearer ${token}` } });
   }
-
+  obtenerDatosCodigo<T>(body: any): Observable<T> {
+    //console.log(body);
+    const token = this.getToken();
+    return this.http.post<T>(this.configService.getEndpoint('systemAdmin','getSearchCodigo'), body, { headers: { Authorization: `Bearer ${token}` } });
+  }
   isAuthenticated(): boolean {
     return !!localStorage.getItem('token');
   }

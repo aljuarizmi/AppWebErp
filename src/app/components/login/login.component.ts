@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ConfigService } from '../../services/config.service';
 @Component({
   selector: 'app-login',
   imports: [CommonModule,ReactiveFormsModule,MatFormFieldModule,MatSelectModule,MatInputModule,MatButtonModule,MatCardModule,MatSnackBarModule],
@@ -18,6 +19,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  //private serversUrl = '';
   servers: { server_id: number; server_name: string }[] = [];
   databases: { sy_company: string; sy_company_descr: string }[] = [];
 
@@ -25,7 +27,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private configService: ConfigService
   ) {
     this.loginForm = this.fb.group({
       server: ['', Validators.required],
@@ -33,10 +36,14 @@ export class LoginComponent {
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
+    //this.serversUrl=this.configService.getEndpoint('configuration','getServers');
   }
 
   ngOnInit() {
-    this.authService.getServers().subscribe((data) => (this.servers = data));
+    //this.authService.getServers(this.serversUrl).subscribe((data) => (this.servers = data));
+    setTimeout(() => {
+      this.authService.getServers().subscribe((data) => (this.servers = data));
+    }, 1000); // Espera 1 segundo antes de llamar a la API
   }
 
   onServerChange() {

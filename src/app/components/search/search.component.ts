@@ -17,10 +17,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 interface ApiResponse {
-  listFiltroDatoBuscar: string[];
-  listFiltroTipoBuscar: string[];
-  listCampos: string[];
-  table: string;
+  selectedRow:any;
+  searchNo:number;
 }
 
 @Component({
@@ -59,6 +57,7 @@ export class SearchComponent implements OnInit {
     { value: '2', label: 'Contiene' }
   ];
   selectedData: any;
+  searchNo:number=0;
   constructor(private fb: FormBuilder,private authService: AuthService) {
     this.searchForm = this.fb.group({
       searchType: [null],
@@ -114,6 +113,7 @@ export class SearchComponent implements OnInit {
       listColumnas:this.listColumnas,
       listTipos:this.tipos
     };
+    console.log("this.FiltrosAdicionales: "+this.FiltrosAdicionales);
     //Reemplazamos ApiResponse por any
     this.authService.obtenerDatosBuscador<any>(body).subscribe(
       (data) => {
@@ -126,6 +126,7 @@ export class SearchComponent implements OnInit {
         this.listFiltroTipoBuscar=data.listFiltroTipoBuscar;
         this.listFiltroDatoBuscar=data.listFiltroDatoBuscar;
         this.displayedColumns=this.columns.map(c => c.key);
+        this.searchNo=Number(this.searchForm.get('searchType')?.value.toString());
         this.columns.forEach(col => {
           if (!this.filterControls[col.key]) {
             //Aqui se llena el objeto filterControls con el nombre de los campos de la grilla
@@ -212,7 +213,12 @@ export class SearchComponent implements OnInit {
 
   confirmSelection(): void {
     if (this.selectedRow) {
-      this.selectedData=this.selectedRow;
+      //this.selectedData=this.selectedRow;
+      console.log("this.selectedRow: "+this.selectedRow);
+      this.selectedData={
+        selectedRow:this.selectedRow,
+        searchNo:this.searchNo
+      };
       this.dialogRef.close(this.selectedData);
     }
   }

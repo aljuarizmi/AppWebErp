@@ -15,8 +15,11 @@ import { ConfigService } from './services/config.service';
 export class AppComponent {
   title = 'AppWebErp';
   constructor(private configService: ConfigService) {
+  }
+  ngOnInit() {
     this.configService.loadConfig().subscribe(config => {
       this.configService.setConfig(config);
+      //console.log('config: '+config.apiUrl);
     });
   }
 }

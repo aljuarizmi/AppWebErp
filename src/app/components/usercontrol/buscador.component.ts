@@ -1,9 +1,10 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 // Define un tipo para el evento
 interface BusquedaExitosaEvent {
@@ -12,16 +13,17 @@ interface BusquedaExitosaEvent {
 
 @Component({
   selector: 'app-buscador',
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule,CommonModule,ReactiveFormsModule],
   templateUrl: './buscador.component.html',
   styleUrl: './buscador.component.css'
 })
 export class BuscadorComponent implements OnInit {
+  datosDinamicos: Record<string, any> = {}; // Se declara como un objeto dinámico
   @Input() id: string = ''; // Se puede sobrescribir al usar el componente
   codigo: string = '';
   descripcion: string = '';
   @Input() SearchID: string = '';
-  @Input() TamanioCodigo: number = 15;
+  @Input() TamanioCodigo: number = 100;
   @Input() TamanioDescripcion: number = 50;
   @Input() DiccionarioRowDatos: { [key: string]: string } = {};
   @Input() SelectRowDatos: string = '';
@@ -49,11 +51,12 @@ export class BuscadorComponent implements OnInit {
   @Input() UseCatalog: boolean = false;
   @Input() Ancho: number = 300;
   @Input() Alto: number = 40;
-  @Input() txt_codigo: string ="";
+  //@Input() txt_codigo: string ="";
+  @Input() HabilitarDescripcion: boolean=false;
   //@Output() busquedaExitosa: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() busquedaExitosa: EventEmitter<BusquedaExitosaEvent> = new EventEmitter<BusquedaExitosaEvent>(); // Usar el tipo personalizado
   
-  constructor(private dialog:MatDialog){
+  constructor(private dialog:MatDialog,private authService: AuthService){
   }
   ngOnInit(): void {
     //console.log("Propiedades: "+this.SearchID);
@@ -64,18 +67,18 @@ export class BuscadorComponent implements OnInit {
   hid_SearchFiltro:string='';
   
   // Maneja el cambio de valor en el campo 'codigo'
-  onCodigoChange(event: any) {
+  onChange(event: any) {
     //console.log('Cambio en el campo código:', value);
-    this.txt_codigo = this.txt_codigo.trim();
+    //this.txt_codigo = this.txt_codigo.trim();
     // Aquí puedes agregar cualquier lógica adicional para el cambio
     const btnBuscar = document.getElementById(this.id + '_btnBuscar') as HTMLButtonElement;
     const hid_SearchFiltro = document.getElementById(this.id + '_hid_SearchFiltro') as HTMLInputElement;
     //HTMLInputElement
-    //this.F_BuscarDatos_Control(btnBuscar,this.FuncionPreviaValidacion,this.FiltrosAdicionales,hid_SearchFiltro);
+    this.F_BuscarDatos_Control(btnBuscar,this.FuncionPreviaValidacion,this.FiltrosAdicionales,hid_SearchFiltro);
   }
 
   // Maneja el evento keypress en el campo 'codigo'
-  onCodigoKeyPress(event: KeyboardEvent) {
+  onKeyPress(event: KeyboardEvent) {
     //console.log('Tecla presionada:', event.key);
     const txtBusqueda = document.getElementById(this.id + '_txt_codigo') as HTMLInputElement;
     const hidBusqueda = document.getElementById(this.id + '_hidCodigo') as HTMLInputElement;
@@ -98,7 +101,8 @@ export class BuscadorComponent implements OnInit {
     }
 
     // Realiza la búsqueda, si es exitosa cambia el estado
-    if (this.txt_codigo === this.CodigoPrincipal) {
+    //if (this.txt_codigo === this.CodigoPrincipal) {
+      if ("" === this.CodigoPrincipal) {
       this.txt_descripcion = this.CampoDescripcion;
       this.BolBusquedaExitosa = true;
       this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa] }); // Emitir un arreglo con el 'success'
@@ -114,7 +118,7 @@ export class BuscadorComponent implements OnInit {
   }
 
   limpiar() {
-    this.txt_codigo = '';
+    //this.txt_codigo = '';
     this.txt_descripcion = '';
   }
 
@@ -142,11 +146,9 @@ export class BuscadorComponent implements OnInit {
     if (FuncionPrevia !== '') {
       //bolResult = eval(FuncionPrevia); // ⚠️ No recomendado por seguridad
     }
-    
     if (!bolResult) {
       return false;
     }
-
     // Si hay un filtro SQL, lo aplicamos
     if (vSQLFilter !== '') {
       vSQLFilter = this.f_CrearFiltro(vSQLFilter);
@@ -155,13 +157,12 @@ export class BuscadorComponent implements OnInit {
         hid_SearchFiltro.value = vSQLFilter;
       }
     }
-
     // Simular el clic en el botón
     //const boton = document.getElementById(botonId) as HTMLButtonElement;
     if (botonId) {
+      //En este boton debe hacer la busqueda del codigo ingresado
       botonId.click();
     }
-
     return true;
   }
 
@@ -236,10 +237,39 @@ export class BuscadorComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         //alert("Se escogió un registro");
-        //console.log('Dato seleccionado:', result);
+        console.log("selectedRow: "+result.selectedRow[this.CodigoPrincipal]);
+        const body = {
+          searchFieldId: this.SearchID,
+          searchNo: result.searchNo,
+          searchNumeroRegistros: "1",
+          sqlfilter: this.f_CrearFiltro(this.FiltrosAdicionales),
+          campoDescripcion:this.CampoDescripcion,
+          codigoPrincipal:this.CodigoPrincipal,
+          habilitarWhere:true,
+          codigo:result.selectedRow[this.CodigoPrincipal],
+          selectRowDatos:"",
+          listFiltroDatoBuscar:null
+        };
+        this.authService.obtenerDatosCodigo<any>(body).subscribe((data)=>{
+          console.log('Dato seleccionado:', data);
+          this.datosDinamicos=data;
+          if(Object.keys(this.datosDinamicos).length>0){
+            this.BolBusquedaExitosa=true;
+            this.DiccionarioRowDatos=data;
+            if(this.DescripcionVisible){
+              if(this.DiccionarioRowDatos.hasOwnProperty(this.CampoDescripcion)){
+                //Ponemos la descripcion en el campo respectivo
+
+              }
+            }
+          }else{
+            this.BolBusquedaExitosa=false;
+          }
+        })
       } else {
         //console.log('El usuario canceló la selección.',result);
       }
     });
   }
+  
 }
