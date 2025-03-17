@@ -134,27 +134,27 @@ export class BuscadorComponent implements OnInit {
       };
       this.authService.obtenerDatosCodigo<any>(body).subscribe({next:(data)=>{
         console.log('Dato resultado: '+data+": SelectRowDatos: "+this.SelectRowDatos);
-        Object.keys(data).forEach((key) => {
-          console.log(`${key}: ${data[key]}`);
-        });
         if(data!=null){
+          Object.keys(data).forEach((key) => {
+            console.log(`${key}: ${data[key]}`);
+          });
           this.datosDinamicos=data;
-        if(Object.keys(this.datosDinamicos).length>0){
-          this.BolBusquedaExitosa=true;
-          this.DiccionarioRowDatos=data;
-          this.txt_code=this.DiccionarioRowDatos[this.CodigoPrincipal];
-          if(this.DescripcionVisible){
-            if(this.DiccionarioRowDatos.hasOwnProperty(this.CampoDescripcion)){
-              //Ponemos la descripcion en el campo respectivo
-              this.txt_description=this.DiccionarioRowDatos[this.CampoDescripcion];
+          if(Object.keys(this.datosDinamicos).length>0){
+            this.BolBusquedaExitosa=true;
+            this.DiccionarioRowDatos=data;
+            this.txt_code=this.DiccionarioRowDatos[this.CodigoPrincipal];
+            if(this.DescripcionVisible){
+              if(this.DiccionarioRowDatos.hasOwnProperty(this.CampoDescripcion)){
+                //Ponemos la descripcion en el campo respectivo
+                this.txt_description=this.DiccionarioRowDatos[this.CampoDescripcion];
+              }
             }
+          }else{
+            this.BolBusquedaExitosa=false;
+            alert("No se encontró el código "+this.txt_code.trim());
+            this.txt_code='';
+            this.txt_description='';
           }
-        }else{
-          this.BolBusquedaExitosa=false;
-          alert("No se encontró el código "+this.txt_code.trim());
-          this.txt_code='';
-          this.txt_description='';
-        }
         }else{
           this.BolBusquedaExitosa=false;
           alert("No se encontró el código "+this.txt_code.trim());
