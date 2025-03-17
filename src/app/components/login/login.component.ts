@@ -27,8 +27,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private router: Router,
-    private configService: ConfigService
+    private router: Router/*,
+    private configService: ConfigService*/
   ) {
     this.loginForm = this.fb.group({
       server: ['', Validators.required],
@@ -42,7 +42,9 @@ export class LoginComponent {
   ngOnInit() {
     //this.authService.getServers(this.serversUrl).subscribe((data) => (this.servers = data));
     setTimeout(() => {
-      this.authService.getServers().subscribe((data) => (this.servers = data));
+      this.authService.getServers().subscribe((data) => {
+        this.servers = data;
+      });
     }, 1000); // Espera 1 segundo antes de llamar a la API
   }
 
@@ -76,12 +78,14 @@ export class LoginComponent {
       this.authService.login(credentials).subscribe(
         (response) => {
           //console.log('Token recibido:', response.token); // <-- PRUEBA SI SE RECIBE TOKEN
-          this.authService.saveToken(response.token);
+          //console.log('expirationTime recibido:', response.expirationTime);
+          //console.log('response recibido:', response);
+          this.authService.saveToken(response.token,Number(response.expirationTime));
           //console.log('Token guardado:', this.authService.getToken()); // <-- PRUEBA SI SE GUARDA
           this.snackBar.open('Login exitoso', 'Cerrar', { duration: 2000 });
           //this.router.navigate(['/principal']);
           this.router.navigate(['/principal']).then(() => {
-            //console.log('Redirigiendo a principal...');
+          console.log('Redirigiendo a principal...');
             //window.location.reload();
           });
         },

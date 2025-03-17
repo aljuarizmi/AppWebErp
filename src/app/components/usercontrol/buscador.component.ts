@@ -5,6 +5,7 @@ import { SearchComponent } from '../search/search.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+//import { MatSnackBar } from '@angular/material/snack-bar';
 
 // Define un tipo para el evento
 interface BusquedaExitosaEvent {
@@ -51,25 +52,26 @@ export class BuscadorComponent implements OnInit {
   @Input() UseCatalog: boolean = false;
   @Input() Ancho: number = 300;
   @Input() Alto: number = 40;
-  //@Input() txt_codigo: string ="";
+  @Input() txt_code: string ='';
+  @Input() txt_description: string ='';
   @Input() HabilitarDescripcion: boolean=false;
   //@Output() busquedaExitosa: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() busquedaExitosa: EventEmitter<BusquedaExitosaEvent> = new EventEmitter<BusquedaExitosaEvent>(); // Usar el tipo personalizado
   
   constructor(private dialog:MatDialog,private authService: AuthService){
   }
+  
   ngOnInit(): void {
-    //console.log("Propiedades: "+this.SearchID);
   }
   //txt_codigo: string = '';
-  txt_descripcion: string = '';
+  //txt_descripcion: string = '';
   hidCodigo:string='';
   hid_SearchFiltro:string='';
   
   // Maneja el cambio de valor en el campo 'codigo'
   onChange(event: any) {
     //console.log('Cambio en el campo código:', value);
-    //this.txt_codigo = this.txt_codigo.trim();
+    this.txt_code = this.txt_code.trim();
     // Aquí puedes agregar cualquier lógica adicional para el cambio
     const btnBuscar = document.getElementById(this.id + '_btnBuscar') as HTMLButtonElement;
     const hid_SearchFiltro = document.getElementById(this.id + '_hid_SearchFiltro') as HTMLInputElement;
@@ -80,7 +82,7 @@ export class BuscadorComponent implements OnInit {
   // Maneja el evento keypress en el campo 'codigo'
   onKeyPress(event: KeyboardEvent) {
     //console.log('Tecla presionada:', event.key);
-    const txtBusqueda = document.getElementById(this.id + '_txt_codigo') as HTMLInputElement;
+    //const txtBusqueda = document.getElementById(this.id + '_txt_codigo') as HTMLInputElement;
     const hidBusqueda = document.getElementById(this.id + '_hidCodigo') as HTMLInputElement;
     const btnLimpiar = document.getElementById(this.id + '_btnLimpiar') as HTMLButtonElement;
     const hid_SearchFiltro = document.getElementById(this.id + '_hid_SearchFiltro') as HTMLInputElement;
@@ -103,11 +105,11 @@ export class BuscadorComponent implements OnInit {
     // Realiza la búsqueda, si es exitosa cambia el estado
     //if (this.txt_codigo === this.CodigoPrincipal) {
       if ("" === this.CodigoPrincipal) {
-      this.txt_descripcion = this.CampoDescripcion;
+      //this.txt_descripcion = this.CampoDescripcion;
       this.BolBusquedaExitosa = true;
       this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa] }); // Emitir un arreglo con el 'success'
     } else {
-      this.txt_descripcion = 'No encontrado';
+      //this.txt_descripcion = 'No encontrado';
       this.BolBusquedaExitosa = false;
       this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa] }); // Emitir el arreglo con 'success'
     }
@@ -116,10 +118,63 @@ export class BuscadorComponent implements OnInit {
       // Lógica de post búsqueda si hay una función definida
     }
   }
-
+  buscarCodigo() {
+    if(this.txt_code.trim()!=''){
+      //Buscamos en la bd el codigo ingresado por el usuario en el input
+      const body = {
+        searchFieldId: this.SearchID,
+        searchNo: 1,
+        searchNumeroRegistros: "1",
+        sqlfilter: this.f_CrearFiltro(this.FiltrosAdicionales),
+        campoDescripcion:this.CampoDescripcion,
+        codigoPrincipal:this.CodigoPrincipal,
+        habilitarWhere:true,
+        codigo:this.txt_code.trim(),
+        selectRowDatos:this.SelectRowDatos
+      };
+      this.authService.obtenerDatosCodigo<any>(body).subscribe({next:(data)=>{
+        console.log('Dato resultado: '+data+": SelectRowDatos: "+this.SelectRowDatos);
+        Object.keys(data).forEach((key) => {
+          console.log(`${key}: ${data[key]}`);
+        });
+        if(data!=null){
+          this.datosDinamicos=data;
+        if(Object.keys(this.datosDinamicos).length>0){
+          this.BolBusquedaExitosa=true;
+          this.DiccionarioRowDatos=data;
+          this.txt_code=this.DiccionarioRowDatos[this.CodigoPrincipal];
+          if(this.DescripcionVisible){
+            if(this.DiccionarioRowDatos.hasOwnProperty(this.CampoDescripcion)){
+              //Ponemos la descripcion en el campo respectivo
+              this.txt_description=this.DiccionarioRowDatos[this.CampoDescripcion];
+            }
+          }
+        }else{
+          this.BolBusquedaExitosa=false;
+          alert("No se encontró el código "+this.txt_code.trim());
+          this.txt_code='';
+          this.txt_description='';
+        }
+        }else{
+          this.BolBusquedaExitosa=false;
+          alert("No se encontró el código "+this.txt_code.trim());
+          this.txt_code='';
+          this.txt_description='';
+        }
+      },
+      error: (error) => {
+        //this.errorMessage = error.message; // Captura el mensaje de "details"
+        //console.error('Error en la API-REST:', error.message);
+        alert(error.message);
+        this.txt_code='';
+        //this.snackBar.open(error.message, 'Cerrar', { duration: 3000 });
+      }
+    })
+    }
+  }
   limpiar() {
     //this.txt_codigo = '';
-    this.txt_descripcion = '';
+    //this.txt_descripcion = '';
   }
 
   // Función para controlar la entrada solo numérica si es necesario
@@ -238,34 +293,45 @@ export class BuscadorComponent implements OnInit {
       if (result) {
         //alert("Se escogió un registro");
         console.log("selectedRow: "+result.selectedRow[this.CodigoPrincipal]);
-        const body = {
-          searchFieldId: this.SearchID,
-          searchNo: result.searchNo,
-          searchNumeroRegistros: "1",
-          sqlfilter: this.f_CrearFiltro(this.FiltrosAdicionales),
-          campoDescripcion:this.CampoDescripcion,
-          codigoPrincipal:this.CodigoPrincipal,
-          habilitarWhere:true,
-          codigo:result.selectedRow[this.CodigoPrincipal],
-          selectRowDatos:"",
-          listFiltroDatoBuscar:null
-        };
-        this.authService.obtenerDatosCodigo<any>(body).subscribe((data)=>{
-          console.log('Dato seleccionado:', data);
-          this.datosDinamicos=data;
-          if(Object.keys(this.datosDinamicos).length>0){
-            this.BolBusquedaExitosa=true;
-            this.DiccionarioRowDatos=data;
-            if(this.DescripcionVisible){
-              if(this.DiccionarioRowDatos.hasOwnProperty(this.CampoDescripcion)){
-                //Ponemos la descripcion en el campo respectivo
-
+        if(this.AutoPostBack){
+          const body = {
+            searchFieldId: this.SearchID,
+            searchNo: result.searchNo,
+            searchNumeroRegistros: "1",
+            sqlfilter: this.f_CrearFiltro(this.FiltrosAdicionales),
+            campoDescripcion:this.CampoDescripcion,
+            codigoPrincipal:this.CodigoPrincipal,
+            habilitarWhere:true,
+            codigo:result.selectedRow[this.CodigoPrincipal],
+            selectRowDatos:""
+          };
+          this.authService.obtenerDatosCodigo<any>(body).subscribe((data)=>{
+            console.log('Dato seleccionado:', data);
+            this.datosDinamicos=data;
+            if(Object.keys(this.datosDinamicos).length>0){
+              this.BolBusquedaExitosa=true;
+              this.DiccionarioRowDatos=data;
+              this.txt_code=this.DiccionarioRowDatos[this.CodigoPrincipal];
+              if(this.DescripcionVisible){
+                if(this.DiccionarioRowDatos.hasOwnProperty(this.CampoDescripcion)){
+                  //Ponemos la descripcion en el campo respectivo
+                  this.txt_description=this.DiccionarioRowDatos[this.CampoDescripcion];
+                }
               }
+            }else{
+              this.BolBusquedaExitosa=false;
             }
-          }else{
-            this.BolBusquedaExitosa=false;
+          })
+        }else{
+          this.txt_code=result.selectedRow[this.CodigoPrincipal];
+          this.BolBusquedaExitosa=true;
+          if(this.DescripcionVisible){
+            if(result.selectedRow.hasOwnProperty(this.CampoDescripcion)){
+              //Ponemos la descripcion en el campo respectivo
+              this.txt_description=result.selectedRow[this.CampoDescripcion];
+            }
           }
-        })
+        }
       } else {
         //console.log('El usuario canceló la selección.',result);
       }

@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Observable,catchError,throwError } from 'rxjs';
+import { Observable,catchError,of,throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { tap } from 'rxjs/operators';
@@ -50,13 +50,13 @@ export class AuthService {
   /*getPrueba(){
     return this.configService.getEndpoint('auth','login');
   }*/
-  login(credentials: { syUser: string; bizGrpId: number; serverName: string; dataBase: string; syUserPsc: string }): Observable<{ token: string }> {
-    console.log("login: "+this.loginUrl);
-    return this.http.post<{ token: string }>(this.loginUrl, credentials);
+  login(credentials: { syUser: string; bizGrpId: number; serverName: string; dataBase: string; syUserPsc: string }): Observable<{ token: string,expirationTime:number }> {
+    //console.log("login: "+this.loginUrl);
+    return this.http.post<{ token: string,expirationTime:number }>(this.loginUrl, credentials);
   }
 
   getServers(): Observable<Server[]> {
-    console.log("serversUrl:"+this.configService.getEndpoint('configuration','getServers'));
+    //console.log("serversUrl:"+this.configService.getEndpoint('configuration','getServers'));
     return this.http.get<Server[]>(this.configService.getEndpoint('configuration','getServers')).pipe(
       catchError(error => {
         console.error('Error en getServers():', error);
@@ -96,24 +96,60 @@ export class AuthService {
     );
   }
 
-  saveToken(token: string): void {
+  saveToken(token: string,expirationTime: number): void {
     localStorage.setItem('token', token);
+    localStorage.setItem('tokenExpiration', expirationTime.toString());
   }
 
   getToken(): string {
-    if (isPlatformBrowser(this.platformId)) {
+    /*if (isPlatformBrowser(this.platformId)) {
       return localStorage.getItem('token')||'';
+    }*/
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('token') || '';
+      const expiration = localStorage.getItem('tokenExpiration')||'';
+      //console.log("token: "+token+"- expiration: "+expiration);
+      if (token && expiration) {
+        const now = Math.floor(Date.now() / 1000); // Obtener el tiempo actual en segundos
+        //console.log("now: "+now+" => "+parseInt(expiration, 10));
+        if (parseInt(expiration, 10) > now) {
+          return token; // Token válido
+        } else {
+          this.clearToken(); // Token expirado, eliminarlo
+          return '';
+        }
+      }
     }
     return '';
   }
 
-  logout(): void {
+  clearToken(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('token_expiration');
+    //this.router.navigate(['/login']); // Redirigir al login
+  }
+
+  logout(): void {
+    //localStorage.removeItem('token');
+    this.clearToken();
     this.router.navigate(['/login']).then(() => {
       window.location.reload();
     });
   }
 
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
+  isTokenValid(): boolean {
+    const token = localStorage.getItem('token');
+    const expiration = localStorage.getItem('tokenExpiration');
+    if (!token || !expiration) {
+      return false;
+    }
+    const now = Math.floor(Date.now() / 1000); // Obtener tiempo actual en segundos
+    return now < +expiration; // Comparar con la fecha de expiración
+  }
   getMenu(): Observable<any> {
     const token = this.getToken();
     if (!token) {
@@ -134,24 +170,45 @@ export class AuthService {
   }
   
   obtenerDatosBuscador<T>(body: any): Observable<T> {
-    console.log(body);
-    console.log(this.menuSearch+", menuSearch");
     const token = this.getToken();
     return this.http.post<T>(this.menuSearch, body, { headers: { Authorization: `Bearer ${token}` } });
   }
 
   obtenerBuscadores<T>(body: any): Observable<T> {
-    console.log("obtenerBuscadores: "+this.menuSearchers+", datos");
-    console.log(this.menuSearchers+", datos");
     const token = this.getToken();
     return this.http.post<T>(this.menuSearchers, body, { headers: { Authorization: `Bearer ${token}` } });
   }
   obtenerDatosCodigo<T>(body: any): Observable<T> {
-    //console.log(body);
     const token = this.getToken();
-    return this.http.post<T>(this.configService.getEndpoint('systemAdmin','getSearchCodigo'), body, { headers: { Authorization: `Bearer ${token}` } });
+    return this.http.post<T>(this.configService.getEndpoint('systemAdmin','getSearchCodigo'), body, { headers: { Authorization: `Bearer ${token}` } })
+    .pipe(
+      catchError(this.handleError) // Manejo de errores mejorado
+    );
   }
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+
+  private handleError(error: any) {
+    let errorMessage = 'Ocurrió un error desconocido.';
+    if (error instanceof HttpErrorResponse) {
+      // Error HTTP (respuesta del servidor con status >= 400)
+      if (error.error && error.error.details) {
+        errorMessage = error.error.details; // Extrae el "details" si está presente
+      } else {
+        errorMessage = `Error ${error.status}: ${error.message}`;
+      }
+    } else if (error instanceof TypeError) {
+      // Error de conexión o de red
+      errorMessage = "Error de red: No se pudo conectar a la API.";
+    } else if (error.name === "TimeoutError") {
+      // Timeout en la petición
+      errorMessage = "Error: La petición tardó demasiado en responder.";
+    } else if (error instanceof SyntaxError) {
+      // Error de JSON mal formado
+      errorMessage = "Error en la respuesta del servidor.";
+    } else {
+      // Otros errores desconocidos
+      errorMessage = "Error desconocido.";
+    }
+    return throwError(() => new Error(errorMessage));
+    //return of(null);
   }
 }

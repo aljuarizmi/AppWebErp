@@ -3,18 +3,20 @@
     <label for="username">Usuario</label>
     <input type="text" class="form-control form-control-sm" id="username" [(ngModel)]="username">
     <app-buscador 
-      [SearchID]="'AP-CHK-XCTA'"
+      [SearchID]="'AP-VENDOR'"
       [TamanioCodigo]="100"
       [TamanioDescripcion]="200"
-      [CodigoPrincipal]="'chk_no'"
-      [CampoDescripcion]="''"
+      [CodigoPrincipal]="'vend_no'"
+      [CampoDescripcion]="'vend_name'"
       [DescripcionVisible]="true"
-      [SoloNumeros]="true"
+      [SoloNumeros]="false"
       [Enabled]="true"
       [MaxLength]="15"
       (busquedaExitosa)="onBusquedaExitosa($event)"
       [FiltrosAdicionales]="'10411030|8|00000000|8|00000000|8'"
-      [id]="'txt_vendedor'" >
+      [id]="'txt_vendedor'" [txt_code]="''"
+      [AutoPostBack]="false"
+      [SelectRowDatos]="'addr_1,addr_2,ord_no'">
     </app-buscador>
   </div>
   
