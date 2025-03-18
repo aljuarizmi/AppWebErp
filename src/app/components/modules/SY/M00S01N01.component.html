@@ -1,22 +1,70 @@
 <!-- Input pequeño usando la clase form-control-sm de Bootstrap -->
 <div class="form-group">
-    <label for="username">Usuario</label>
-    <input type="text" class="form-control form-control-sm" id="username" [(ngModel)]="username">
-    <app-buscador 
-      [SearchID]="'AP-VENDOR'"
-      [TamanioCodigo]="100"
-      [TamanioDescripcion]="200"
-      [CodigoPrincipal]="'vend_no'"
-      [CampoDescripcion]="'vend_name'"
-      [DescripcionVisible]="true"
-      [SoloNumeros]="false"
-      [Enabled]="true"
-      [MaxLength]="15"
-      (busquedaExitosa)="onBusquedaExitosa($event)"
-      [FiltrosAdicionales]="'10411030|8|00000000|8|00000000|8'"
-      [id]="'txt_vendedor'" [txt_code]="''"
-      [AutoPostBack]="false"
-      [SelectRowDatos]="'addr_1,addr_2,ord_no'">
-    </app-buscador>
+    <!-- <label for="username">Usuario</label>
+    <input type="text" class="form-control form-control-sm" id="username" [(ngModel)]="username"> -->
+    
+    <div class="container mt-4">
+      <div class="card p-4">
+        <form (ngSubmit)="onSubmit()">
+          <div class="mb-3 d-flex align-items-center">
+            <label class="form-label me-2" for="field1" style="width: 30%;">Campo 1</label>
+            <input type="text" class="form-control" [(ngModel)]="field1" name="field1" id="field1" style="width: 70%;" />
+          </div>
+          <div class="mb-3 d-flex align-items-center">
+            <label class="form-label me-2" for="field2" style="width: 30%;">Campo 2</label>
+            <input type="text" class="form-control" [(ngModel)]="field2" name="field2" id="field2" style="width: 70%;" />
+          </div>
+          <div class="mb-3 d-flex align-items-center">
+            <label class="form-label me-2" for="field3" style="width: 30%;">Campo 3</label>
+            <input type="text" class="form-control" [(ngModel)]="field3" name="field3" id="field3" style="width: 70%;" />
+          </div>
+          <div class="mb-3 d-flex align-items-center">
+            <label class="form-label me-2" for="field4" style="width: 30%;">Campo 4</label>
+            <input type="text" class="form-control" [(ngModel)]="field4" name="field4" id="field4" style="width: 70%;" />
+          </div>
+          <div class="mb-3 d-flex align-items-center">
+            <label class="form-label me-2" for="field5" style="width: 30%;">Campo 5</label>
+            <input type="text" class="form-control" [(ngModel)]="field5" name="field5" id="field5" style="width: 70%;" />
+          </div>
+          <div class="mb-3 d-flex align-items-center">
+            <label class="form-label me-2" for="field6" style="width: 30%;">Campo 6</label>
+            <input type="text" class="form-control" [(ngModel)]="field6" name="field6" id="field6" style="width: 70%;" />
+          </div>
+          <div class="mb-3 d-flex align-items-center">
+            <label class="form-label me-2" for="field7" style="width: 30%;">Campo 7</label>
+            <input type="text" class="form-control" [(ngModel)]="field7" name="field7" id="field7" style="width: 70%;" />
+          </div>
+          <div class="mb-3 d-flex align-items-center">
+            <label class="form-label me-2" for="field8" style="width: 30%;">Campo 8</label>
+            <!-- <input type="text" class="form-control" [(ngModel)]="field8" name="field8" id="field8" style="width: 70%;" /> -->
+            <app-buscador 
+            [SearchID]="'AP-VENDOR'"
+            [TamanioCodigo]="100"
+            [TamanioDescripcion]="200"
+            [CodigoPrincipal]="'vend_no'"
+            [CampoDescripcion]="'vend_name'"
+            [DescripcionVisible]="true"
+            [SoloNumeros]="false"
+            [Enabled]="true"
+            [MaxLength]="15"
+            (busquedaExitosa)="onBusquedaExitosa($event)"
+            [FiltrosAdicionales]="'10411030|8|00000000|8|00000000|8'"
+            [id]="'txt_vendedor'" [txt_code]="''"
+            [AutoPostBack]="false"
+            [SelectRowDatos]="'addr_1,addr_2'">
+          </app-buscador>
+          </div>
+          <div class="mb-3 d-flex align-items-center">
+            <label class="form-label me-2" for="field9" style="width: 30%;">Campo 9</label>
+            <input type="text" class="form-control" [(ngModel)]="field9" name="field9" id="field9" style="width: 70%;" />
+          </div>
+          <div class="mb-3 d-flex align-items-center">
+            <label class="form-label me-2" for="field10" style="width: 30%;">Campo 10</label>
+            <input type="text" class="form-control" [(ngModel)]="field10" name="field10" id="field10" style="width: 70%;" />
+          </div>
+          <button class="btn btn-primary w-100" type="submit">Enviar</button>
+        </form>
+      </div>
+    </div>
   </div>
   

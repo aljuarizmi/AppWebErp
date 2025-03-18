@@ -163,18 +163,16 @@ export class BuscadorComponent implements OnInit {
         }
       },
       error: (error) => {
-        //this.errorMessage = error.message; // Captura el mensaje de "details"
         //console.error('Error en la API-REST:', error.message);
         alert(error.message);
         this.txt_code='';
-        //this.snackBar.open(error.message, 'Cerrar', { duration: 3000 });
       }
     })
     }
   }
   limpiar() {
-    //this.txt_codigo = '';
-    //this.txt_descripcion = '';
+    this.txt_code = '';
+    this.txt_description = '';
   }
 
   // Función para controlar la entrada solo numérica si es necesario
@@ -306,7 +304,7 @@ export class BuscadorComponent implements OnInit {
             selectRowDatos:""
           };
           this.authService.obtenerDatosCodigo<any>(body).subscribe((data)=>{
-            console.log('Dato seleccionado:', data);
+            //console.log('Dato seleccionado:', data);
             this.datosDinamicos=data;
             if(Object.keys(this.datosDinamicos).length>0){
               this.BolBusquedaExitosa=true;

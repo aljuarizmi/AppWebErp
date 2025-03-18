@@ -2,35 +2,23 @@
   <div class="row align-items-center">
     <div class="col-auto">
       <input
-          type="text"
-          [id]="id+'_txt_code'"
-          (change)="onChange($event)" 
-          (keypress)="onKeyPress($event)"    
+          type="text" [id]="id+'_txt_code'"
+          (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
           class="form-control"
-          (input)="onInput($event)"
-          [disabled]="!Enabled"
-          [attr.maxlength]="MaxLength" value=""
-          [style.width.px]="TamanioCodigo"
-          [(ngModel)]="txt_code"
-          name="txt_code"
-          />
+          [disabled]="!Enabled" [attr.maxlength]="MaxLength" 
+          [style.width.px]="TamanioCodigo" [(ngModel)]="txt_code"
+          name="txt_code" />
     </div>
     <div class="col-auto">
-      <button type="button" class="btn btn-light" [id]="id+'_btnSearch'" #btnBuscar (click)="buscar()" tabindex="-1" [disabled]="!Enabled">
+      <button type="button" class="btn btn-light" [id]="id+'_btnSearch'" 
+              #btnBuscar (click)="buscar()" [disabled]="!Enabled">
         <img src="assets/images/buscar.png" alt="Buscar" />
       </button>
     </div>
     <div class="col-auto" *ngIf="DescripcionVisible">
       <input
-          type="text"
-          [id]="id+'_txt_descripcion'"
-          class="form-control"
-          tabindex="-1"
-          style="width: 150px;"
-          [disabled]="!HabilitarDescripcion"
-          [style.width.px]="TamanioDescripcion"
-          [(ngModel)]="txt_description"
-          />
+          type="text" [id]="id+'_txt_descripcion'" class="form-control" 
+          [disabled]="!HabilitarDescripcion" [style.width.px]="TamanioDescripcion" [(ngModel)]="txt_description" />
     </div>
   </div>
     <span style="display: none;">
