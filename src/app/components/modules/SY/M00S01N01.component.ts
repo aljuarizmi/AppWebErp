@@ -78,11 +78,11 @@ export class M00S01N01Component implements OnInit{
           this.ratePct1 = data.ratePct1;
           this.ratePct2 = data.ratePct2;
         }else{
-          console.log('Empresa NO cargada: ',data);
+          //console.log('Empresa NO cargada: ',data);
         }
       },
       error: (error) => {
-        console.error('Error al obtener la empresa:', error);
+        //console.error('Error al obtener la empresa:', error);
       }
     });
   }

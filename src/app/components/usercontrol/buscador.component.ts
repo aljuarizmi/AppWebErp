@@ -133,7 +133,7 @@ export class BuscadorComponent implements OnInit {
         selectRowDatos:this.SelectRowDatos
       };
       this.authService.obtenerDatosCodigo<any>(body).subscribe({next:(data)=>{
-        console.log('Dato resultado: '+data+": SelectRowDatos: "+this.SelectRowDatos);
+        //console.log('Dato resultado: '+data+": SelectRowDatos: "+this.SelectRowDatos);
         if(data!=null){
           Object.keys(data).forEach((key) => {
             console.log(`${key}: ${data[key]}`);
@@ -293,7 +293,7 @@ export class BuscadorComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         //alert("Se escogió un registro");
-        console.log("selectedRow: "+result.selectedRow[this.CodigoPrincipal]);
+        //console.log("selectedRow: "+result.selectedRow[this.CodigoPrincipal]);
         if(this.AutoPostBack){
           const body = {
             searchFieldId: this.SearchID,

@@ -113,7 +113,7 @@ export class SearchComponent implements OnInit {
       listColumnas:this.listColumnas,
       listTipos:this.tipos
     };
-    console.log("this.FiltrosAdicionales: "+this.FiltrosAdicionales);
+    //console.log("this.FiltrosAdicionales: "+this.FiltrosAdicionales);
     //Reemplazamos ApiResponse por any
     this.authService.obtenerDatosBuscador<any>(body).subscribe(
       (data) => {
@@ -140,11 +140,11 @@ export class SearchComponent implements OnInit {
           }
         });
         this.isLoading = false; // Desactivar cuando los datos llegan
-        console.log("Se obtuvo datos:");
+        //console.log("Se obtuvo datos:");
       },
       (error) => {
         this.isLoading = false; // Desactivar incluso si hay error
-        console.error("Error al obtener datos:", error);
+        //console.error("Error al obtener datos:", error);
       }
     );
   }
@@ -183,7 +183,7 @@ export class SearchComponent implements OnInit {
 
     //COMPARAR FILTROS IGNORANDO MAYÚSCULAS, ESPACIOS Y NÚMEROS
   if (this.areFiltersSame(this.previousFilters, newFilters)) {
-    console.log("Filtros iguales, no se llama a la API.");
+    //console.log("Filtros iguales, no se llama a la API.");
     return;
   }
 
@@ -214,7 +214,7 @@ export class SearchComponent implements OnInit {
   confirmSelection(): void {
     if (this.selectedRow) {
       //this.selectedData=this.selectedRow;
-      console.log("this.selectedRow: "+this.selectedRow);
+      //console.log("this.selectedRow: "+this.selectedRow);
       this.selectedData={
         selectedRow:this.selectedRow,
         searchNo:this.searchNo
