@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmdialogComponent } from '../components/login/confirmdialog.component';
 import { ConfigService } from './config.service';
 import { isPlatformBrowser } from '@angular/common';
+import { ErrorHandlerService } from './error-handler.service';
 
 
 interface Server {
@@ -32,14 +33,14 @@ export class AuthService {
   private menuUrl='';//this.apiURL+'/sy/access';
   private menuSearch='';//this.apiURL+'/sy/managment/search';
   private menuSearchers='';//this.apiURL+'/sy/managment/searchers';
-  private urlPrueba='';
 
   constructor(private http: HttpClient, 
               private router: Router, 
               private snackBar: MatSnackBar,
               private dialog: MatDialog,
               private configService: ConfigService,
-              @Inject(PLATFORM_ID) private platformId: object) {
+              @Inject(PLATFORM_ID) private platformId: object,
+              private errorHandler: ErrorHandlerService) {
     this.loginUrl=this.configService.getEndpoint('auth','login');
     this.serversUrl=this.configService.getEndpoint('configuration','getServers');
     this.databasesUrl=this.configService.getEndpoint('configuration','getCompanies');
@@ -88,6 +89,7 @@ export class AuthService {
       bizGrpId: serverId,
       syServer: serverName,
     };
+    //console.log("this.databasesUrl: "+this.databasesUrl+", requestBody: "+requestBody);
     return this.http.post<Database[]>(this.databasesUrl, requestBody).pipe(
       catchError(() => {
         this.snackBar.open('No se pudo conectar al API para cargar bases de datos', 'Cerrar', { duration: 3000 });
@@ -182,7 +184,7 @@ export class AuthService {
     const token = this.getToken();
     return this.http.post<T>(this.configService.getEndpoint('systemAdmin','getSearchCodigo'), body, { headers: { Authorization: `Bearer ${token}` } })
     .pipe(
-      catchError(this.handleError) // Manejo de errores mejorado
+      catchError(this.errorHandler.handleError) // Manejo de errores mejorado
     );
   }
 

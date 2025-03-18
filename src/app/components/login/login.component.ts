@@ -52,6 +52,7 @@ export class LoginComponent {
     this.databases = []; // Limpiar bases de datos al cambiar de servidor
     const selectedServer = this.servers.find(s => s.server_id === this.loginForm.get('server')?.value);
     if (selectedServer) {
+      //console.log("selectedServer:",selectedServer)
       this.authService.getDatabases(selectedServer.server_id, selectedServer.server_name).subscribe(
         (data) => (this.databases = data),
         () => this.snackBar.open('Error al cargar bases de datos', 'Cerrar', { duration: 3000 })
@@ -66,7 +67,6 @@ export class LoginComponent {
         this.snackBar.open('Seleccione un servidor válido', 'Cerrar', { duration: 3000 });
         return;
       }
-
       const credentials = {
         syUser: this.loginForm.get('username')?.value,
         bizGrpId: selectedServer.server_id,

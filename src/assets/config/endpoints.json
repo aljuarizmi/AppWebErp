@@ -1,5 +1,5 @@
 {
-    "apiUrl": "http://webapprest:8080/api",
+    "apiUrl": "http://192.168.18.187:8080/api",
     "apiTest": "https://localhost:7113/api",
     "timeout": 5000,
     "modules": {
@@ -16,7 +16,7 @@
         "getSearchCodigo": "/sy/managment/searchCodigo",
         "getSearchers": "/sy/managment/searchers",
         "getMenu": "/sy/access",
-        "getCompanie": "/sy/compaines"
+        "getCompanies": "/sy/companies"
       },
       "fixedAssets": {
         "getAssets": "/fixedAssets/assets",

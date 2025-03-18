@@ -28,7 +28,6 @@ export class MenuComponent implements OnInit{
         this.menu = this.setExpandedProperty(data);
       });
     }
-
     setExpandedProperty(menu: MenuItem[]): MenuItem[] {
       return menu.map(item => ({
         ...item,
@@ -39,8 +38,9 @@ export class MenuComponent implements OnInit{
     toggle(item: any) {
       item.expanded = !item.expanded;
     }
-    navigateTo(route: string) {
-      this.router.navigate([route],{skipLocationChange:true}).catch(error => {
+    navigateTo(route: string,name:string) {
+      //console.log("route: "+route+",name: "+name)
+      this.router.navigate([route],{queryParams:{syMenuName:name},skipLocationChange:true}).catch(error => {
         console.error('Error al navegar:', error);});
     }
 }

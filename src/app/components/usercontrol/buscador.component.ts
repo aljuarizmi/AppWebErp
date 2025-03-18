@@ -168,6 +168,9 @@ export class BuscadorComponent implements OnInit {
         this.txt_code='';
       }
     })
+    }else{
+      this.txt_code='';
+      this.txt_description='';
     }
   }
   limpiar() {
