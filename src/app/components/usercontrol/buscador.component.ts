@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,17 +8,26 @@ import { AuthService } from '../../services/auth.service';
 //import { MatSnackBar } from '@angular/material/snack-bar';
 
 // Define un tipo para el evento
-interface BusquedaExitosaEvent {
+export interface BusquedaExitosaEvent {
   success: boolean[];
+  mensaje: string;
+  resultado: any;
 }
 
 @Component({
   selector: 'app-buscador',
   imports: [FormsModule,CommonModule,ReactiveFormsModule],
   templateUrl: './buscador.component.html',
-  styleUrl: './buscador.component.css'
+  styleUrl: './buscador.component.css'/*,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => BuscadorComponent),
+      multi: true
+    }
+  ]*/
 })
-export class BuscadorComponent implements OnInit {
+export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
   datosDinamicos: Record<string, any> = {}; // Se declara como un objeto dinámico
   @Input() id: string = ''; // Se puede sobrescribir al usar el componente
   codigo: string = '';
@@ -53,6 +62,7 @@ export class BuscadorComponent implements OnInit {
   @Input() Ancho: number = 300;
   @Input() Alto: number = 40;
   @Input() txt_code: string ='';
+  //txt_code: string ='';
   @Input() txt_description: string ='';
   @Input() HabilitarDescripcion: boolean=false;
   //@Output() busquedaExitosa: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -104,14 +114,14 @@ export class BuscadorComponent implements OnInit {
 
     // Realiza la búsqueda, si es exitosa cambia el estado
     //if (this.txt_codigo === this.CodigoPrincipal) {
-      if ("" === this.CodigoPrincipal) {
+    if ("" === this.CodigoPrincipal) {
       //this.txt_descripcion = this.CampoDescripcion;
-      this.BolBusquedaExitosa = true;
-      this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa] }); // Emitir un arreglo con el 'success'
+      //this.BolBusquedaExitosa = true;
+      //this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa] }); // Emitir un arreglo con el 'success'
     } else {
       //this.txt_descripcion = 'No encontrado';
-      this.BolBusquedaExitosa = false;
-      this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa] }); // Emitir el arreglo con 'success'
+      //this.BolBusquedaExitosa = false;
+      //this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa] }); // Emitir el arreglo con 'success'
     }
     // Ejecuta la función posterior a la búsqueda
     if (this.FuncionPostBusqueda) {
@@ -135,14 +145,15 @@ export class BuscadorComponent implements OnInit {
       this.authService.obtenerDatosCodigo<any>(body).subscribe({next:(data)=>{
         //console.log('Dato resultado: '+data+": SelectRowDatos: "+this.SelectRowDatos);
         if(data!=null){
-          Object.keys(data).forEach((key) => {
+          /*Object.keys(data).forEach((key) => {
             console.log(`${key}: ${data[key]}`);
-          });
+          });*/
           this.datosDinamicos=data;
           if(Object.keys(this.datosDinamicos).length>0){
             this.BolBusquedaExitosa=true;
             this.DiccionarioRowDatos=data;
             this.txt_code=this.DiccionarioRowDatos[this.CodigoPrincipal];
+            this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code });
             if(this.DescripcionVisible){
               if(this.DiccionarioRowDatos.hasOwnProperty(this.CampoDescripcion)){
                 //Ponemos la descripcion en el campo respectivo
@@ -154,12 +165,14 @@ export class BuscadorComponent implements OnInit {
             alert("No se encontró el código "+this.txt_code.trim());
             this.txt_code='';
             this.txt_description='';
+            this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code });
           }
         }else{
           this.BolBusquedaExitosa=false;
           alert("No se encontró el código "+this.txt_code.trim());
           this.txt_code='';
           this.txt_description='';
+          this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code });
         }
       },
       error: (error) => {
@@ -171,6 +184,8 @@ export class BuscadorComponent implements OnInit {
     }else{
       this.txt_code='';
       this.txt_description='';
+      this.BolBusquedaExitosa=false;
+      this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code });
     }
   }
   limpiar() {
@@ -313,6 +328,7 @@ export class BuscadorComponent implements OnInit {
               this.BolBusquedaExitosa=true;
               this.DiccionarioRowDatos=data;
               this.txt_code=this.DiccionarioRowDatos[this.CodigoPrincipal];
+              this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code }); // Emitir un arreglo con el 'success'
               if(this.DescripcionVisible){
                 if(this.DiccionarioRowDatos.hasOwnProperty(this.CampoDescripcion)){
                   //Ponemos la descripcion en el campo respectivo
@@ -326,6 +342,8 @@ export class BuscadorComponent implements OnInit {
         }else{
           this.txt_code=result.selectedRow[this.CodigoPrincipal];
           this.BolBusquedaExitosa=true;
+          this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code });
+          //this.BolBusquedaExitosa=true;
           if(this.DescripcionVisible){
             if(result.selectedRow.hasOwnProperty(this.CampoDescripcion)){
               //Ponemos la descripcion en el campo respectivo
@@ -338,5 +356,4 @@ export class BuscadorComponent implements OnInit {
       }
     });
   }
-  
 }

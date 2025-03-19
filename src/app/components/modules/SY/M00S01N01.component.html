@@ -15,7 +15,7 @@
               <i class="bi bi-x-circle"></i>
             </button>
             <!-- Grabar -->
-            <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" title="Grabar">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" (click)="guardarDatos()" title="Grabar">
               <i class="bi bi-save"></i>
             </button>
             <!-- Eliminar -->
@@ -89,20 +89,20 @@
             <label class="form-label me-2" for="field8" style="width: 30%;">Empresa Ei Sunat</label>
             <!-- <input type="text" class="form-control" [(ngModel)]="field8" name="field8" id="field8" style="width: 70%;" /> -->
             <app-buscador 
-            [SearchID]="'AP-VENDOR'"
+            [SearchID]="'AR-CUSTOMER'"
             [TamanioCodigo]="100"
             [TamanioDescripcion]="200"
-            [CodigoPrincipal]="'vend_no'"
-            [CampoDescripcion]="'vend_name'"
+            [CodigoPrincipal]="'cus_no'"
+            [CampoDescripcion]="'cus_name'"
             [DescripcionVisible]="false"
             [SoloNumeros]="false"
             [Enabled]="true"
             [MaxLength]="15"
             (busquedaExitosa)="onBusquedaExitosa($event)"
             [FiltrosAdicionales]="'10411030|8|00000000|8|00000000|8'"
-            [id]="'eiCusNo'" [txt_code]="''"
+            [id]="eiCusNo" 
             [AutoPostBack]="false"
-            [SelectRowDatos]="'addr_1,addr_2'" [txt_code]="eiCusNo">
+            [SelectRowDatos]="'addr_1,addr_2'" [txt_code]="eiCusNo" >
           </app-buscador>
           </div>
           <div class="mb-3 d-flex align-items-center">

@@ -2,7 +2,7 @@ import { NgModule, OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule,ReactiveFormsModule } from '@angular/forms';
-import { BuscadorComponent } from '../../usercontrol/buscador.component';
+import { BuscadorComponent, BusquedaExitosaEvent } from '../../usercontrol/buscador.component';
 import { SystemadminService } from '../../../services/systemadmin.service';
 import { Compfile } from '../../../models/systemadmin.model';
 import { ActivatedRoute } from '@angular/router';
@@ -60,7 +60,7 @@ export class M00S01N01Component implements OnInit{
       next: (data) => {
         if(data){
           this.company = data;
-          //console.log('Empresa cargada:', this.company);
+          //console.log('Empresa cargada: '+this.company+", this.eiCusNo: "+this.eiCusNo);
           this.compKey1=data.compKey1;
           this.rptName = data.rptName;
           this.displayName = data.displayName;
@@ -77,6 +77,7 @@ export class M00S01N01Component implements OnInit{
           this.eiCusNo = data.eiCusNo;
           this.ratePct1 = data.ratePct1;
           this.ratePct2 = data.ratePct2;
+          //console.log('this.company.eiCusNo: '+this.company.eiCusNo+", this.eiCusNo: "+this.eiCusNo);
         }else{
           //console.log('Empresa NO cargada: ',data);
         }
@@ -87,38 +88,47 @@ export class M00S01N01Component implements OnInit{
     });
   }
   guardarDatos():void{
-    this.company.compKey1=this.compKey1;
-    this.company.rptName = this.rptName;
-    this.company.displayName = this.displayName;
-    this.company.addrLine1 = this.addrLine1;
-    this.company.addrLine2 = this.addrLine2;
-    this.company.addrLine3 = this.addrLine3;
-    this.company.phoneNo = this.phoneNo;
-    this.company.glAcctLev1Dgts = this.glAcctLev1Dgts;
-    this.company.glAcctLev2Dgts = this.glAcctLev2Dgts;
-    this.company.glAcctLev3Dgts = this.glAcctLev3Dgts;
-    this.company.startJnlHistNo = this.startJnlHistNo;
-    this.company.typeEconomicActivity = this.typeEconomicActivity;
-    this.company.employees = this.employees;
-    this.company.eiCusNo = this.eiCusNo;
-    this.company.ratePct1 = this.ratePct1;
-    this.company.ratePct2 = this.ratePct2;
-    this.adminService.guardarDatosCompania(this.compKey1,this.company).subscribe({
-      next: (data) => {
-        if(data){
-          //this.company = data;
-          //console.log('Empresa cargada:', this.company);
-          //this.compKey1=data.compKey1;
-        }else{
-          //console.log('Empresa NO cargada: ',data);
+    if(confirm("¿Seguro que desea modificar los datos?")){
+      this.company.compKey1=this.compKey1;
+      this.company.rptName = this.rptName;
+      this.company.displayName = this.displayName;
+      this.company.addrLine1 = this.addrLine1;
+      this.company.addrLine2 = this.addrLine2;
+      this.company.addrLine3 = this.addrLine3;
+      this.company.phoneNo = this.phoneNo;
+      this.company.glAcctLev1Dgts = this.glAcctLev1Dgts;
+      this.company.glAcctLev2Dgts = this.glAcctLev2Dgts;
+      this.company.glAcctLev3Dgts = this.glAcctLev3Dgts;
+      this.company.startJnlHistNo = this.startJnlHistNo;
+      this.company.typeEconomicActivity = this.typeEconomicActivity;
+      this.company.employees = this.employees;
+      this.company.eiCusNo = this.eiCusNo;
+      this.company.ratePct1 = this.ratePct1;
+      this.company.ratePct2 = this.ratePct2;
+      //console.log("this.company.eiCusNo: ",this.company.eiCusNo+",this.eiCusNo: "+this.eiCusNo);
+      this.adminService.guardarDatosCompania(this.compKey1,this.company).subscribe({
+        next: (data) => {
+          if(data){
+            alert("Datos actualizados");
+          }
+          if(data){
+            //this.company = data;
+            //console.log('Empresa cargada:', this.company);
+            //this.compKey1=data.compKey1;
+          }else{
+            //console.log('Empresa NO cargada: ',data);
+          }
+        },
+        error: (error) => {
+          alert(error);
+          //console.error('Error al obtener la empresa:', error);
         }
-      },
-      error: (error) => {
-        //console.error('Error al obtener la empresa:', error);
-      }
-    });
+      });
+    }
   }
-  onBusquedaExitosa(event:any){}
+  onBusquedaExitosa(event:BusquedaExitosaEvent){
+    this.eiCusNo=event.resultado;
+  }
   onSubmit() {
     //console.log(this.formGroup.value);
   }

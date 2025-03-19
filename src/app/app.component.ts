@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MenuComponent } from './components/menu/menu.component';
 import { CommonModule } from '@angular/common';
@@ -12,7 +12,7 @@ import { ConfigService } from './services/config.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'AppWebErp';
   constructor(private configService: ConfigService) {
   }
