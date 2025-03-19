@@ -86,8 +86,37 @@ export class M00S01N01Component implements OnInit{
       }
     });
   }
-  guardarDatos(){
-    
+  guardarDatos():void{
+    this.company.compKey1=this.compKey1;
+    this.company.rptName = this.rptName;
+    this.company.displayName = this.displayName;
+    this.company.addrLine1 = this.addrLine1;
+    this.company.addrLine2 = this.addrLine2;
+    this.company.addrLine3 = this.addrLine3;
+    this.company.phoneNo = this.phoneNo;
+    this.company.glAcctLev1Dgts = this.glAcctLev1Dgts;
+    this.company.glAcctLev2Dgts = this.glAcctLev2Dgts;
+    this.company.glAcctLev3Dgts = this.glAcctLev3Dgts;
+    this.company.startJnlHistNo = this.startJnlHistNo;
+    this.company.typeEconomicActivity = this.typeEconomicActivity;
+    this.company.employees = this.employees;
+    this.company.eiCusNo = this.eiCusNo;
+    this.company.ratePct1 = this.ratePct1;
+    this.company.ratePct2 = this.ratePct2;
+    this.adminService.guardarDatosCompania(this.compKey1,this.company).subscribe({
+      next: (data) => {
+        if(data){
+          //this.company = data;
+          //console.log('Empresa cargada:', this.company);
+          //this.compKey1=data.compKey1;
+        }else{
+          //console.log('Empresa NO cargada: ',data);
+        }
+      },
+      error: (error) => {
+        //console.error('Error al obtener la empresa:', error);
+      }
+    });
   }
   onBusquedaExitosa(event:any){}
   onSubmit() {

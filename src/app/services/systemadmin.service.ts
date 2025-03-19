@@ -13,11 +13,19 @@ export class SystemadminService {
 
   constructor(private errorHandler: ErrorHandlerService,private configService: ConfigService,private authService: AuthService,private http: HttpClient) { }
   obtenerDatosCompania(id: string): Observable<Compfile> {
-      const token = this.authService.getToken();
-      let apiURL:string=this.configService.getEndpoint('systemAdmin','getCompanies');
-      return this.http.get<Compfile>(`${apiURL}/${id}`, { headers: { Authorization: `Bearer ${token}` } })
-      .pipe(
-        catchError(this.errorHandler.handleError) // Manejo de errores mejorado
-      );
-    }
+    const token = this.authService.getToken();
+    let apiURL:string=this.configService.getEndpoint('systemAdmin','getCompanies');
+    return this.http.get<Compfile>(`${apiURL}/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+    .pipe(
+      catchError(this.errorHandler.handleError) // Manejo de errores mejorado
+    );
+  }
+  guardarDatosCompania(id: string, company:Compfile): Observable<Compfile> {
+    const token = this.authService.getToken();
+    let apiURL:string=this.configService.getEndpoint('systemAdmin','getCompanies');
+    return this.http.put<Compfile>(`${apiURL}/${id}`,company, { headers: { Authorization: `Bearer ${token}` } })
+    .pipe(
+      catchError(this.errorHandler.handleError) // Manejo de errores mejorado
+    );
+  }
 }
