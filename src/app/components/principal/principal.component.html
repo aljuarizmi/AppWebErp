@@ -1,8 +1,11 @@
 <div class="container">
-    <div class="menu">
+    <div class="menu" [ngClass]="{ 'hidden': isMenuHidden }">
         <app-menu></app-menu> <!-- Aquí se carga el menú -->
     </div>
     <div class="content">
+        <button mat-icon-button (click)="toggleMenu()" class="menu-toggle">
+            <mat-icon>{{ isMenuHidden ? 'menu' : 'close' }}</mat-icon>
+        </button>
         <button mat-button color="warn" class="logout-btn" (click)="logout()">Cerrar Sesión</button>
         <router-outlet></router-outlet> <!-- Aquí se cargará la página seleccionada del menú -->
     </div>

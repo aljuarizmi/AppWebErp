@@ -13,12 +13,26 @@
   .menu {
     width: 250px;
     background-color: #f4f4f4;
-    padding: 10px;
+    padding: 5px;
+    transition: width 0.3s ease;
   }
   
+  .menu.hidden {
+    width: 0;
+    overflow: hidden;
+}
+
+.menu-toggle {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}
+
   .content {
     flex-grow: 1;
     padding: 10px;
+    position: relative;
   }
   
   .logout-btn {
