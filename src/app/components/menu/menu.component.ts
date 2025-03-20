@@ -3,7 +3,8 @@ import { MenuService } from '../../services/menu.service';
 import {MenuItem} from '../../models/menu.model'
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, Routes } from '@angular/router';
+import { routes } from '../../app.routes';
 
 @Component({
   selector: 'app-menu',
@@ -31,9 +32,27 @@ export class MenuComponent implements OnInit{
   toggle(item: any) {
     item.expanded = !item.expanded;
   }
-  navigateTo(route: string,name:string) {
+  navigateTo(route: string,name:string,code:string) {
+    const existeRuta = this.verificarRuta(routes, code);
     //console.log("route: "+route+",name: "+name)
-    this.router.navigate([route],{queryParams:{syMenuName:name},skipLocationChange:true}).catch(error => {
-      console.error('Error al navegar:', error);});
+    if (existeRuta) {
+      this.router.navigate([route],{queryParams:{syMenuName:name},skipLocationChange:true}).catch(error => {
+        console.error('Error al navegar:', error);});
+    }else {
+      alert('La opción "' + name+'" no esta disponible');
+    }
+  }
+  private verificarRuta(rutas: Routes, ruta: string): boolean {
+    for (let r of rutas) {
+      if (r.path === ruta) {
+        return true;
+      }
+      if (r.children) {
+        if (this.verificarRuta(r.children, ruta)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }

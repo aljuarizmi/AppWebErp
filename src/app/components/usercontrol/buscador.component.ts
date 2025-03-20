@@ -5,14 +5,7 @@ import { SearchComponent } from '../search/search.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
-//import { MatSnackBar } from '@angular/material/snack-bar';
-
-// Define un tipo para el evento
-export interface BusquedaExitosaEvent {
-  success: boolean[];
-  mensaje: string;
-  resultado: any;
-}
+import { BusquedaExitosaEvent } from '../../models/systemadmin.model';
 
 @Component({
   selector: 'app-buscador',
@@ -30,8 +23,8 @@ export interface BusquedaExitosaEvent {
 export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
   datosDinamicos: Record<string, any> = {}; // Se declara como un objeto dinámico
   @Input() id: string = ''; // Se puede sobrescribir al usar el componente
-  codigo: string = '';
-  descripcion: string = '';
+  //codigo: string = '';
+  //descripcion: string = '';
   @Input() SearchID: string = '';
   @Input() TamanioCodigo: number = 100;
   @Input() TamanioDescripcion: number = 50;
@@ -62,7 +55,6 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
   @Input() Ancho: number = 300;
   @Input() Alto: number = 40;
   @Input() txt_code: string ='';
-  //txt_code: string ='';
   @Input() txt_description: string ='';
   @Input() HabilitarDescripcion: boolean=false;
   //@Output() busquedaExitosa: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -153,26 +145,26 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
             this.BolBusquedaExitosa=true;
             this.DiccionarioRowDatos=data;
             this.txt_code=this.DiccionarioRowDatos[this.CodigoPrincipal];
-            this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code });
             if(this.DescripcionVisible){
               if(this.DiccionarioRowDatos.hasOwnProperty(this.CampoDescripcion)){
                 //Ponemos la descripcion en el campo respectivo
                 this.txt_description=this.DiccionarioRowDatos[this.CampoDescripcion];
               }
             }
+            this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:{code:this.txt_code,description:this.txt_description}});
           }else{
             this.BolBusquedaExitosa=false;
             alert("No se encontró el código "+this.txt_code.trim());
             this.txt_code='';
             this.txt_description='';
-            this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code });
+            this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:{code:this.txt_code,description:this.txt_description} });
           }
         }else{
           this.BolBusquedaExitosa=false;
           alert("No se encontró el código "+this.txt_code.trim());
           this.txt_code='';
           this.txt_description='';
-          this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code });
+          this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:{code:this.txt_code,description:this.txt_description} });
         }
       },
       error: (error) => {
@@ -185,7 +177,7 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
       this.txt_code='';
       this.txt_description='';
       this.BolBusquedaExitosa=false;
-      this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code });
+      this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:{code:this.txt_code,description:this.txt_description} });
     }
   }
   limpiar() {
@@ -328,13 +320,13 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
               this.BolBusquedaExitosa=true;
               this.DiccionarioRowDatos=data;
               this.txt_code=this.DiccionarioRowDatos[this.CodigoPrincipal];
-              this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code }); // Emitir un arreglo con el 'success'
               if(this.DescripcionVisible){
                 if(this.DiccionarioRowDatos.hasOwnProperty(this.CampoDescripcion)){
                   //Ponemos la descripcion en el campo respectivo
                   this.txt_description=this.DiccionarioRowDatos[this.CampoDescripcion];
                 }
               }
+              this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:{code:this.txt_code,description:this.txt_description} }); // Emitir un arreglo con el 'success'
             }else{
               this.BolBusquedaExitosa=false;
             }
@@ -342,7 +334,6 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
         }else{
           this.txt_code=result.selectedRow[this.CodigoPrincipal];
           this.BolBusquedaExitosa=true;
-          this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:this.txt_code });
           //this.BolBusquedaExitosa=true;
           if(this.DescripcionVisible){
             if(result.selectedRow.hasOwnProperty(this.CampoDescripcion)){
@@ -350,6 +341,7 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
               this.txt_description=result.selectedRow[this.CampoDescripcion];
             }
           }
+          this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:{code:this.txt_code,description:this.txt_description} });
         }
       } else {
         //console.log('El usuario canceló la selección.',result);

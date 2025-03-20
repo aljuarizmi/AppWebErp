@@ -1,5 +1,5 @@
 export interface MenuItem  {
-    syMenuCode: string | null;
+    syMenuCode: string;
     syMenuName: string;
     syMenuParent: string | null;
     syMenuLevel: number;

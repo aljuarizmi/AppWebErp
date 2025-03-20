@@ -16,7 +16,7 @@
           
           <ul *ngIf="child.expanded" class="list-group mt-2">
             <li *ngFor="let subChild of child.children" class="list-group-item">
-              <button class="btn btn-light btn-sm w-100 text-start" (click)="navigateTo(subChild.syUrl,subChild.syMenuName)">
+              <button class="btn btn-light btn-sm w-100 text-start" (click)="navigateTo(subChild.syUrl,subChild.syMenuName,subChild.syMenuCode||'')">
                 {{ subChild.syMenuName }}
               </button>
             </li>
