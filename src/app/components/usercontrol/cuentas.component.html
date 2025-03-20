@@ -1,32 +1,60 @@
-<div class="mb-3 d-flex align-items-center">
-    <div style="width: 100%; display: flex; align-items: center; gap: 5px;">
+<!-- <div class="d-flex align-items-center w-100 gap-2">
       <input
-          type="text" [id]="id+'_txt_code'" class="form-control"
+          type="text" [id]="id+'_txt_code'" class="form-control flex-grow-1"
           (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-          [disabled]="!Enabled" [attr.maxlength]="MaxLength" [style.flex]="'auto'" 
+          [disabled]="!Enabled" [attr.maxlength]="MaxLength"  
           name="txt_code" [(ngModel)]="txt_code"/>
         <input
-          type="text" [id]="id+'_txt_code'" class="form-control"
+          type="text" [id]="id+'_txt_code'" class="form-control flex-grow-1"
           (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-          [disabled]="!Enabled" [attr.maxlength]="MaxLength" [style.flex]="'auto'" 
+          [disabled]="!Enabled" [attr.maxlength]="MaxLength"  
           name="txt_code" [(ngModel)]="txt_code"/>
         <input
-          type="text" [id]="id+'_txt_code'" class="form-control"
+          type="text" [id]="id+'_txt_code'" class="form-control flex-grow-1"
           (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-          [disabled]="!Enabled" [attr.maxlength]="MaxLength" [style.flex]="'auto'" 
+          [disabled]="!Enabled" [attr.maxlength]="MaxLength"  
           name="txt_code" [(ngModel)]="txt_code"/>
       <button type="button" class="btn btn-light" [id]="id+'_btnSearch'" 
               #btnBuscar (click)="buscar()" [disabled]="!Enabled">
         <img src="assets/images/buscar.png" alt="Buscar" />
       </button>
-      <div *ngIf="DescripcionVisible">
-      <input
-        type="text" [id]="id+'_txt_descripcion'" class="form-control" 
+      <input *ngIf="DescripcionVisible"
+        type="text" [id]="id+'_txt_descripcion'" class="form-control flex-grow-2" 
         [disabled]="!HabilitarDescripcion" [(ngModel)]="txt_description" 
-        name="txt_description" [style.flex]="'2'"/>
-      </div>
-    </div>
+        name="txt_description" />
+
   </div>
+
+   -->
+
+   <div class="d-flex align-items-center w-100 gap-2">
+    <!-- Input 1 -->
+    <input type="text" [id]="id+'_txt_code1'" class="form-control flex-grow-1"
+      (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
+      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code1" [(ngModel)]="txt_code"/>
+  
+    <!-- Input 2 -->
+    <input type="text" [id]="id+'_txt_code2'" class="form-control flex-grow-1"
+      (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
+      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code2" [(ngModel)]="txt_code"/>
+  
+    <!-- Input 3 -->
+    <input type="text" [id]="id+'_txt_code3'" class="form-control flex-grow-1"
+      (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
+      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code3" [(ngModel)]="txt_code"/>
+  
+    <!-- Botón de búsqueda -->
+    <button type="button" class="btn btn-light d-flex align-items-center"
+            [id]="id+'_btnSearch'" #btnBuscar (click)="buscar()" [disabled]="!Enabled">
+      <img src="assets/images/buscar.png" alt="Buscar" style="height: 20px;">
+    </button>
+  
+    <!-- Input Descripción (Opcional) -->
+    <input *ngIf="DescripcionVisible" type="text" [id]="id+'_txt_descripcion'" 
+      class="form-control flex-grow-2" [disabled]="!HabilitarDescripcion" 
+      [(ngModel)]="txt_description" name="txt_description"/>
+  </div>
+  
   <span style="display: none;">
     <input type="hidden" [id]="id+'_hidCodigo'" #codigoHidden [(ngModel)]="hidCodigo" />
     <input type="hidden" [id]="id+'_hid_SearchFiltro'" [(ngModel)]="hid_SearchFiltro" />

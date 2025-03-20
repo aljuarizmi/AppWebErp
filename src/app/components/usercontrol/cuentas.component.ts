@@ -39,6 +39,9 @@ export class CuentasComponent {
   @Input() UseCatalog: boolean = false;
   @Input() Ancho: number = 300;
   @Input() Alto: number = 40;
+  @Input() txt_code1: string ='';
+  @Input() txt_code2: string ='';
+  @Input() txt_code3: string ='';
   @Input() txt_code: string ='';
   @Input() txt_description: string ='';
   @Input() HabilitarDescripcion: boolean=false;
