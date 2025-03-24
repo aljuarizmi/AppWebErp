@@ -1,25 +1,38 @@
-* {
+html, body  {
     margin: 0;
     padding: 0;
+    height: 100%;
+    width: 100%;
     box-sizing: border-box;
+    overflow-x: hidden; 
   }
   
   .container {
     display: flex;
     height: 100vh; /* Ocupa toda la altura de la pantalla */
-    width: 100vw; /* Ocupa todo el ancho de la pantalla */
+    min-width: 100%; /* Ocupa todo el ancho de la pantalla */
+    overflow: hidden;
   }
   
+  .content {
+    flex-grow: 1;
+    padding: 10px;
+    position: relative;
+  }
   .menu {
     width: 250px;
     background-color: #f4f4f4;
     padding: 5px;
-    transition: width 0.3s ease;
+    transition: transform 0.3s ease;
+    /*height: 100vh;*/
+    overflow-y: auto;
   }
   
   .menu.hidden {
-    width: 0;
-    overflow: hidden;
+    /*width: 0;
+    overflow: hidden;*/
+    transform: translateX(-100%);
+    position: absolute;
 }
 
 .menu-toggle {
@@ -29,11 +42,7 @@
   z-index: 10;
 }
 
-  .content {
-    flex-grow: 1;
-    padding: 10px;
-    position: relative;
-  }
+  
   
   .logout-btn {
     position: absolute;

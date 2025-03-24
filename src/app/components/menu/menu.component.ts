@@ -33,13 +33,18 @@ export class MenuComponent implements OnInit{
     item.expanded = !item.expanded;
   }
   navigateTo(route: string,name:string,code:string) {
-    const existeRuta = this.verificarRuta(routes, code);
-    //console.log("route: "+route+",name: "+name)
-    if (existeRuta) {
-      this.router.navigate([route],{queryParams:{syMenuName:name},skipLocationChange:true}).catch(error => {
-        console.error('Error al navegar:', error);});
-    }else {
-      alert('La opción "' + name+'" no esta disponible');
+    //console.log("route: "+route+",name: "+name+", code: "+code)
+    if (code !== null && code !== '') {
+      const existeRuta = this.verificarRuta(routes, code);
+      if (existeRuta) {
+        this.router.navigate([route],{queryParams:{syMenuName:name},skipLocationChange:true}).catch(error => {
+          console.error('Error al navegar:', error);});
+      }else {
+        alert('La opción "' + name+'" no esta disponible');
+      }
+    } else {
+      const fechaActual = new Date().toLocaleDateString();
+      alert("No existe Tipo de Cambio a la fecha "+fechaActual+". Comunicarse con el Área encargada de registrar Tipos de Cambio (TC).");
     }
   }
   private verificarRuta(rutas: Routes, ruta: string): boolean {

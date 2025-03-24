@@ -1,0 +1,98 @@
+<!-- En Bootstrap 4 y versiones anteriores, form-group se usaba para agrupar etiquetas (<label>), campos de entrada (<input>, <textarea>, <select>), y mensajes de validación dentro de un formulario. -->
+    <div class="form-group">
+        <!-- * container: Se usa para envolver el contenido dentro de un contenedor con márgenes laterales automáticos, lo que lo mantiene centrado en la página. -->
+        <!-- * mt-4: Agrega un margen superior (margin-top) de 4 unidades (en Bootstrap, 4 equivale a 1.5rem o 24px). -->
+        <div class="container mt-4">
+          <!-- * card: Define un contenedor con un fondo blanco, bordes redondeados y sombra ligera, ideal para crear tarjetas de contenido. -->
+          <!-- * p-4: Agrega un padding (relleno interno) de 4 unidades (1.5rem o 24px), lo que separa el contenido del borde de la tarjeta. -->
+          <div class="card p-4">
+            <!-- <form > -->
+              <div class="d-flex align-items-center p-2 border-bottom">
+                <!-- Grupo de botones -->
+                <div class="btn-group" role="group" aria-label="Acciones">
+                  <!-- Salir -->
+                  <!-- <button type="button" class="btn btn-outline-danger" data-bs-toggle="tooltip" title="Salir">
+                    <i class="bi bi-box-arrow-left"></i>
+                  </button> -->
+                  <!-- Cancelar -->
+                  <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" title="Cancelar / Limpiar">Cancelar
+                    <i class="bi bi-x-circle"></i>
+                  </button>
+                  <!-- Grabar -->
+                  <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" (click)="guardarDatos()" title="Grabar">Grabar
+                    <i class="bi bi-save"></i>
+                  </button>
+                  <!-- Eliminar -->
+                  <!-- <button type="button" class="btn btn-outline-danger" data-bs-toggle="tooltip" title="Eliminar">
+                    <i class="bi bi-trash"></i>
+                  </button> -->
+                  <!-- Exportar a Excel -->
+                  <button type="button" class="btn btn-success" data-bs-toggle="tooltip" title="Exportar a Excel">Excel
+                    <i class="bi bi-file-earmark-excel"></i>
+                  </button>
+                </div>
+                <!-- Título -->
+                <h1 class="ms-3" id="lblTitulo">{{ titulo }}</h1>
+              </div>
+
+              <fieldset class="border p-3">
+                <legend class="w-auto">Períodos del Sistema</legend>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="ddlModulo" class="form-label">Módulo</label>
+                        <select id="ddlModulo" class="form-select"></select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="txtNroPrds" class="form-label">Nro. de Períodos</label>
+                        <input type="text" id="txtNroPrds" class="form-control" style="width: 60px;">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="txtNombre" class="form-label">Periodicidad</label>
+                        <input type="text" id="txtNombre" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="txtPActual" class="form-label">Periodo Actual</label>
+                        <input type="text" id="txtPActual" class="form-control" style="width: 60px;">
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="mt-4">
+                <div class="row g-3">
+                    <!-- Se repiten las filas de períodos usando Bootstrap -->
+                    <div class="col-md-1">
+                        <label class="form-label">1</label>
+                    </div>
+                    <div class="col-md-1">
+                        <input type="text" class="form-control" placeholder="Inicio">
+                    </div>
+                    <div class="col-md-1">
+                        <input type="text" class="form-control" placeholder="Fin">
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select">
+                            <option value="">Tipo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">2</label>
+                    </div>
+                    <div class="col-md-1">
+                        <input type="text" class="form-control" placeholder="Inicio">
+                    </div>
+                    <div class="col-md-1">
+                        <input type="text" class="form-control" placeholder="Fin">
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select">
+                            <option value="">Tipo</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Repetir las filas según sea necesario -->
+            </div>
+            <!-- </form> -->
+          </div>
+        </div>
+      </div>
+        
