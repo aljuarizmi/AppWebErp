@@ -16,7 +16,8 @@
         "getSearchCodigo": "/sy/managment/searchCodigo",
         "getSearchers": "/sy/managment/searchers",
         "getMenu": "/sy/access",
-        "getCompanies": "/sy/companies"
+        "getCompanies": "/sy/companies",
+        "getPeriods": "/sy/periods"
       },
       "fixedAssets": {
         "getAssets": "/fixedAssets/assets",

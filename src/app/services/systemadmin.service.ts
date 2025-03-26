@@ -4,7 +4,7 @@ import { catchError, Observable } from 'rxjs';
 import { ConfigService } from './config.service';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
-import { Compfile } from '../models/systemadmin.model';
+import { Compfile, Syprdfil } from '../models/systemadmin.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,30 @@ import { Compfile } from '../models/systemadmin.model';
 export class SystemadminService {
 
   constructor(private errorHandler: ErrorHandlerService,private configService: ConfigService,private authService: AuthService,private http: HttpClient) { }
+  obtenerDatosPeriodo(id: string): Observable<Syprdfil> {
+    const token = this.authService.getToken();
+    let apiURL:string=this.configService.getEndpoint('systemAdmin','getPeriods');
+    return this.http.get<Syprdfil>(`${apiURL}/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+    .pipe(
+      catchError(this.errorHandler.handleError) // Manejo de errores mejorado
+    );
+  }
+  actualizarDatosPeriodo(id: string, company:Syprdfil): Observable<Syprdfil> {
+    const token = this.authService.getToken();
+    let apiURL:string=this.configService.getEndpoint('systemAdmin','getPeriods');
+    return this.http.put<Syprdfil>(`${apiURL}/${id}`,company, { headers: { Authorization: `Bearer ${token}` } })
+    .pipe(
+      catchError(this.errorHandler.handleError) // Manejo de errores mejorado
+    );
+  }
+  insertarDatosPeriodo(company:Syprdfil): Observable<Syprdfil> {
+    const token = this.authService.getToken();
+    let apiURL:string=this.configService.getEndpoint('systemAdmin','getPeriods');
+    return this.http.post<Syprdfil>(`${apiURL}`,company, { headers: { Authorization: `Bearer ${token}` } })
+    .pipe(
+      catchError(this.errorHandler.handleError) // Manejo de errores mejorado
+    );
+  }
   obtenerDatosCompania(id: string): Observable<Compfile> {
     const token = this.authService.getToken();
     let apiURL:string=this.configService.getEndpoint('systemAdmin','getCompanies');

@@ -1,14 +1,14 @@
 <!-- En Bootstrap 4 y versiones anteriores, form-group se usaba para agrupar etiquetas (<label>), campos de entrada (<input>, <textarea>, <select>), y mensajes de validación dentro de un formulario. -->
-    <div class="form-group">
+<div class="form-group">
         <!-- * container: Se usa para envolver el contenido dentro de un contenedor con márgenes laterales automáticos, lo que lo mantiene centrado en la página. -->
-        <!-- * mt-4: Agrega un margen superior (margin-top) de 4 unidades (en Bootstrap, 4 equivale a 1.5rem o 24px). -->
-        <!-- <div class="container mt-5"> -->
+        <!-- * mt-5: Agrega un margen superior (margin-top) de 5 unidades (en Bootstrap, 4 equivale a 1.5rem o 24px). -->
+    <div class="container mt-5">
           <!-- * card: Define un contenedor con un fondo blanco, bordes redondeados y sombra ligera, ideal para crear tarjetas de contenido. -->
-          <!-- * p-4: Agrega un padding (relleno interno) de 4 unidades (1.5rem o 24px), lo que separa el contenido del borde de la tarjeta. -->
-          <!-- <div class="card p-4"> -->
+          <!-- * p-2: Agrega un padding (relleno interno) de 2 unidades (1.5rem o 24px), lo que separa el contenido del borde de la tarjeta. -->
+        <div class="card p-2">
             <!-- <form > -->
               
-              <div class="d-flex align-items-center p-2 border-bottom">
+            <div class="d-flex align-items-center p-2 border-bottom">
                 <div class="btn-group" role="group" aria-label="Acciones">
                   <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" title="Cancelar / Limpiar">Cancelar
                     <i class="bi bi-x-circle"></i>
@@ -21,31 +21,34 @@
                   </button>
                 </div>
                 <h1 class="ms-3" id="lblTitulo">{{ titulo }}</h1>
-              </div>
+            </div>
 
-              <fieldset class="border p-3">
-                <legend class="w-auto">Períodos del Sistema</legend>
+            <fieldset class="border p-3">
+                <!-- <legend class="w-auto">Períodos del Sistema</legend> -->
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="ddlModulo" class="form-label">Módulo</label>
-                        <select id="ddlModulo" class="form-select">
-                          <option value="1">1=GL Contabilidad General</option>
-                          <option value="2">2=AR Cuentas por Cobrar</option>
-                          <option value="3">3=AP Cuentas por Pagar</option>
-                          <option value="4">4=PR Ordenes de Producción (POP)</option>
-                          <option value="5">5=AD Activos Fijos</option>
-                          <option value="6">6=BB Libro Bancos</option>
-                          <option value="7">7=CM Monedas</option>
-                          <option value="8">8=IM Inventarios</option>
-                          <option value="9">9=OE Pedidos y Facturación</option>
-                          <option value="A">A=PO Ordenes de Compra</option>
-                          <option value="B">B=BM Lista de Materiales (BOM)</option>
-                          <option value="D">D=MP Programación Maestra</option>
+                        <select id="ddlModulo" class="form-select" [(ngModel)]="prdKey" id="prdKey" (change)="onModuleChange()">
+                            <option value="0" selected>--SELECCIONE--</option>
+                            <option value="1">1=GL Contabilidad General</option>
+                            <option value="2">2=AR Cuentas por Cobrar</option>
+                            <option value="3">3=AP Cuentas por Pagar</option>
+                            <option value="4">4=PR Ordenes de Producción (POP)</option>
+                            <option value="5">5=AD Activos Fijos</option>
+                            <option value="6">6=BB Libro Bancos</option>
+                            <option value="7">7=CM Monedas</option>
+                            <option value="8">8=IM Inventarios</option>
+                            <option value="9">9=OE Pedidos y Facturación</option>
+                            <option value="A">A=PO Ordenes de Compra</option>
+                            <option value="B">B=BM Lista de Materiales (BOM)</option>
+                            <option value="D">D=MP Programación Maestra</option>
+                            <option value="E">E=Post Billing OE-Asentamientos OE</option>
+                            <option value="F">F=Consumos/Entrada de Producción SF</option>
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label for="txtNroPrds" class="form-label">Nro. de Períodos</label>
-                        <input type="text" id="txtNroPrds" class="form-control" style="width: 60px;">
+                        <input type="text" id="txtNroPrds" class="form-control" style="width: 60px;" [(ngModel)]="noOfValPrd" id="noOfValPrd">
                     </div>
                     <div class="col-md-6">
                         <label for="txtNombre" class="form-label">Periodicidad</label>
@@ -53,230 +56,237 @@
                     </div>
                     <div class="col-md-6">
                         <label for="txtPActual" class="form-label">Periodo Actual</label>
-                        <input type="text" id="txtPActual" class="form-control" style="width: 60px;">
+                        <input type="text" id="txtPActual" class="form-control" style="width: 60px;" [(ngModel)]="currentPrd" id="currentPrd">
                     </div>
                 </div>
             </fieldset>
 
             <div class="mt-4">
                 <div class="row g-0">
-                    <!-- Se repiten las filas de períodos usando Bootstrap -->
-                    <div class="col-md-1">
+                    <div class="col-md-1 p-0 m-0">
                         <label class="form-label">Enero</label>
                     </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" placeholder="dd/MM/yyyy" pattern="^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" placeholder="dd/MM/yyyy" pattern="^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$">
-                    </div>
-                    <div class="col-md-1">
-                        <select class="form-select">
-                            <option value="N">NINGUNO</option>
-                            <option value="P">PROHIBIR</option>
-                            <option value="W">ADVERTIR</option>
-                        </select>
+                    <div class="col-md-5 p-0 m-0 d-flex">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers1" maxlength="10" [(ngModel)]="strDt1" id="strDt1" (click)="pickers1.open()">
+                            <mat-datepicker #pickers1></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere1" [(ngModel)]="endDt1" id="endDt1" (click)="pickere1.open()">
+                            <mat-datepicker #pickere1></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg1" id="wrnPrvGlPrdFg1">
+                                <option value="0">--SELECCIONE--</option>
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="col-md-1">
                         <label class="form-label">Febrero</label>
                     </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" placeholder="Inicio">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" placeholder="Fin">
-                    </div>
-                    <div class="col-md-1">
-                        <select class="form-select">
-                          <option value="N">NINGUNO</option>
-                          <option value="P">PROHIBIR</option>
-                          <option value="W">ADVERTIR</option>
-                        </select>
+                    <div class="col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers2" (click)="pickers2.open()" [(ngModel)]="strDt2" id="strDt2">
+                            <mat-datepicker #pickers2></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere2" (click)="pickere2.open()" [(ngModel)]="endDt2" id="endDt2">
+                            <mat-datepicker #pickere2></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg2" id="wrnPrvGlPrdFg2">
+                                <option value="0">--SELECCIONE--</option>
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="row g-0">
-                  <!-- Se repiten las filas de períodos usando Bootstrap -->
-                  <div class="col-md-1">
-                      <label class="form-label">Marzo</label>
-                  </div>
-                  <div class="col-md-2">
-                      <input type="text" class="form-control" placeholder="Inicio">
-                  </div>
-                  <div class="col-md-2">
-                      <input type="text" class="form-control" placeholder="Fin">
-                  </div>
-                  <div class="col-md-1">
-                      <select class="form-select">
-                          <option value="N">NINGUNO</option>
-                          <option value="P">PROHIBIR</option>
-                          <option value="W">ADVERTIR</option>
-                      </select>
-                  </div>
-                  <div class="col-md-1">
-                      <label class="form-label">Abril</label>
-                  </div>
-                  <div class="col-md-2">
-                      <input type="text" class="form-control" placeholder="Inicio">
-                  </div>
-                  <div class="col-md-2">
-                      <input type="text" class="form-control" placeholder="Fin">
-                  </div>
-                  <div class="col-md-1">
-                      <select class="form-select">
-                        <option value="N">NINGUNO</option>
-                        <option value="P">PROHIBIR</option>
-                        <option value="W">ADVERTIR</option>
-                      </select>
-                  </div>
-              </div>
+                    <div class="col-md-1">
+                        <label class="form-label">Marzo</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers3" [(ngModel)]="strDt3" id="strDt3" (click)="pickers3.open()">
+                            <mat-datepicker #pickers3></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere3" [(ngModel)]="endDt3" id="endDt3" (click)="pickere3.open()">
+                            <mat-datepicker #pickere3></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg3" id="wrnPrvGlPrdFg3">
+                                <option value="0">--SELECCIONE--</option>
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">Abril</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers4" (click)="pickers4.open()" [(ngModel)]="strDt4" id="strDt4">
+                            <mat-datepicker #pickers4></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere4" (click)="pickere4.open()" [(ngModel)]="endDt4" id="endDt4">
+                            <mat-datepicker #pickere4></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg4" id="wrnPrvGlPrdFg4">
+                                <option value="0">--SELECCIONE--</option>
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-              <div class="row g-0">
-                <!-- Se repiten las filas de períodos usando Bootstrap -->
-                <div class="col-md-1">
-                    <label class="form-label">Mayo</label>
+                <div class="row g-0">
+                    <div class="col-md-1">
+                        <label class="form-label">Mayo</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers5" (click)="pickers5.open()" [(ngModel)]="strDt5" id="strDt5">
+                            <mat-datepicker #pickers5></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere5" (click)="pickere5.open()" [(ngModel)]="endDt5" id="endDt5">
+                            <mat-datepicker #pickere5></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg5" id="wrnPrvGlPrdFg5">
+                                <option value="0">--SELECCIONE--</option>
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">Junio</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers6" (click)="pickers6.open()" [(ngModel)]="strDt6" id="strDt6">
+                            <mat-datepicker #pickers6></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere6" (click)="pickere6.open()" [(ngModel)]="endDt6" id="endDt6">
+                            <mat-datepicker #pickere6></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg6" id="wrnPrvGlPrdFg6">
+                                <option value="0">--SELECCIONE--</option>
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <input type="text" class="form-control" placeholder="Inicio">
-                </div>
-                <div class="col-md-2">
-                    <input type="text" class="form-control" placeholder="Fin">
-                </div>
-                <div class="col-md-1">
-                    <select class="form-select">
-                        <option value="N">NINGUNO</option>
-                        <option value="P">PROHIBIR</option>
-                        <option value="W">ADVERTIR</option>
-                    </select>
-                </div>
-                <div class="col-md-1">
-                    <label class="form-label">Junio</label>
-                </div>
-                <div class="col-md-2">
-                    <input type="text" class="form-control" placeholder="Inicio">
-                </div>
-                <div class="col-md-2">
-                    <input type="text" class="form-control" placeholder="Fin">
-                </div>
-                <div class="col-md-1">
-                    <select class="form-select">
-                      <option value="N">NINGUNO</option>
-                      <option value="P">PROHIBIR</option>
-                      <option value="W">ADVERTIR</option>
-                    </select>
-                </div>
-            </div>
 
-            <div class="row g-0">
-              <!-- Se repiten las filas de períodos usando Bootstrap -->
-              <div class="col-md-1">
-                  <label class="form-label">Julio</label>
-              </div>
-              <div class="col-md-2">
-                  <input type="text" class="form-control" placeholder="Inicio">
-              </div>
-              <div class="col-md-2">
-                  <input type="text" class="form-control" placeholder="Fin">
-              </div>
-              <div class="col-md-1">
-                  <select class="form-select">
-                      <option value="N">NINGUNO</option>
-                      <option value="P">PROHIBIR</option>
-                      <option value="W">ADVERTIR</option>
-                  </select>
-              </div>
-              <div class="col-md-1">
-                  <label class="form-label">Agosto</label>
-              </div>
-              <div class="col-md-2">
-                  <input type="text" class="form-control" placeholder="Inicio">
-              </div>
-              <div class="col-md-2">
-                  <input type="text" class="form-control" placeholder="Fin">
-              </div>
-              <div class="col-md-1">
-                  <select class="form-select">
-                    <option value="N">NINGUNO</option>
-                    <option value="P">PROHIBIR</option>
-                    <option value="W">ADVERTIR</option>
-                  </select>
-              </div>
-          </div>
+                <div class="row g-0">
+                    <div class="col-md-1">
+                        <label class="form-label">Julio</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers7" (click)="pickers7.open()" [(ngModel)]="strDt7" id="strDt7">
+                            <mat-datepicker #pickers7></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere7" (click)="pickere7.open()" [(ngModel)]="endDt7" id="endDt7">
+                            <mat-datepicker #pickere7></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg7" id="wrnPrvGlPrdFg7">
+                                <option value="0">--SELECCIONE--</option>  
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
+                    </div>
 
-          <div class="row g-0">
-            <!-- Se repiten las filas de períodos usando Bootstrap -->
-            <div class="col-md-1">
-                <label class="form-label">Setiembre</label>
-            </div>
-            <div class="col-md-2">
-                <input type="text" class="form-control" placeholder="Inicio">
-            </div>
-            <div class="col-md-2">
-                <input type="text" class="form-control" placeholder="Fin">
-            </div>
-            <div class="col-md-1">
-                <select class="form-select">
-                    <option value="N">NINGUNO</option>
-                    <option value="P">PROHIBIR</option>
-                    <option value="W">ADVERTIR</option>
-                </select>
-            </div>
-            <div class="col-md-1">
-                <label class="form-label">Octubre</label>
-            </div>
-            <div class="col-md-2">
-                <input type="text" class="form-control" placeholder="Inicio">
-            </div>
-            <div class="col-md-2">
-                <input type="text" class="form-control" placeholder="Fin">
-            </div>
-            <div class="col-md-1">
-                <select class="form-select">
-                  <option value="N">NINGUNO</option>
-                  <option value="P">PROHIBIR</option>
-                  <option value="W">ADVERTIR</option>
-                </select>
-            </div>
-        </div>
+                    <div class="col-md-1">
+                        <label class="form-label">Agosto</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers8" (click)="pickers8.open()" [(ngModel)]="strDt8" id="strDt8">
+                            <mat-datepicker #pickers8></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere8" (click)="pickere8.open()" [(ngModel)]="endDt8" id="endDt8">
+                            <mat-datepicker #pickere8></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg8" id="wrnPrvGlPrdFg8">
+                                <option value="0">--SELECCIONE--</option>
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="row g-0">
-          <!-- Se repiten las filas de períodos usando Bootstrap -->
-          <div class="col-md-1">
-              <label class="form-label">Noviembre</label>
-          </div>
-          <div class="col-md-2">
-              <input type="text" class="form-control" placeholder="Inicio">
-          </div>
-          <div class="col-md-2">
-              <input type="text" class="form-control" placeholder="Fin">
-          </div>
-          <div class="col-md-1">
-              <select class="form-select">
-                  <option value="N">NINGUNO</option>
-                  <option value="P">PROHIBIR</option>
-                  <option value="W">ADVERTIR</option>
-              </select>
-          </div>
-          <div class="col-md-1">
-              <label class="form-label">Diciembre</label>
-          </div>
-          <div class="col-md-2">
-              <input type="text" class="form-control" placeholder="Inicio">
-          </div>
-          <div class="col-md-2">
-              <input type="text" class="form-control" placeholder="Fin">
-          </div>
-          <div class="col-md-1">
-              <select class="form-select">
-                <option value="N">NINGUNO</option>
-                <option value="P">PROHIBIR</option>
-                <option value="W">ADVERTIR</option>
-              </select>
-          </div>
-      </div>
-                <!-- Repetir las filas según sea necesario -->
+                <div class="row g-0">
+                    <div class="col-md-1">
+                        <label class="form-label">Setiembre</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers9" (click)="pickers9.open()" [(ngModel)]="strDt9" id="strDt9">
+                            <mat-datepicker #pickers9></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere9" (click)="pickere9.open()" [(ngModel)]="endDt9" id="endDt9">
+                            <mat-datepicker #pickere9></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg9" id="wrnPrvGlPrdFg9">
+                                <option value="0">--SELECCIONE--</option>
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label">Octubre</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers10" (click)="pickers10.open()" [(ngModel)]="strDt10" id="strDt10">
+                            <mat-datepicker #pickers10></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere10" (click)="pickere10.open()" [(ngModel)]="endDt10" id="endDt10">
+                            <mat-datepicker #pickere10></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg10" id="wrnPrvGlPrdFg10">
+                                <option value="0">--SELECCIONE--</option>
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-0">
+                    <div class="col-md-1">
+                        <label class="form-label">Noviembre</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers11" (click)="pickers11.open()" [(ngModel)]="strDt11" id="strDt11">
+                            <mat-datepicker #pickers11></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere11" (click)="pickere11.open()" [(ngModel)]="endDt11" id="endDt11">
+                            <mat-datepicker #pickere11></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg11" id="wrnPrvGlPrdFg11">
+                                <option value="0">--SELECCIONE--</option>  
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">Diciembre</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers12" (click)="pickers12.open()" [(ngModel)]="strDt12" id="strDt12">
+                            <mat-datepicker #pickers12></mat-datepicker>
+                            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickere12" (click)="pickere12.open()" [(ngModel)]="endDt12" id="endDt12">
+                            <mat-datepicker #pickere12></mat-datepicker>
+                            <select class="form-select" [(ngModel)]="wrnPrvGlPrdFg12" id="wrnPrvGlPrdFg12">
+                                <option value="0">--SELECCIONE--</option>
+                                <option value="N">NINGUNO</option>
+                                <option value="P">PROHIBIR</option>
+                                <option value="W">ADVERTIR</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- </form> -->
-          <!-- </div> -->
-        <!-- </div> -->
-      </div>
+        </div>
+    </div>
+</div>
         
