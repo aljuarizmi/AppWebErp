@@ -18,6 +18,7 @@
     <div *ngIf="isLoading" class="loading-overlay">
       <mat-spinner></mat-spinner>
     </div>
+    <div class="table-responsive">
     <table mat-table [dataSource]="filteredData" class="mat-elevation-z8 full-width compact-rows" *ngIf="columns.length">
       <ng-container *ngFor="let col of columns" [matColumnDef]="col.key">
         <th mat-header-cell *matHeaderCellDef class="header-cell">
@@ -34,9 +35,10 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selectRow(row)" [class.selected]="selectedRow === row" class="table-row" ></tr>
     </table>
+    </div>
   </div>
   <div style="display: flex; justify-content: center; gap: 10px;">
-    <button mat-raised-button color="primary" (click)="confirmSelection()">OK</button>
+    <button mat-raised-button color="primary" (click)="confirmSelection()">Aceptar</button>
     <button mat-raised-button color="warn" (click)="cancel()">Cancelar</button>
   </div>
 </div>

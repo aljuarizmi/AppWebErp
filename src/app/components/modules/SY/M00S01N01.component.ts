@@ -1,15 +1,15 @@
-import { NgModule, OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { BuscadorComponent } from '../../usercontrol/buscador.component';
 import { SystemadminService } from '../../../services/systemadmin.service';
 import { BusquedaExitosaEvent, Compfile } from '../../../models/systemadmin.model';
 import { ActivatedRoute } from '@angular/router';
-import { CuentasComponent } from "../../usercontrol/cuentas.component";
+
 @Component({
   selector: 'app-m00-s01-n01',
-  imports: [CommonModule, FormsModule, BuscadorComponent, ReactiveFormsModule, CuentasComponent,CuentasComponent],
+  imports: [CommonModule, FormsModule, BuscadorComponent, ReactiveFormsModule],
   templateUrl: './M00S01N01.component.html',
   /*styleUrl: './M00S01N01.component.css'*/
   styles: [`.container {
@@ -130,5 +130,17 @@ export class M00S01N01Component implements OnInit{
   onBusquedaExitosa(event:BusquedaExitosaEvent){
     this.eiCusNo=event.resultado.code;
   }
+  /*F_Validar():boolean{
+    alert("No se muestra busqueda");
+    return true;
+  }*/
   
+  F_Validar = (): boolean => {
+    if(this.typeEconomicActivity.trim()===''){
+      alert("Ingrese el Rubro empresa");
+      return false;
+    }else{
+      return true;
+    }
+  };
 }
