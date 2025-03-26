@@ -364,7 +364,12 @@ export class M00S01N02Component implements OnInit{
       this.strDt1=this.convertirStringADate(this.anio.toString()+'0101');
       this.endDt1 =this.convertirStringADate(this.anio.toString()+'0131');
       this.strDt2 =this.convertirStringADate(this.anio.toString()+'0201');
-      this.endDt2 =this.convertirStringADate(this.anio.toString()+'0228');
+      if ((this.anio % 4 === 0 && this.anio % 100 !== 0) || this.anio % 400 === 0) {
+        //Año bisiesto
+        this.endDt2 =this.convertirStringADate(this.anio.toString()+'0229');
+      }else{
+        this.endDt2 =this.convertirStringADate(this.anio.toString()+'0228');
+      }
       this.strDt3 =this.convertirStringADate(this.anio.toString()+'0301');
       this.endDt3 =this.convertirStringADate(this.anio.toString()+'0331');
       this.strDt4 =this.convertirStringADate(this.anio.toString()+'0401');

@@ -48,7 +48,6 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
   @Input() txt_code: string ='';
   @Input() txt_description: string ='';
   @Input() HabilitarDescripcion: boolean=false;
-  //@Output() busquedaExitosa: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() busquedaExitosa: EventEmitter<BusquedaExitosaEvent> = new EventEmitter<BusquedaExitosaEvent>(); // Usar el tipo personalizado
   
   constructor(private dialog:MatDialog,private authService: AuthService){
@@ -62,22 +61,14 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
   
   // Maneja el cambio de valor en el campo 'codigo'
   onChange(event: any) {
-    //console.log("onChange");
     this.txt_code = this.txt_code.trim();
     // Aquí puedes agregar cualquier lógica adicional para el cambio
-    //const btnBuscar = document.getElementById(this.id + '_btnBuscar') as HTMLButtonElement;
-    //const hid_SearchFiltro = document.getElementById(this.id + '_hid_SearchFiltro') as HTMLInputElement;
-    this.F_BuscarDatos_Control(/*btnBuscar,*//*this.FuncionPreviaValidacion,this.FiltrosAdicionales*//*,hid_SearchFiltro*/);
+    this.F_BuscarDatos_Control();
   }
 
   // Maneja el evento keypress en el campo 'codigo'
   onKeyPress(event: KeyboardEvent) {
-    //console.log("onKeyPress");
-    //const txtBusqueda = document.getElementById(this.id + '_txt_codigo') as HTMLInputElement;
-    //const hidBusqueda = document.getElementById(this.id + '_hidCodigo') as HTMLInputElement;
-    //const btnLimpiar = document.getElementById(this.id + '_btnLimpiar') as HTMLButtonElement;
-    //const hid_SearchFiltro = document.getElementById(this.id + '_hid_SearchFiltro') as HTMLInputElement;
-    this.onKeyPressBusqueda_Control(event/*,txtBusqueda,hidBusqueda,btnLimpiar,this.FuncionPreviaValidacion,this.FiltrosAdicionales,hid_SearchFiltro*/);
+    this.onKeyPressBusqueda_Control(event);
     if (this.SoloNumeros && !/^[0-9]$/.test(event.key)) {
       event.preventDefault();  // Si solo se permiten números, previene otras teclas
     }
@@ -86,8 +77,6 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
   buscar() {
     // Validación previa
     if (!this.FuncionPreviaValidacion || this.FuncionPreviaValidacion()) {
-      // Lógica de validación si hay una función definida
-      //alert("Mensaje de validacion:"+this.FuncionPreviaValidacion);
       this.ModalDialogSearch();
     }else{
       //alert("Mensaje sin validacion");
@@ -152,7 +141,6 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
         }
       },
       error: (error) => {
-        //console.error('Error en la API-REST:', error.message);
         alert(error.message);
         this.txt_code='';
       }
@@ -179,12 +167,7 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
     }
   }
 
-  F_BuscarDatos_Control(
-    /*botonId: HTMLButtonElement, */
-    /*FuncionPrevia: string, 
-    vSQLFilter: string*//*, 
-    hid_SearchFiltro: HTMLInputElement*/
-  ): boolean {
+  F_BuscarDatos_Control(): boolean {
     let bolResult = true;
     if (!this.FuncionPreviaValidacion || this.FuncionPreviaValidacion()) {
       bolResult = true;//eval(FuncionPrevia); // No recomendado por seguridad
@@ -195,14 +178,12 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
     // Si hay un filtro SQL, lo aplicamos
     if (this.FiltrosAdicionales !== '') {
       this.FiltrosAdicionales = this.f_CrearFiltro(this.FiltrosAdicionales);
-      //const filtroElemento = document.getElementById(hid_SearchFiltro) as HTMLInputElement;
       const hid_SearchFiltro = document.getElementById(this.id + '_hid_SearchFiltro') as HTMLInputElement;
       if (hid_SearchFiltro) {
         hid_SearchFiltro.value = this.FiltrosAdicionales;
       }
     }
     // Simular el clic en el botón
-    //const boton = document.getElementById(botonId) as HTMLButtonElement;
     const btnBuscar = document.getElementById(this.id + '_btnBuscar') as HTMLButtonElement;
     if (btnBuscar) {
       //En este boton debe hacer la busqueda del codigo ingresado
@@ -239,27 +220,14 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
 
   onKeyPressBusqueda_Control(
     event: KeyboardEvent,
-    /*txtBusqueda: HTMLInputElement,
-    hidBusqueda: HTMLInputElement,*/
-    //txtDescripcion: string,
-    //boton: string,
-    /*btnLimpiar: HTMLButtonElement,*/
-    /*FuncionPrevia: string,
-    vSQLFilter: string,*/
-    /*hid_SearchFiltro: HTMLInputElement*/
   ): void {
-    //console.log("onKeyPressBusqueda_Control");
     const keyAscii = event.keyCode || event.which;
     if (keyAscii === 13) { // Si presiona "Enter"
       event.preventDefault(); // Evita que el Enter cause otros efectos
-      //const hBusqueda = document.getElementById(hidBusqueda) as HTMLInputElement;
       const txtBusqueda = document.getElementById(this.id + '_txt_code') as HTMLInputElement;
       const hidBusqueda = document.getElementById(this.id + '_hidCodigo') as HTMLInputElement;
-      //const btnLimpiar = document.getElementById(this.id + '_btnLimpiar') as HTMLButtonElement;
-      //const hid_SearchFiltro = document.getElementById(this.id + '_hid_SearchFiltro') as HTMLInputElement;
-      //console.log("preventDefault,txtBusqueda:"+txtBusqueda+",hidBusqueda:"+hidBusqueda);
       if (txtBusqueda.value != hidBusqueda.value) {
-        this.F_BuscarDatos_Control(/*btnLimpiar,*/ /*FuncionPrevia, vSQLFilter*//*, hid_SearchFiltro*/);
+        this.F_BuscarDatos_Control();
       }
     }
   }
