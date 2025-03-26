@@ -1,15 +1,11 @@
-/* Ajustar el tamaño del input en Bootstrap */
-.form-control-sm {
+  .form-control-sm {
     font-size: 15px;  /* Reducir el tamaño de la fuente */
     padding: 4px 8px; /* Reducir el padding */
     height: 30px;     /* Ajustar la altura */
   }
   
-  /* Si deseas modificar el tamaño del input más allá de las clases Bootstrap */
   input.form-control {
     font-size: 15px;   /* Reducir el tamaño de la fuente */
     padding: 4px 8px;  /* Ajustar el padding */
     height: 30px;      /* Reducir la altura */
   }
-  
-  

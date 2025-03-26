@@ -1,38 +1,42 @@
 html, body  {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    overflow-x: hidden; 
-  }
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden; 
+}
   
-  .container {
-    display: flex;
-    height: 100vh; /* Ocupa toda la altura de la pantalla */
-    min-width: 100%; /* Ocupa todo el ancho de la pantalla */
-    /*overflow: hidden;*/
-  }
+.container {
+  display: flex;
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  min-width: 100%;
+  /*overflow: hidden;*/
+}
   
-  .content {
-    flex-grow: 1;
-    padding: 10px;
-    position: relative;
-  }
-  .menu {
-    width: 250px;
-    background-color: #f4f4f4;
-    padding: 5px;
-    transition: transform 0.3s ease;
-    /*height: 100vh;*/
-    overflow-y: auto;
-  }
+.content {
+  flex-grow: 1;
+  padding: 10px;
+  position: relative;
+  min-width: 0; /* Evita problemas de tamaño */
+  max-width: none; /* Evita restricciones en el ancho */
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
+
+.menu {
+  width: 250px;
+  background-color: #f4f4f4;
+  padding: 5px;
+  transition: transform 0.3s ease;
+  /*height: 100vh;*/
+  overflow-y: auto;
+}
   
-  .menu.hidden {
-    /*width: 0;
-    overflow: hidden;*/
-    transform: translateX(-100%);
-    position: absolute;
+.menu.hidden {
+  /*width: 0;
+  overflow: hidden;*/
+  transform: translateX(-100%);
+  position: absolute;
 }
 
 .menu-toggle {
@@ -41,24 +45,9 @@ html, body  {
   left: 10px;
   z-index: 10;
 }
-
-/*.menu.show {
-  transform: translateX(0);
-  position: absolute;
-}*/
   
-  .logout-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+.logout-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
-
-/* Asegurar que el menú sea responsive */
-/*@media (max-width: 768px) {
-  .menu {
-      position: absolute;
-      left: 0;
-      top: 0;
-      height: 100vh;
-  }
-}*/
