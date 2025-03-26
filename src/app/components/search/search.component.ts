@@ -113,7 +113,6 @@ export class SearchComponent implements OnInit {
       listColumnas:this.listColumnas,
       listTipos:this.tipos
     };
-    //console.log("this.FiltrosAdicionales: "+this.FiltrosAdicionales);
     //Reemplazamos ApiResponse por any
     this.authService.obtenerDatosBuscador<any>(body).subscribe(
       (data) => {
@@ -140,11 +139,9 @@ export class SearchComponent implements OnInit {
           }
         });
         this.isLoading = false; // Desactivar cuando los datos llegan
-        //console.log("Se obtuvo datos:");
       },
       (error) => {
         this.isLoading = false; // Desactivar incluso si hay error
-        //console.error("Error al obtener datos:", error);
       }
     );
   }
@@ -152,7 +149,6 @@ export class SearchComponent implements OnInit {
   applyFilters(): void {
     let filtered = this.data.data;
     let newFilters: { [key: string]: string } = {};
-    let listFiltroDatoTmp: string[] =this.listFiltroDatoBuscar;
     this.listCampos=[];//contiene el nombre del campo sobre el cual se va buscar el dato
     this.listFiltroDatoBuscar=[];//contiene el dato a buscar
     this.columns.forEach(col => {
@@ -183,7 +179,6 @@ export class SearchComponent implements OnInit {
 
     //COMPARAR FILTROS IGNORANDO MAYÚSCULAS, ESPACIOS Y NÚMEROS
   if (this.areFiltersSame(this.previousFilters, newFilters)) {
-    //console.log("Filtros iguales, no se llama a la API.");
     return;
   }
 
@@ -213,8 +208,6 @@ export class SearchComponent implements OnInit {
 
   confirmSelection(): void {
     if (this.selectedRow) {
-      //this.selectedData=this.selectedRow;
-      //console.log("this.selectedRow: "+this.selectedRow);
       this.selectedData={
         selectedRow:this.selectedRow,
         searchNo:this.searchNo
@@ -223,8 +216,15 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  selectAndAccept(row: any) {
+    this.selectRow(row);  // Selecciona la fila
+    this.confirmSelection();// Llama la función de aceptar
+  }
+
   cancel(): void {
     this.selectedRow = null;
     this.dialogRef.close();
   }
+
+
 }
