@@ -3,13 +3,15 @@
   /*flex-direction: column;*/
   gap: 10px;
   padding: 20px;
-  max-width: 900px;
+  /*max-width: 900px;*/
   margin: auto;
-}
-
-/*.full-width {
+  
+  max-width: 100%;  /* Para que no sobrepase el ancho del viewport */
   width: 100%;
-}*/
+  /*margin: auto;*/
+  /*padding: 10px;*/
+  overflow-x: hidden; /* Evita desbordamiento horizontal */
+}
 
 .filter-input {
   font-size: 12px !important;
@@ -196,4 +198,24 @@ tr.mat-footer-row {
   height: 12px !important; /* Ajusta según necesites */
   margin-top: 2px !important;
   padding-top: 0 !important;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+.mat-dialog-container {
+  max-height: 90vh; /* Evita que el contenido desborde la pantalla */
+  overflow-y: auto;  /* Agrega scroll si el contenido es muy largo */
+}
+
+@media (max-width: 768px) {
+  .mat-dialog-container {
+    width: 95vw;  /* Ocupa casi todo el ancho en móviles */
+    max-width: 95vw;
+    max-height: 95vh; /* Evita que el contenido desborde */
+    padding: 10px; /* Reduce padding en móviles */
+  }
 }

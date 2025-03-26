@@ -22,15 +22,11 @@
       <ng-container *ngFor="let col of columns" [matColumnDef]="col.key">
         <th mat-header-cell *matHeaderCellDef class="header-cell">
           {{ col.label }}
-
-          <!-- Selector de tipo de filtro -->
         <mat-form-field appearance="outline"  >
-          <!-- <mat-select  formControlName="typeFilter"> -->
           <mat-select  [formControl]="filterTypeControls[col.key+'_type']">
             <mat-option *ngFor="let type of filterTypes" [value]="type.value">{{ type.label }}</mat-option>
           </mat-select>
         </mat-form-field>
-
           <input matInput [formControl]="filterControls[col.key]" (blur)="applyFilters()" (keyup.enter)="applyFilters()" placeholder="Filtrar" class="filter-input" />
         </th>
         <td mat-cell *matCellDef="let element"> {{ element[col.key] }} </td>
