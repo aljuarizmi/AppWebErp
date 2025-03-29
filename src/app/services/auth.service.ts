@@ -51,9 +51,9 @@ export class AuthService {
   /*getPrueba(){
     return this.configService.getEndpoint('auth','login');
   }*/
-  login(credentials: { syUser: string; bizGrpId: number; serverName: string; dataBase: string; syUserPsc: string }): Observable<{ token: string,expirationTime:number }> {
+  login(credentials: { syUser: string; bizGrpId: number; serverName: string; dataBase: string; syUserPsc: string }): Observable<{ token: string,expirationTime:number,glAcctLev1Dgts:number,glAcctLev2Dgts:number,glAcctLev3Dgts:number }> {
     //console.log("login: "+this.loginUrl);
-    return this.http.post<{ token: string,expirationTime:number }>(this.loginUrl, credentials);
+    return this.http.post<{ token: string,expirationTime:number,glAcctLev1Dgts:number,glAcctLev2Dgts:number,glAcctLev3Dgts:number }>(this.loginUrl, credentials);
   }
 
   getServers(): Observable<Server[]> {
@@ -98,9 +98,12 @@ export class AuthService {
     );
   }
 
-  saveToken(token: string,expirationTime: number): void {
+  saveToken(token: string,expirationTime: number,glAcctLev1Dgts:number,glAcctLev2Dgts:number,glAcctLev3Dgts:number): void {
     localStorage.setItem('token', token);
     localStorage.setItem('tokenExpiration', expirationTime.toString());
+    localStorage.setItem('glAcctLev1Dgts', glAcctLev1Dgts.toString());
+    localStorage.setItem('glAcctLev2Dgts', glAcctLev2Dgts.toString());
+    localStorage.setItem('glAcctLev3Dgts', glAcctLev3Dgts.toString());
   }
 
   getToken(): string {
