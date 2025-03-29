@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ConfigService } from '../../services/config.service';
+import { SystemadminService } from '../../services/systemadmin.service';
 @Component({
   selector: 'app-login',
   imports: [CommonModule,ReactiveFormsModule,MatFormFieldModule,MatSelectModule,MatInputModule,MatButtonModule,MatCardModule,MatSnackBarModule],
@@ -22,12 +23,15 @@ export class LoginComponent {
   //private serversUrl = '';
   servers: { server_id: number; server_name: string }[] = [];
   databases: { sy_company: string; sy_company_descr: string }[] = [];
-
+  glAcctLev1Dgts:number=0;
+  glAcctLev2Dgts:number=0;
+  glAcctLev3Dgts:number=0;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private router: Router/*,
+    private router: Router,
+    private adminService: SystemadminService/*,
     private configService: ConfigService*/
   ) {
     this.loginForm = this.fb.group({
@@ -77,16 +81,27 @@ export class LoginComponent {
       
       this.authService.login(credentials).subscribe(
         (response) => {
-          //console.log('Token recibido:', response.token); // <-- PRUEBA SI SE RECIBE TOKEN
-          //console.log('expirationTime recibido:', response.expirationTime);
-          //console.log('response recibido:', response);
-          this.authService.saveToken(response.token,Number(response.expirationTime),Number(response.glAcctLev1Dgts),Number(response.glAcctLev2Dgts),Number(response.glAcctLev3Dgts));
+          //Consultamos los tamaños de la cuenta
+          this.authService.saveToken(response.token,Number(response.expirationTime));
+          this.adminService.obtenerDatosCompania('1').subscribe({
+            next: (data) => {
+              if(data){
+                this.glAcctLev1Dgts = data.glAcctLev1Dgts;
+                this.glAcctLev2Dgts = data.glAcctLev2Dgts;
+                this.glAcctLev3Dgts = data.glAcctLev3Dgts;
+                this.authService.saveTamaniosCuenta(Number(this.glAcctLev1Dgts),Number(this.glAcctLev2Dgts),Number(this.glAcctLev3Dgts));
+              }else{
+                //console.log('Empresa NO cargada: ',data);
+              }
+            },
+            error: (error) => {
+              alert(error);
+            }
+          });
           //console.log('Token guardado:', this.authService.getToken()); // <-- PRUEBA SI SE GUARDA
           this.snackBar.open('Login exitoso', 'Cerrar', { duration: 2000 });
-          //this.router.navigate(['/principal']);
           this.router.navigate(['/principal']).then(() => {
           console.log('Redirigiendo a principal...');
-            //window.location.reload();
           });
         },
         (error: HttpErrorResponse) => {

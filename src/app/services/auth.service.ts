@@ -9,6 +9,7 @@ import { ConfirmdialogComponent } from '../components/login/confirmdialog.compon
 import { ConfigService } from './config.service';
 import { isPlatformBrowser } from '@angular/common';
 import { ErrorHandlerService } from './error-handler.service';
+import { Compfile } from '../models/systemadmin.model';
 
 
 interface Server {
@@ -98,9 +99,12 @@ export class AuthService {
     );
   }
 
-  saveToken(token: string,expirationTime: number,glAcctLev1Dgts:number,glAcctLev2Dgts:number,glAcctLev3Dgts:number): void {
+  saveToken(token: string,expirationTime: number): void {
     localStorage.setItem('token', token);
     localStorage.setItem('tokenExpiration', expirationTime.toString());
+  }
+
+  saveTamaniosCuenta(glAcctLev1Dgts:number,glAcctLev2Dgts:number,glAcctLev3Dgts:number): void {
     localStorage.setItem('glAcctLev1Dgts', glAcctLev1Dgts.toString());
     localStorage.setItem('glAcctLev2Dgts', glAcctLev2Dgts.toString());
     localStorage.setItem('glAcctLev3Dgts', glAcctLev3Dgts.toString());
@@ -126,6 +130,33 @@ export class AuthService {
       }
     }
     return '';
+  }
+
+  getTamaniosCuenta(): Compfile {
+    let Tamanios: Compfile={
+      compKey1:'',
+      rptName:'',
+      displayName:'',
+      addrLine1:'',
+      addrLine2:'',
+      addrLine3:'',
+      phoneNo:'',
+      glAcctLev1Dgts:0,
+      glAcctLev2Dgts:0,
+      glAcctLev3Dgts:0,
+      startJnlHistNo:0,
+      typeEconomicActivity:'',
+      employees:0,
+      eiCusNo:'',
+      ratePct1:0,
+      ratePct2:0
+    }
+    if (isPlatformBrowser(this.platformId)) {
+      Tamanios.glAcctLev1Dgts = Number(localStorage.getItem('glAcctLev1Dgts'));
+      Tamanios.glAcctLev2Dgts = Number(localStorage.getItem('glAcctLev2Dgts'));
+      Tamanios.glAcctLev3Dgts = Number(localStorage.getItem('glAcctLev3Dgts'));
+    }
+    return Tamanios;
   }
 
   clearToken(): void {

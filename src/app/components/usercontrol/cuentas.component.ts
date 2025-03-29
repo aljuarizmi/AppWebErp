@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Compfile } from '../../models/systemadmin.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-cuentas',
@@ -54,13 +56,18 @@ export class CuentasComponent implements OnInit{
   hidCodigo:string='';
   hid_SearchFiltro:string='';
   
+  constructor(private authService: AuthService){}
   ngOnInit(): void {
-    this.TamanioUNO=Number(localStorage.getItem('glAcctLev1Dgts'));
-    this.TamanioDOS=Number(localStorage.getItem('glAcctLev2Dgts'));
-    this.TamanioTRES=Number(localStorage.getItem('glAcctLev3Dgts'));
+    let Tamanios:Compfile=this.authService.getTamaniosCuenta();
+    this.TamanioUNO=Tamanios.glAcctLev1Dgts;
+    this.TamanioDOS=Tamanios.glAcctLev2Dgts;
+    this.TamanioTRES=Tamanios.glAcctLev3Dgts;
+
   }
   onChange(event: any){}
-  onKeyPress(event: any){}
+  onKeyPress(event: any){
+    
+  }
   onInput(event: any){}
   buscar(){}
   onClickLimpiar(){}

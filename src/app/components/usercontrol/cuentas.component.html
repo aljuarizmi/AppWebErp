@@ -2,16 +2,16 @@
   <!-- Input 1 -->
   <input type="text" [id]="id+'_txt_code1'" class="form-control flex-grow-1"
       (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code1" [(ngModel)]="txt_code1"/>
+      [disabled]="!Enabled" [attr.maxlength]="TamanioUNO" name="txt_code1" [(ngModel)]="txt_code1"/>
   <!-- Input 2 -->
   <input type="text" [id]="id+'_txt_code2'" class="form-control flex-grow-1"
       (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code2" [(ngModel)]="txt_code2"/>
+      [disabled]="!Enabled" [attr.maxlength]="TamanioDOS" name="txt_code2" [(ngModel)]="txt_code2"/>
   
   <!-- Input 3 -->
   <input type="text" [id]="id+'_txt_code3'" class="form-control flex-grow-1"
       (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code3" [(ngModel)]="txt_code3"/>
+      [disabled]="!Enabled" [attr.maxlength]="TamanioTRES" name="txt_code3" [(ngModel)]="txt_code3"/>
   
   <!-- Botón de búsqueda -->
   <button type="button" class="btn btn-light d-flex align-items-center"

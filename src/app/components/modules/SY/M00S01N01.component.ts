@@ -6,10 +6,11 @@ import { BuscadorComponent } from '../../usercontrol/buscador.component';
 import { SystemadminService } from '../../../services/systemadmin.service';
 import { BusquedaExitosaEvent, Compfile } from '../../../models/systemadmin.model';
 import { ActivatedRoute } from '@angular/router';
+import { CuentasComponent } from '../../usercontrol/cuentas.component';
 
 @Component({
   selector: 'app-m00-s01-n01',
-  imports: [CommonModule, FormsModule, BuscadorComponent, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, BuscadorComponent, ReactiveFormsModule,CuentasComponent],
   templateUrl: './M00S01N01.component.html',
   /*styleUrl: './M00S01N01.component.css'*/
   styles: [`.container {
