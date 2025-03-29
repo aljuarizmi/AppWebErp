@@ -6,9 +6,9 @@ import { M00S01N01Component } from './components/modules/SY/M00S01N01.component'
 import { ErrorComponent } from './components/error/error.component';
 import { M00S01N02Component } from './components/modules/SY/M00S01N02.component';
 
-//export const routes: Routes = [];
 export const routes: Routes = [
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    /*{ path: '', redirectTo: 'login', pathMatch: 'full' },*/
+    {path:'',component:LoginComponent},
     { path: 'login', component: LoginComponent },
     {   path: 'principal', 
         component: PrincipalComponent,
