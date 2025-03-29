@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
@@ -13,7 +13,7 @@ import { BusquedaExitosaEvent } from '../../models/systemadmin.model';
   templateUrl: './buscador.component.html',
   styleUrl: './buscador.component.css'
 })
-export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
+export class BuscadorComponent  {
   datosDinamicos: Record<string, any> = {}; // Se declara como un objeto dinámico
   @Input() id: string = ''; // Se puede sobrescribir al usar el componente
   @Input() SearchID: string = '';
@@ -51,9 +51,6 @@ export class BuscadorComponent implements OnInit/*,ControlValueAccessor*/  {
   @Output() busquedaExitosa: EventEmitter<BusquedaExitosaEvent> = new EventEmitter<BusquedaExitosaEvent>(); // Usar el tipo personalizado
   
   constructor(private dialog:MatDialog,private authService: AuthService){
-  }
-  
-  ngOnInit(): void {
   }
   
   hidCodigo:string='';

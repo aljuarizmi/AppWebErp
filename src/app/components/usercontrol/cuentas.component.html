@@ -1,63 +1,33 @@
-<!-- <div class="d-flex align-items-center w-100 gap-2">
-      <input
-          type="text" [id]="id+'_txt_code'" class="form-control flex-grow-1"
-          (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-          [disabled]="!Enabled" [attr.maxlength]="MaxLength"  
-          name="txt_code" [(ngModel)]="txt_code"/>
-        <input
-          type="text" [id]="id+'_txt_code'" class="form-control flex-grow-1"
-          (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-          [disabled]="!Enabled" [attr.maxlength]="MaxLength"  
-          name="txt_code" [(ngModel)]="txt_code"/>
-        <input
-          type="text" [id]="id+'_txt_code'" class="form-control flex-grow-1"
-          (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-          [disabled]="!Enabled" [attr.maxlength]="MaxLength"  
-          name="txt_code" [(ngModel)]="txt_code"/>
-      <button type="button" class="btn btn-light" [id]="id+'_btnSearch'" 
-              #btnBuscar (click)="buscar()" [disabled]="!Enabled">
-        <img src="assets/images/buscar.png" alt="Buscar" />
-      </button>
-      <input *ngIf="DescripcionVisible"
-        type="text" [id]="id+'_txt_descripcion'" class="form-control flex-grow-2" 
-        [disabled]="!HabilitarDescripcion" [(ngModel)]="txt_description" 
-        name="txt_description" />
-
-  </div>
-
-   -->
-
-   <div class="d-flex align-items-center w-100 gap-2">
-    <!-- Input 1 -->
-    <input type="text" [id]="id+'_txt_code1'" class="form-control flex-grow-1"
+<div class="d-flex align-items-center w-100 gap-2">
+  <!-- Input 1 -->
+  <input type="text" [id]="id+'_txt_code1'" class="form-control flex-grow-1"
       (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code1" [(ngModel)]="txt_code"/>
-  
-    <!-- Input 2 -->
-    <input type="text" [id]="id+'_txt_code2'" class="form-control flex-grow-1"
+      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code1" [(ngModel)]="txt_code1"/>
+  <!-- Input 2 -->
+  <input type="text" [id]="id+'_txt_code2'" class="form-control flex-grow-1"
       (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code2" [(ngModel)]="txt_code"/>
+      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code2" [(ngModel)]="txt_code2"/>
   
-    <!-- Input 3 -->
-    <input type="text" [id]="id+'_txt_code3'" class="form-control flex-grow-1"
+  <!-- Input 3 -->
+  <input type="text" [id]="id+'_txt_code3'" class="form-control flex-grow-1"
       (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
-      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code3" [(ngModel)]="txt_code"/>
+      [disabled]="!Enabled" [attr.maxlength]="MaxLength" name="txt_code3" [(ngModel)]="txt_code3"/>
   
-    <!-- Botón de búsqueda -->
-    <button type="button" class="btn btn-light d-flex align-items-center"
+  <!-- Botón de búsqueda -->
+  <button type="button" class="btn btn-light d-flex align-items-center"
             [id]="id+'_btnSearch'" #btnBuscar (click)="buscar()" [disabled]="!Enabled">
       <img src="assets/images/buscar.png" alt="Buscar" style="height: 20px;">
-    </button>
+  </button>
   
-    <!-- Input Descripción (Opcional) -->
-    <input *ngIf="DescripcionVisible" type="text" [id]="id+'_txt_descripcion'" 
+  <!-- Input Descripción (Opcional) -->
+  <input *ngIf="DescripcionVisible" type="text" [id]="id+'_txt_descripcion'" 
       class="form-control flex-grow-2" [disabled]="!HabilitarDescripcion" 
       [(ngModel)]="txt_description" name="txt_description"/>
-  </div>
+</div>
   
-  <span style="display: none;">
+<span style="display: none;">
     <input type="hidden" [id]="id+'_hidCodigo'" #codigoHidden [(ngModel)]="hidCodigo" />
     <input type="hidden" [id]="id+'_hid_SearchFiltro'" [(ngModel)]="hid_SearchFiltro" />
     <button type="button" hidden [id]="id+'_btnLimpiar'" (click)="onClickLimpiar()"></button>
     <button type="button" hidden [id]="id+'_btnBuscar'" (click)="buscarCodigo()"></button>
-  </span>
+</span>

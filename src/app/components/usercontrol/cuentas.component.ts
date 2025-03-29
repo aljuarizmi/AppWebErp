@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './cuentas.component.html',
   styleUrl: './cuentas.component.css'
 })
-export class CuentasComponent {
+export class CuentasComponent implements OnInit{
   @Input() id: string = ''; // Se puede sobrescribir al usar el componente
   @Input() SearchID: string = '';
   @Input() TamanioCodigo: number = 100;
@@ -45,9 +45,20 @@ export class CuentasComponent {
   @Input() txt_code: string ='';
   @Input() txt_description: string ='';
   @Input() HabilitarDescripcion: boolean=false;
+  @Input() TamanioUNO: number=0;
+  @Input() TamanioDOS: number=0;
+  @Input() TamanioTRES: number=0;
+  @Input() ValorUNO: string ='';
+  @Input() ValorDOS: string ='';
+  @Input() ValorTRES: string ='';
   hidCodigo:string='';
   hid_SearchFiltro:string='';
   
+  ngOnInit(): void {
+    this.TamanioUNO=Number(localStorage.getItem('glAcctLev1Dgts'));
+    this.TamanioDOS=Number(localStorage.getItem('glAcctLev2Dgts'));
+    this.TamanioTRES=Number(localStorage.getItem('glAcctLev3Dgts'));
+  }
   onChange(event: any){}
   onKeyPress(event: any){}
   onInput(event: any){}
