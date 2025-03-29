@@ -80,7 +80,7 @@ export class LoginComponent {
           //console.log('Token recibido:', response.token); // <-- PRUEBA SI SE RECIBE TOKEN
           //console.log('expirationTime recibido:', response.expirationTime);
           //console.log('response recibido:', response);
-          this.authService.saveToken(response.token,Number(response.expirationTime));
+          this.authService.saveToken(response.token,Number(response.expirationTime),Number(response.glAcctLev1Dgts),Number(response.glAcctLev2Dgts),Number(response.glAcctLev3Dgts));
           //console.log('Token guardado:', this.authService.getToken()); // <-- PRUEBA SI SE GUARDA
           this.snackBar.open('Login exitoso', 'Cerrar', { duration: 2000 });
           //this.router.navigate(['/principal']);
