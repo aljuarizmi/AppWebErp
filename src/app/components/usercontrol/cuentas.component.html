@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center w-100 gap-2">
   <!-- Input 1 -->
-  <input type="text" [id]="id+'_txt_code1'" class="form-control flex-grow-1"
+  <input type="text" [id]="id+'_txt_code1'" #code1 class="form-control flex-grow-1"
       (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
       [disabled]="!Enabled" [attr.maxlength]="TamanioUNO" name="txt_code1" [(ngModel)]="txt_code1"/>
   <!-- Input 2 -->

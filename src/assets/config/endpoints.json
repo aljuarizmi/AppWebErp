@@ -17,7 +17,9 @@
         "getSearchers": "/sy/managment/searchers",
         "getMenu": "/sy/access",
         "getCompanies": "/sy/companies",
-        "getPeriods": "/sy/periods"
+        "getPeriods": "/sy/periods",
+        "getAccounts": "/sy/accounts",
+        "getCashAccounts": "/sy/accounts/cash"
       },
       "fixedAssets": {
         "getAssets": "/fixedAssets/assets",

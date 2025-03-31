@@ -44,6 +44,8 @@ export class SearchComponent implements OnInit {
   listColumnas: { key: string; label: string }[] = [];
   listFiltroDatoBuscar: string[] = [];
   listFiltroTipoBuscar:string[]=[];
+  searchFormats:string="";
+  searchRetVal:string="";
   SearchID:string="";
   CodigoPrincipal:string="";
   CampoDescripcion:string="";
@@ -124,6 +126,8 @@ export class SearchComponent implements OnInit {
         this.tipos=data.listTipos;
         this.listFiltroTipoBuscar=data.listFiltroTipoBuscar;
         this.listFiltroDatoBuscar=data.listFiltroDatoBuscar;
+        this.searchFormats=data.searchFormats;
+        this.searchRetVal=data.searchRetVal;//Valor necesario para obtener el codigo de cuentas contables
         this.displayedColumns=this.columns.map(c => c.key);
         this.searchNo=Number(this.searchForm.get('searchType')?.value.toString());
         this.columns.forEach(col => {
@@ -204,14 +208,17 @@ export class SearchComponent implements OnInit {
 
   selectRow(row: any): void {
     this.selectedRow = row;
+    //console.log("selectedRow:"+JSON.stringify(row, null, 2));
   }
 
   confirmSelection(): void {
     if (this.selectedRow) {
       this.selectedData={
         selectedRow:this.selectedRow,
-        searchNo:this.searchNo
+        searchNo:this.searchNo,
+        searchRetVal:this.searchRetVal
       };
+      //console.log("this.searchRetVal:"+this.searchRetVal);
       this.dialogRef.close(this.selectedData);
     }
   }
@@ -226,5 +233,6 @@ export class SearchComponent implements OnInit {
     this.dialogRef.close();
   }
 
-
+  
+  
 }

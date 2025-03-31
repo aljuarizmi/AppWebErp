@@ -100,7 +100,7 @@
             [TamanioDescripcion]="200"
             [CodigoPrincipal]="'cus_no'"
             [CampoDescripcion]="'cus_name'"
-            [DescripcionVisible]="false"
+            [DescripcionVisible]="true"
             [SoloNumeros]="false"
             [Enabled]="true"
             [MaxLength]="15"
@@ -124,7 +124,7 @@
           <div class="mb-2 d-flex align-items-center">
             <label class="form-label me-2" for="field8" style="width: 30%;">Cuenta Contable</label>
             <div style="width: 70%;">
-              <app-cuentas [DescripcionVisible]="false" class="w-100 d-block"></app-cuentas>
+              <app-cuentas [SearchID]="'SY-ACCOUNT'" [DescripcionVisible]="true" [AutoPostBack]="true" class="w-100 d-block"></app-cuentas>
             </div>
           </div>
       <!-- </form> -->

@@ -4,7 +4,7 @@ import { catchError, Observable } from 'rxjs';
 import { ConfigService } from './config.service';
 import { AuthService } from './auth.service';
 import { HttpClient } from '@angular/common/http';
-import { Compfile, Syprdfil } from '../models/systemadmin.model';
+import { Account, Compfile, Syprdfil } from '../models/systemadmin.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +48,24 @@ export class SystemadminService {
     const token = this.authService.getToken();
     let apiURL:string=this.configService.getEndpoint('systemAdmin','getCompanies');
     return this.http.put<Compfile>(`${apiURL}/${id}`,company, { headers: { Authorization: `Bearer ${token}` } })
+    .pipe(
+      catchError(this.errorHandler.handleError) // Manejo de errores mejorado
+    );
+  }
+
+  obtenerDatosCuentaContable(id: string): Observable<Account> {
+    const token = this.authService.getToken();
+    let apiURL:string=this.configService.getEndpoint('systemAdmin','getAccounts');
+    return this.http.get<Account>(`${apiURL}/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+    .pipe(
+      catchError(this.errorHandler.handleError) // Manejo de errores mejorado
+    );
+  }
+
+  obtenerDatosCuentaCaja(id: string): Observable<Account> {
+    const token = this.authService.getToken();
+    let apiURL:string=this.configService.getEndpoint('systemAdmin','getCashAccounts');
+    return this.http.get<Account>(`${apiURL}/${id}`, { headers: { Authorization: `Bearer ${token}` } })
     .pipe(
       catchError(this.errorHandler.handleError) // Manejo de errores mejorado
     );

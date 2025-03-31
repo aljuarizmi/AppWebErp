@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center w-100 gap-2">
-    <input type="text" [id]="id+'_txt_code'"
+    <input type="text" [id]="id+'_txt_code'" #code
         (change)="onChange($event)" (keypress)="onKeyPress($event)" (input)="onInput($event)"
         class="form-control flex-grow-1 me-2"
         [disabled]="!Enabled" [attr.maxlength]="MaxLength" 

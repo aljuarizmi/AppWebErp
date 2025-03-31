@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, ElementRef, Input, Output, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
@@ -49,7 +49,7 @@ export class BuscadorComponent  {
   @Input() txt_description: string ='';
   @Input() HabilitarDescripcion: boolean=false;
   @Output() busquedaExitosa: EventEmitter<BusquedaExitosaEvent> = new EventEmitter<BusquedaExitosaEvent>(); // Usar el tipo personalizado
-  
+  @ViewChild('code') code!: ElementRef<HTMLInputElement>;
   constructor(private dialog:MatDialog,private authService: AuthService){
   }
   
@@ -127,6 +127,7 @@ export class BuscadorComponent  {
             alert("No se encontró el código "+this.txt_code.trim());
             this.txt_code='';
             this.txt_description='';
+            this.code.nativeElement.focus();
             this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:{code:this.txt_code,description:this.txt_description} });
           }
         }else{
@@ -134,24 +135,29 @@ export class BuscadorComponent  {
           alert("No se encontró el código "+this.txt_code.trim());
           this.txt_code='';
           this.txt_description='';
+          this.code.nativeElement.focus();
           this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:{code:this.txt_code,description:this.txt_description} });
         }
       },
       error: (error) => {
         alert(error.message);
         this.txt_code='';
+        this.txt_description='';
+        this.code.nativeElement.focus();
       }
     })
     }else{
       this.txt_code='';
       this.txt_description='';
       this.BolBusquedaExitosa=false;
+      this.code.nativeElement.focus();
       this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:{code:this.txt_code,description:this.txt_description} });
     }
   }
   limpiar() {
     this.txt_code = '';
     this.txt_description = '';
+    this.hidCodigo='';
   }
 
   // Función para controlar la entrada solo numérica si es necesario
@@ -221,9 +227,9 @@ export class BuscadorComponent  {
     const keyAscii = event.keyCode || event.which;
     if (keyAscii === 13) { // Si presiona "Enter"
       event.preventDefault(); // Evita que el Enter cause otros efectos
-      const txtBusqueda = document.getElementById(this.id + '_txt_code') as HTMLInputElement;
-      const hidBusqueda = document.getElementById(this.id + '_hidCodigo') as HTMLInputElement;
-      if (txtBusqueda.value != hidBusqueda.value) {
+      //const txtBusqueda = document.getElementById(this.id + '_txt_code') as HTMLInputElement;
+      //const hidBusqueda = document.getElementById(this.id + '_hidCodigo') as HTMLInputElement;
+      if (this.txt_code != this.hidCodigo) {
         this.F_BuscarDatos_Control();
       }
     }
@@ -271,6 +277,7 @@ export class BuscadorComponent  {
               this.BolBusquedaExitosa=true;
               this.DiccionarioRowDatos=data;
               this.txt_code=this.DiccionarioRowDatos[this.CodigoPrincipal];
+              this.hidCodigo=this.DiccionarioRowDatos[this.CodigoPrincipal];
               if(this.DescripcionVisible){
                 if(this.DiccionarioRowDatos.hasOwnProperty(this.CampoDescripcion)){
                   //Ponemos la descripcion en el campo respectivo
@@ -280,10 +287,12 @@ export class BuscadorComponent  {
               this.busquedaExitosa.emit({ success: [this.BolBusquedaExitosa],mensaje:"Búsqueda completada",resultado:{code:this.txt_code,description:this.txt_description} }); // Emitir un arreglo con el 'success'
             }else{
               this.BolBusquedaExitosa=false;
+              this.hidCodigo='';
             }
           })
         }else{
           this.txt_code=result.selectedRow[this.CodigoPrincipal];
+          this.hidCodigo=result.selectedRow[this.CodigoPrincipal];
           this.BolBusquedaExitosa=true;
           //this.BolBusquedaExitosa=true;
           if(this.DescripcionVisible){
