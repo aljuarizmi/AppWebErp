@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import {MenuItem} from '../../models/menu.model'
 import { CommonModule } from '@angular/common';
@@ -14,11 +14,11 @@ import { routes } from '../../app.routes';
 })
 export class MenuComponent implements OnInit{
   menu: MenuItem[] = [];
-
+  @Input() username: string='';
   constructor(private menuService: MenuService,private authService: AuthService,private router: Router) {}
 
   ngOnInit() {
-    this.authService.getMenu().subscribe((data: MenuItem[]) => {
+    this.authService.getMenu(this.username).subscribe((data: MenuItem[]) => {
       this.menu = this.setExpandedProperty(data);
     });
   }
@@ -59,5 +59,9 @@ export class MenuComponent implements OnInit{
       }
     }
     return false;
+  }
+  nodoVisible(code:string):boolean{
+    const existeRuta = this.verificarRuta(routes, code);
+    return existeRuta;
   }
 }

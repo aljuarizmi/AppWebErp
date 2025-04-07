@@ -100,7 +100,7 @@ export class LoginComponent {
           });
           //console.log('Token guardado:', this.authService.getToken()); // <-- PRUEBA SI SE GUARDA
           this.snackBar.open('Login exitoso', 'Cerrar', { duration: 2000 });
-          this.router.navigate(['/principal']).then(() => {
+          this.router.navigate(['/principal'],{queryParams:{username:this.loginForm.get('username')?.value},skipLocationChange:true}).then(() => {
           console.log('Redirigiendo a principal...');
           });
         },

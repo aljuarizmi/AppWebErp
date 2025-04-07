@@ -15,11 +15,16 @@
         "getSearch": "/sy/managment/search",
         "getSearchCodigo": "/sy/managment/searchCodigo",
         "getSearchers": "/sy/managment/searchers",
-        "getMenu": "/sy/access",
+        "getMenu": "/sy/access/users/{userId}/menu",
         "getCompanies": "/sy/companies",
         "getPeriods": "/sy/periods",
         "getAccounts": "/sy/accounts",
-        "getCashAccounts": "/sy/accounts/cash"
+        "getCashAccounts": "/sy/accounts/cash",
+        "getUsers": "/sy/access/users",
+        "getUsersConfig": "/sy/access/users/{userId}/config",
+        "getUsersUserCompanies": "/sy/access/users/{userId}/companies",
+        "getUsersCompanies": "/sy/access/companies",
+        "getAccesos": "/sy/access"
       },
       "fixedAssets": {
         "getAssets": "/fixedAssets/assets",

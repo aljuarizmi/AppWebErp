@@ -186,13 +186,13 @@ export class AuthService {
     const now = Math.floor(Date.now() / 1000); // Obtener tiempo actual en segundos
     return now < +expiration; // Comparar con la fecha de expiración
   }
-  getMenu(): Observable<any> {
+  getMenu(userId:string): Observable<any> {
     const token = this.getToken();
     if (!token) {
       return throwError(() => new Error('No hay token disponible'));
     }
-    return this.http.get(this.menuUrl, {
-      headers: { Authorization: `Bearer ${token}` }
+    this.menuUrl=this.menuUrl.replace('{userId}',userId)
+    return this.http.get(this.menuUrl, {headers: { Authorization: `Bearer ${token}` }
     }).pipe(
       tap(menu => {
         localStorage.setItem('menu', JSON.stringify(menu));

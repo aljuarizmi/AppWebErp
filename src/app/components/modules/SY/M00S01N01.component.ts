@@ -86,6 +86,7 @@ export class M00S01N01Component implements OnInit{
       },
       error: (error) => {
         //console.error('Error al obtener la empresa:', error);
+        alert(error);
       }
     });
   }

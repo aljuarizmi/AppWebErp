@@ -1,6 +1,6 @@
 <div class="container">
     <div class="menu" [ngClass]="{ 'hidden': isMenuHidden }">
-        <app-menu></app-menu> <!-- Aquí se carga el menú -->
+        <app-menu [username]="username"></app-menu> <!-- Aquí se carga el menú -->
     </div>
     <div class="content">
         <button mat-icon-button (click)="toggleMenu()" class="menu-toggle">

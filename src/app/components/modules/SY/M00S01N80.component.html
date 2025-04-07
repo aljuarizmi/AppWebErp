@@ -1,0 +1,71 @@
+<div class="form-group">
+  <div class="container mt-5">
+    <div class="card p-2">
+      <!-- <form id="form2" (ngSubmit)="onSubmit()"> -->
+      <!-- Header Section -->
+      <div class="d-flex flex-column flex-sm-row align-items-center p-2 border-bottom text-center text-sm-start">
+        <div class="btn-group" role="group" aria-label="Acciones">
+          <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" title="Cancelar / Limpiar">Cancelar
+            <i class="bi bi-x-circle"></i>
+          </button>
+          <!-- <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" title="Grabar">Grabar
+            <i class="bi bi-save"></i>
+          </button> -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" title="Imprimir">Imprimir
+            <i class="bi bi-printer"></i>
+          </button>
+        </div>
+        <h1 class="fs-4 text-truncate ms-3" id="lblTitulo">{{ titulo }}</h1>
+      </div>
+  
+      <!-- Main Content Section -->
+      <div class="row">
+        <!-- Left Panel Section -->
+        <div class="col-md-6 col-lg-5">
+          <div class="row">
+            <div class="col-6">
+              <label for="usuarios" class="form-label">Usuarios:</label>
+              <div class="overflow-auto" style="height: 292px; border: 1px solid #ddd; padding: 10px;">
+                <div *ngFor="let usuario of usuarios">
+                  <input type="checkbox" [(ngModel)]="usuario.selected" (change)="onUsuarioChange()">
+                  {{ usuario.syUser }}
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <label for="empresas" class="form-label">Empresas:</label>
+              <div class="overflow-auto" style="height: 292px; border: 1px solid #ddd; padding: 10px;">
+                <div *ngFor="let empresa of empresas">
+                  <input type="checkbox" [(ngModel)]="empresa.selected" (change)="onEmpresaChange()">
+                  {{ empresa.syCompany }}
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Buttons Section -->
+          <div class="mt-3">
+            <div class="d-flex flex-column">
+              <button type="button" class="btn btn-primary mb-2" (click)="onCreateUser()">Crear Usuario</button>
+              <button type="button" class="btn btn-primary mb-2" (click)="onViewProperties()">Ver Propiedades</button>
+              <button type="button" class="btn btn-danger mb-2" (click)="onDeleteUser()">Eliminar Usuario</button>
+              <button type="button" class="btn btn-success mb-2" (click)="onSaveProperties()">Grabar Propiedades</button>
+              <button type="button" class="btn btn-warning mb-2" (click)="onChangePassword()">Cambiar Clave</button>
+              <button type="button" class="btn btn-info mb-2" (click)="onCopyProperties()">Copiar Propiedades</button>
+              <!-- <button type="button" class="btn btn-secondary" (click)="onViewMac()">Mac</button> -->
+            </div>
+          </div>
+        </div>
+  
+        <!-- Right Panel Section -->
+        <div class="col-md-6 col-lg-7">
+            <label class="form-label">Propiedades:</label>
+          <div class="overflow-auto" style="height: 490px; border: 1px solid #ddd; padding: 10px;">
+            <app-treeview [nodes]="treeData"></app-treeview>
+            <!-- <p-tree [value]="files" selectionMode="checkbox" [(selection)]="selectedFiles" styleClass="w-full md:w-[30rem]" showIcons="true" /> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

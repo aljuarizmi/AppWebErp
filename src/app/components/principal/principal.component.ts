@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MenuComponent } from '../menu/menu.component';
 import { AuthService } from '../../services/auth.service';
 import { MatIcon } from '@angular/material/icon';
@@ -11,9 +11,15 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './principal.component.html',
   styleUrl: './principal.component.css'
 })
-export class PrincipalComponent {
+export class PrincipalComponent implements OnInit{
   isMenuHidden = false; // Estado del menú
-  constructor(private authService: AuthService, private router: Router) {};
+  username: string='';
+  constructor(private authService: AuthService, private route: ActivatedRoute) {};
+  ngOnInit(): void {
+    this.route.queryParamMap.subscribe(params=>{
+      this.username=params.get('username')||'';
+    });
+  }
   logout() {
     if(confirm("¿Seguro que desea cerrar sesion?")){
       this.authService.logout();
