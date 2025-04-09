@@ -151,4 +151,5 @@ export interface Sygenopc {
   syOpcType: string;
   syOpcExec: string;
   syUrl: string;
+  selected:boolean;
 }

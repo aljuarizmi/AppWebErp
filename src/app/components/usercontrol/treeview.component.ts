@@ -18,18 +18,16 @@ export class TreeviewComponent {
     node['expanded'] = !node['expanded'];
   }
 
-  /*toggleCheckbox(node: TreeNode) {
-    this.checkChildren(node, node.checked!);
-    this.updateParentStatus();
-  }*/
-    toggleCheckbox(node: TreeNode) {
+  toggleCheckbox(node: TreeNode) {
       if (node.children) {
+        //Si el nodo tienes hijos (children!=null) se llama a la siguiente funcion
         this.checkChildren(node, node.checked!);
       }
       this.updateParentStatus(node);
     }
 
   checkChildren(node: TreeNode, checked: boolean) {
+    //Si el nodo tiene hijos recorre todos los hijos para actualizar su estado (checked)
     if (node.children) {
       node.children.forEach(child => {
         child.checked = checked;
@@ -46,18 +44,11 @@ export class TreeviewComponent {
       const allChecked = children.every(child => child.checked);
       const someChecked = children.some(child => child.checked);
   
-      parent.checked = allChecked ? true : someChecked ? undefined : false;
+      //parent.checked = allChecked ? true : someChecked ? undefined : false;
+      parent.checked = someChecked ? true : false;
+
   
       node = parent; // seguimos subiendo
     }
   }
-  /*updateParentStatus() {
-    function updateParent(node: TreeNode) {
-      if (!node.children) return;
-      const allChecked = node.children.every(child => child.checked);
-      const someChecked = node.children.some(child => child.checked);
-      node.checked = allChecked ? true : someChecked ? undefined : false;
-    }
-    this.nodes.forEach(updateParent);
-  }*/
 }

@@ -64,6 +64,7 @@ export class M00S01N80Component implements OnInit{
   }];
   treeData: TreeNode[]=[];
   selectedFiles!: TreeNode[];
+  menuAccesos!:Sygenopc[];
 
   //@ViewChild(TreeComponent) tree!: TreeComponent;
   constructor(private adminService: SystemadminService,private route: ActivatedRoute,private authService: AuthService) { }
@@ -96,16 +97,40 @@ export class M00S01N80Component implements OnInit{
     }
   });
   }
+  getEmpresasUsuario(syUser:string){
+    //this.adminService.obtenerUsuarioCompanias(usuario)
+    this.adminService.obtenerUsuarioCompanias(syUser).subscribe({next:(data: Sygenacs[]) => {
+      this.empresas.forEach(itemA => {
+        const coincide = data.some(itemB => itemB.syCompany === itemA.syCompany);
+        itemA.selected = coincide;
+      });
+    },
+    error: (error) => {
+      alert(error);
+    }
+  });
+  }
   getAccesos(){
     this.adminService.obtenerAccesos().subscribe({next:(data: Sygenopc[]) => {
-      //this.files=this.transformToTreeNodes(data);
-      //this.files=this.getTreeNodesData();
+      this.menuAccesos=data;
       this.treeData=this.transformToTreeNodes(data);
       this.treeData.forEach(n => this.setParents(n));
       //this.menu = this.setExpandedProperty(data);
       /*this.nodes = this.transformToTree(data);
       this.nodes = this.nodes.map(node => this.fixTreeStructure(node));*/
       //console.log(JSON.stringify(this.files, null, 2));
+    },
+    error: (error) => {
+      alert(error);
+    }
+  });
+  }
+
+  getAccesosUsuario(syUser:string){
+    this.adminService.obtenerUsuarioAccesos(syUser).subscribe({next:(data: Sygenacs[]) => {
+      this.compareAndSelectMenus(this.menuAccesos,data);
+      this.treeData=this.transformToTreeNodes(this.menuAccesos);
+      this.treeData.forEach(n => this.setParents(n));
     },
     error: (error) => {
       alert(error);
@@ -120,8 +145,8 @@ export class M00S01N80Component implements OnInit{
       data: item.syMenuCode,
       /*icon: 'pi pi-fw pi-inbox',*/
       children: item.children ? this.transformToTreeNodes(item.children) : [],
-      selectable:true
-      
+      selectable:true,
+      checked:item.selected
     }));
   }
   
@@ -132,19 +157,6 @@ export class M00S01N80Component implements OnInit{
     }
   }
 
-  /*transformToTreeNodes(data: any[]): TreeNode[] {
-    return data.map(item => ({
-      key:item.syMenuCode,
-      label: item.syMenuName,
-      data: item.syMenuCode,
-      icon: 'pi pi-fw pi-inbox',
-      children: item.children ? this.transformToTreeNodes(item.children) : [],
-      selectable:true
-      
-    }));
-  }*/
-
-  
   // Métodos que se invocan cuando se hace clic en los botones
   onSubmit() {
     console.log('Formulario enviado');
@@ -163,7 +175,25 @@ export class M00S01N80Component implements OnInit{
   }
 
   onViewProperties() {
-    console.log('Ver Propiedades');
+    //console.log('Ver Propiedades');
+    //Obtenemos la lista de empresas a las que tiene acceso el usuario seleccionado
+    //Primero verificamos si hay marcado un usuario
+    //Consultamos la data
+    let usuario:string='';
+    const seleccionados = this.usuarios.filter(u => u.selected);
+    if (seleccionados.length === 1) {
+      //console.log("Hay uno solo seleccionado. ID:", seleccionados[0].syUser);
+      usuario=seleccionados[0].syUser;
+      this.getEmpresasUsuario(usuario);
+      this.getAccesosUsuario(usuario);
+
+    } else if (seleccionados.length > 1) {
+      //console.log("Hay varios seleccionados.");
+      alert("Solo debe seleccionar solo un usuario.");
+    } else {
+      //console.log("No hay ninguno seleccionado.");
+      alert("Debe de seleccionar un usuario.");
+    }
   }
 
   onDeleteUser() {
@@ -199,72 +229,21 @@ export class M00S01N80Component implements OnInit{
     console.log('Cambio en las propiedades');
   }
 
-  getTreeNodesData() {
-    return [
-        {
-            key: '0',
-            label: 'Documents',
-            data: 'Documents Folder',
-            icon: 'pi pi-fw pi-inbox',
-            children: [
-                {
-                    key: '0-0',
-                    label: 'Work',
-                    data: 'Work Folder',
-                    icon: 'pi pi-fw pi-cog',
-                    children: [
-                        { key: '0-0-0', label: 'Expenses.doc', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                        { key: '0-0-1', label: 'Resume.doc', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
-                    ]
-                },
-                {
-                    key: '0-1',
-                    label: 'Home',
-                    data: 'Home Folder',
-                    icon: 'pi pi-fw pi-home',
-                    children: [{ key: '0-1-0', label: 'Invoices.txt', icon: 'pi pi-fw pi-file', data: 'Invoices for this month' }]
-                }
-            ]
-        },
-        {
-            key: '1',
-            label: 'Events',
-            data: 'Events Folder',
-            icon: 'pi pi-fw pi-calendar',
-            children: [
-                { key: '1-0', label: 'Meeting', icon: 'pi pi-fw pi-calendar-plus', data: 'Meeting' },
-                { key: '1-1', label: 'Product Launch', icon: 'pi pi-fw pi-calendar-plus', data: 'Product Launch' },
-                { key: '1-2', label: 'Report Review', icon: 'pi pi-fw pi-calendar-plus', data: 'Report Review' }
-            ]
-        },
-        {
-            key: '2',
-            label: 'Movies',
-            data: 'Movies Folder',
-            icon: 'pi pi-fw pi-star-fill',
-            children: [
-                {
-                    key: '2-0',
-                    icon: 'pi pi-fw pi-star-fill',
-                    label: 'Al Pacino',
-                    data: 'Pacino Movies',
-                    children: [
-                        { key: '2-0-0', label: 'Scarface', icon: 'pi pi-fw pi-video', data: 'Scarface Movie' },
-                        { key: '2-0-1', label: 'Serpico', icon: 'pi pi-fw pi-video', data: 'Serpico Movie' }
-                    ]
-                },
-                {
-                    key: '2-1',
-                    label: 'Robert De Niro',
-                    icon: 'pi pi-fw pi-star-fill',
-                    data: 'De Niro Movies',
-                    children: [
-                        { key: '2-1-0', label: 'Goodfellas', icon: 'pi pi-fw pi-video', data: 'Goodfellas Movie' },
-                        { key: '2-1-1', label: 'Untouchables', icon: 'pi pi-fw pi-video', data: 'Untouchables Movie' }
-                    ]
-                }
-            ]
-        }
-    ];
+// Función recursiva para comparar los menús en el primer JSON con los del segundo
+compareAndSelectMenus(menuTree: any[], userMenus: any[]): void {
+  menuTree.forEach(menu => {
+    // Verificar si el menú debe ser marcado como seleccionado
+    menu.selected = this.isMenuSelected(menu.syMenuCode, userMenus);
+    
+    // Si el menú tiene hijos, realizar la comparación recursiva
+    if (menu.children && menu.children.length > 0) {
+      this.compareAndSelectMenus(menu.children, userMenus);
+    }
+  });
+}
+
+// Función para verificar si un menú está presente en el segundo JSON basándose solo en syMenuCode
+isMenuSelected(menuCode: string, userMenus: any[]): boolean {
+  return userMenus.some(menu => menu.syMenuCode === menuCode);
 }
 }

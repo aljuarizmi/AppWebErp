@@ -88,11 +88,11 @@ export class SystemadminService {
       catchError(this.errorHandler.handleError) // Manejo de errores mejorado
     );
   }
-  obtenerUsuarioCompanias(userId:string): Observable<Sygenacs> {
+  obtenerUsuarioCompanias(userId:string): Observable<Sygenacs[]> {
     const token = this.authService.getToken();
     let apiURL:string=this.configService.getEndpoint('systemAdmin','getUsersUserCompanies');
     apiURL=apiURL.replace('{userId}',userId);
-    return this.http.get<Sygenacs>(apiURL, { headers: { Authorization: `Bearer ${token}` } })
+    return this.http.get<Sygenacs[]>(apiURL, { headers: { Authorization: `Bearer ${token}` } })
     .pipe(
       catchError(this.errorHandler.handleError) // Manejo de errores mejorado
     );
@@ -109,11 +109,11 @@ export class SystemadminService {
       catchError(this.errorHandler.handleError) // Manejo de errores mejorado
     );
   }
-  obtenerUsuarioAccesos(userId:string): Observable<Sygenacs> {
+  obtenerUsuarioAccesos(userId:string): Observable<Sygenacs[]> {
     const token = this.authService.getToken();
     let apiURL:string=this.configService.getEndpoint('systemAdmin','getUsersConfig');
     apiURL=apiURL.replace('{userId}',userId);
-    return this.http.get<Sygenacs>(apiURL, { headers: { Authorization: `Bearer ${token}` } })
+    return this.http.get<Sygenacs[]>(apiURL, { headers: { Authorization: `Bearer ${token}` } })
     .pipe(
       catchError(this.errorHandler.handleError) // Manejo de errores mejorado
     );
