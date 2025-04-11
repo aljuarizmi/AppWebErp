@@ -20,20 +20,10 @@ import { Sygenacs, Sygenopc, Sygenusr } from '../../../models/systemadmin.model'
   standalone:true
 })
 export class M00S01N80Component implements OnInit{
-
   // Datos de ejemplo para los checkboxes
   usuarios!:Sygenusr[];
-  /*usuarios = [
-    { name: 'Usuario 1', selected: false },
-    { name: 'Usuario 2', selected: false },
-    { name: 'Usuario 3', selected: false }
-  ];*/
 
-  empresas! : Sygenacs[];/*[
-    { name: 'Empresa A', selected: false },
-    { name: 'Empresa B', selected: false },
-    { name: 'Empresa C', selected: false }
-  ];*/
+  empresas! : Sygenacs[];
 
   properties = [
     { name: 'Propiedad 1', selected: false },
@@ -52,16 +42,15 @@ export class M00S01N80Component implements OnInit{
     }
   ];
   titulo='';
-  //menu: MenuItem[] = [];
   nodes: any[] = [];
   menu: MenuItem[] = [];
 
-  files: TreeNode[]=[{
+  /*files: TreeNode[]=[{
     "key": "M00",
       "label": "Administrador del Sistema",
       "data": "Administrador del Sistema",
       "children":[]
-  }];
+  }];*/
   treeData: TreeNode[]=[];
   selectedFiles!: TreeNode[];
   menuAccesos!:Sygenopc[];
@@ -118,7 +107,7 @@ export class M00S01N80Component implements OnInit{
       //this.menu = this.setExpandedProperty(data);
       /*this.nodes = this.transformToTree(data);
       this.nodes = this.nodes.map(node => this.fixTreeStructure(node));*/
-      //console.log(JSON.stringify(this.files, null, 2));
+      //console.log(JSON.stringify(data, null, 2));
     },
     error: (error) => {
       alert(error);
@@ -136,6 +125,27 @@ export class M00S01N80Component implements OnInit{
       alert(error);
     }
   });
+  }
+  grabarAccesos(syUser:string,empresas:Sygenacs[],accesos:Sygenacs[]){
+    //Grabamos los accesos concedidos
+    const body:Sygenacs={
+      syUser:syUser,
+      syCompany:'',
+      empresas:empresas,
+      accesos:accesos
+    }
+    this.adminService.grabarUsuarioAccesos(syUser,body).subscribe({next:(data: Sygenacs) => {
+      if(data){
+        alert("Accesos actualizados para el usuario: "+syUser);
+        this.usuarios.map(u=>{u.selected=false});
+        this.empresas.map(u=>{u.selected=false});
+        this.desmarcarSeleccionados(this.treeData);
+      }
+    },
+      error: (error) => {
+        alert(error);
+    }
+    });
   }
 
   transformToTreeNodes(data: any[]): TreeNode[] {
@@ -176,14 +186,13 @@ export class M00S01N80Component implements OnInit{
 
   onViewProperties() {
     //console.log('Ver Propiedades');
-    //Obtenemos la lista de empresas a las que tiene acceso el usuario seleccionado
     //Primero verificamos si hay marcado un usuario
-    //Consultamos la data
     let usuario:string='';
     const seleccionados = this.usuarios.filter(u => u.selected);
     if (seleccionados.length === 1) {
       //console.log("Hay uno solo seleccionado. ID:", seleccionados[0].syUser);
       usuario=seleccionados[0].syUser;
+      //Obtenemos la lista de empresas a las que tiene acceso el usuario seleccionado
       this.getEmpresasUsuario(usuario);
       this.getAccesosUsuario(usuario);
 
@@ -201,7 +210,27 @@ export class M00S01N80Component implements OnInit{
   }
 
   onSaveProperties() {
-    console.log('Grabar Propiedades');
+    //console.log('Grabar Propiedades');
+    //Obtenemos el usuario seleccionado
+    let syUser:string='';
+    const usuariosSeleccionados = this.usuarios.filter(u => u.selected);
+    if (usuariosSeleccionados.length === 1) {
+      //Obtenemos las empresas seleccionadas
+      const empresasSeleccionados = this.empresas.filter(u => u.selected).map(u=>({syCompany:u.syCompany}));
+      //Obtenemos los accesos seleccionados
+      let accesosSeleccionados = this.obtenerSeleccionados(this.treeData);
+      syUser=usuariosSeleccionados[0].syUser;
+      accesosSeleccionados = this.limpiarReferenciasCirculares(accesosSeleccionados);
+      if(confirm("¿Seguro que desea grabar los permisos para el usuario "+syUser+"?")){
+        this.grabarAccesos(syUser,empresasSeleccionados,accesosSeleccionados);
+      }
+    } else if (usuariosSeleccionados.length > 1) {
+      //console.log("Hay varios seleccionados.");
+      alert("Solo debe seleccionar solo un usuario.");
+    } else {
+      //console.log("No hay ninguno seleccionado.");
+      alert("Debe de seleccionar un usuario.");
+    }
   }
 
   onChangePassword() {
@@ -245,5 +274,57 @@ compareAndSelectMenus(menuTree: any[], userMenus: any[]): void {
 // Función para verificar si un menú está presente en el segundo JSON basándose solo en syMenuCode
 isMenuSelected(menuCode: string, userMenus: any[]): boolean {
   return userMenus.some(menu => menu.syMenuCode === menuCode);
+}
+
+/*obtenerSeleccionados(nodos: any[]): any[] {
+  let seleccionados: any[] = [];
+  for (const nodo of nodos) {
+    if (nodo.checked) {
+      seleccionados.push(nodo);
+    }
+    if (nodo.children && Array.isArray(nodo.children)) {
+      const hijosSeleccionados = this.obtenerSeleccionados(nodo.children);
+      seleccionados = seleccionados.concat(hijosSeleccionados);
+    }
+  }
+  return seleccionados;
+}*/
+
+obtenerSeleccionados(nodos: any[]): any[] {
+  let seleccionados: any[] = [];
+  for (const nodo of nodos) {
+    if (nodo.checked) {
+      seleccionados.push({
+        syMenuCode: nodo.key
+      });
+    }
+    if (nodo.children && Array.isArray(nodo.children)) {
+      const hijosSeleccionados = this.obtenerSeleccionados(nodo.children);
+      seleccionados = seleccionados.concat(hijosSeleccionados);
+    }
+  }
+  return seleccionados;
+}
+
+desmarcarSeleccionados(nodos: any[]) {
+  for (const nodo of nodos) {
+    if (nodo.checked) {
+      nodo.checked=false;
+    }
+    if (nodo.children && Array.isArray(nodo.children)) {
+      this.desmarcarSeleccionados(nodo.children);
+    }/*else{
+      if (nodo.checked) {
+        nodo.checked=false;
+      }
+    }*/
+  }
+}
+limpiarReferenciasCirculares(obj: any): Sygenacs[] {
+  const copia = JSON.parse(JSON.stringify(obj, (key, value) => {
+    if (key === 'parent') return undefined; // ignora la propiedad 'parent'
+    return value;
+  }));
+  return copia;
 }
 }

@@ -121,12 +121,15 @@ export interface Sygenusr {
 }
 
 export interface Sygenacs {
-  syUser: string;
-  syCompany: string;
-  syMenuCode:string;
-  syMenuState:string;
-  syOpcActive:string;
-  selected:boolean;
+  syUser?: string;
+  syCompany?: string;
+  syMenuCode?:string;
+  syMenuState?:string;
+  syOpcActive?:string;
+  selected?:boolean;
+  datosXml?: string;
+  accesos?: Sygenacs[];
+  empresas?: Sygenacs[];
 }
 
 export interface Sygendbc {

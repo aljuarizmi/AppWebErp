@@ -118,4 +118,13 @@ export class SystemadminService {
       catchError(this.errorHandler.handleError) // Manejo de errores mejorado
     );
   }
+  grabarUsuarioAccesos(userId:string,accesos:Sygenacs): Observable<Sygenacs> {
+    const token = this.authService.getToken();
+    let apiURL:string=this.configService.getEndpoint('systemAdmin','getUsersConfig');
+    apiURL=apiURL.replace('{userId}',userId);
+    return this.http.post<Sygenacs>(apiURL,accesos, { headers: { Authorization: `Bearer ${token}` } })
+    .pipe(
+      catchError(this.errorHandler.handleError) // Manejo de errores mejorado
+    );
+  }
 }

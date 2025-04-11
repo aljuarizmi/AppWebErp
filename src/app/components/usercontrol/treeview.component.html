@@ -1,8 +1,8 @@
-<ul class="list-unstyled ms-3">
+<ul class="list-unstyled ms-0">
   <li *ngFor="let node of nodes">
-    <div class="d-flex align-items-center mb-1">
+    <div class="d-flex align-items-center mb-0">
       <span class="me-1" style="cursor: pointer;" (click)="toggleExpand(node)">
-        {{ node.children ? (node['expanded'] ? '▼' : '▶') : '' }}
+        {{ node.children && node.children.length>0? (node['expanded'] ? '▼' : '▶') : '' }}
       </span>
 
       <input type="checkbox"
