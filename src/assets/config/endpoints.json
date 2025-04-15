@@ -1,6 +1,7 @@
 {
-    "apiUrl": "http://192.168.18.187:8080/api",
+    "apiUrl": "https://localhost:7113/api",
     "apiTest": "https://localhost:7113/api",
+    "apiBkp": "http://192.168.18.187:8080/api",
     "timeout": 5000,
     "modules": {
       "auth": {
@@ -35,8 +36,11 @@
         "updateStock": "/inventories/update"
       },
       "currencies": {
-        "getExchangeRates": "/currencies/exchangeRates",
-        "updateCurrency": "/currencies/update"
+        "getExchangeRates": "/cm/exchange-rates/{periodo}",
+        "getExchangeRateSunat": "/cm/exchange-rates/sunat",
+        "updateExchangeRate": "/cm/exchanges-rates",
+        "insertExchangeRate": "/cm/exchanges-rates",
+        "deleteExchangeRate": "/cm/exchanges-rates"
       },
       "generalAccounting": {
         "getAccounts": "/accounting/accounts",
