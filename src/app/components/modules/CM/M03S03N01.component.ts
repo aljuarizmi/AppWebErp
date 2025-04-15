@@ -63,10 +63,16 @@ export class M03S03N01Component implements OnInit{
       if(data){
         this.dataSource=data;
         this.totalItems = data[0].totalReg;
+        this.totalRegistros=this.totalItems;
         this.totalPages = Math.ceil(this.totalItems / this.pageSize);
         this.pages = Array.from({ length: this.totalPages }, (_, i) => i);
         console.log("data[0].totalReg:"+data[0].totalReg);
         console.log("this.totalPages:"+this.totalPages);
+      }else{
+        this.totalItems = 0;
+        this.totalPages = 0;
+        this.pages = [];
+        this.totalRegistros=0;
       }
       
     },
