@@ -1,0 +1,109 @@
+<div class="container-fluid mt-3">
+    <!-- <form> -->
+        <div class="d-flex align-items-center p-2 ">
+            <!-- Grupo de botones -->
+            <div class="btn-group" role="group" aria-label="Acciones">
+              <!-- Salir -->
+              <button type="button" class="btn btn-outline-danger" data-bs-toggle="tooltip" title="Salir">
+                <i class="bi bi-box-arrow-left"></i>
+              </button>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" title="Cancelar / Limpiar">Cancelar
+                <i class="bi bi-x-circle"></i>
+              </button>
+              <button type="button" class="btn btn-success" data-bs-toggle="tooltip" title="Grabar" (click)="guardarTipoCambio()">Grabar
+                <i class="bi bi-save"></i>
+              </button>
+            </div>
+            <!-- Título -->
+            <h1 class="ms-3" id="lblTitulo">Mantener Tipo de Cambio</h1>
+          </div>
+
+      <div class="row mb-3">
+        <div class="col-md-2">
+          <label class="form-label">Moneda</label>
+        </div>
+        <div class="col-md-4">
+          <!-- Reemplazar por componente Angular que simule ucBuscador -->
+          <app-buscador [CodigoPrincipal]="'curr_cd'" [DescripcionVisible]="false"
+                            [SearchID]="'CM-CURREN-CODE'" [SoloNumeros]="false" 
+                           [TamanioCodigo]="60" [MaxLength]="3" (busquedaExitosa)="onBusquedaExitosa($event)" [id]="currCd" [txt_code]="currCd"></app-buscador>
+        </div>
+        <div class="col-md-4">
+            <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" title="Grabar" (click)="buscarSunat()">Consultar Sunat
+                <i class="bi bi-globe"></i>
+              </button>
+          </div>
+      </div>
+  
+      <div class="row mb-3">
+        <div class="col-md-2">
+          <label class="form-label">Fecha</label>
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" placeholder="dd/MM/yyyy" matInput [matDatepicker]="pickers1" maxlength="10" [(ngModel)]="rateExtEfe" id="rateExtEfe" (click)="pickers1.open()">
+            <mat-datepicker #pickers1 ></mat-datepicker>
+        </div>
+      </div>
+  
+      <div class="row mb-3">
+        <div class="col-md-2">
+          <label class="form-label">TC/Cpra. Vig.</label>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" maxlength="20" [(ngModel)]="currRt">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">TC/Vta. Vig.</label>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" maxlength="20" [(ngModel)]="rateVenDia">
+        </div>
+      </div>
+  
+      <div class="row mb-3">
+        <div class="col-md-2">
+          <label class="form-label">TC/Cpra. Pub.</label>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" maxlength="20" [(ngModel)]="rateComPub">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">TC/Vta. Pub.</label>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" maxlength="20" [(ngModel)]="rateVenPub">
+        </div>
+      </div>
+  
+      <div class="row mb-3">
+        <div class="col-md-2">
+          <label class="form-label">TC/Cpra. Cierre</label>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" maxlength="20" [(ngModel)]="rateComPro">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">TC/Vta. Cierre</label>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" maxlength="20" [(ngModel)]="rateVenPro">
+        </div>
+      </div>
+  
+      <div class="row mb-3">
+        <div class="col-md-2">
+          <label class="form-label">TC/Cpra. Canc.</label>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" maxlength="20" [(ngModel)]="rateComCanc">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">TC/Vta. Canc.</label>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" maxlength="20" [(ngModel)]="rateVenCanc">
+        </div>
+      </div>
+    <!-- </form> -->
+  </div>
+  

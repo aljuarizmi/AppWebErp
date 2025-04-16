@@ -1,6 +1,8 @@
 export interface Cmcurrat {
     currCd: string;
+    rateExtCode:string;
     currRtEffDt: number;
+    rateExtEfe:number;
     currRt: number;
     rateVenDia: number;
     rateComPub: number;

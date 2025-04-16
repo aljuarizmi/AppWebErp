@@ -25,7 +25,7 @@ export class CurrenciesService {
   obtenerTipoCambioSunat(fecha:string): Observable<Cmcurrat> {
     const token = this.authService.getToken();
     let apiURL:string=this.configService.getEndpoint('currencies','getExchangeRateSunat');
-    return this.http.get<Cmcurrat>(apiURL, { headers: { Authorization: `Bearer ${token}` } })
+    return this.http.get<Cmcurrat>(`${apiURL}/${fecha}`, { headers: { Authorization: `Bearer ${token}` } })
     .pipe(
       catchError(this.errorHandler.handleError) // Manejo de errores mejorado
     );
@@ -33,7 +33,7 @@ export class CurrenciesService {
   insertarTipoCambio(body:Cmcurrat): Observable<Cmcurrat> {
     const token = this.authService.getToken();
     let apiURL:string=this.configService.getEndpoint('currencies','insertExchangeRate');
-    return this.http.get<Cmcurrat>(apiURL, { headers: { Authorization: `Bearer ${token}` } })
+    return this.http.post<Cmcurrat>(apiURL,body, { headers: { Authorization: `Bearer ${token}` } })
     .pipe(
       catchError(this.errorHandler.handleError)
     );
@@ -41,7 +41,7 @@ export class CurrenciesService {
   actualizarTipoCambio(body:Cmcurrat): Observable<Cmcurrat> {
     const token = this.authService.getToken();
     let apiURL:string=this.configService.getEndpoint('currencies','updateExchangeRate');
-    return this.http.get<Cmcurrat>(apiURL, { headers: { Authorization: `Bearer ${token}` } })
+    return this.http.put<Cmcurrat>(apiURL, { headers: { Authorization: `Bearer ${token}` } })
     .pipe(
       catchError(this.errorHandler.handleError)
     );

@@ -1,46 +1,100 @@
 <div class="container mt-4">
-    <form (ngSubmit)="onSubmit()">
+  <div class="d-flex align-items-center p-2 ">
+    <!-- Grupo de botones -->
+    <div class="btn-group" role="group" aria-label="Acciones">
+      <!-- Salir -->
+      <button type="button" class="btn btn-outline-danger" data-bs-toggle="tooltip" title="Salir">
+        <i class="bi bi-box-arrow-left"></i>
+      </button>
+      <!-- Cancelar -->
+      <!-- <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" title="Cancelar / Limpiar">Cancelar
+        <i class="bi bi-x-circle"></i>
+      </button> -->
+      <!-- Exportar a Excel -->
+      <button type="button" class="btn btn-success" data-bs-toggle="tooltip" title="Exportar a Excel">Excel
+        <i class="bi bi-file-earmark-excel"></i>
+      </button>
+    </div>
+    <!-- Título -->
+    <h1 class="ms-3" id="lblTitulo">{{ titulo }}</h1>
+  </div>
+    <!-- <form (ngSubmit)="onSubmit()"> -->
       <div class="row g-3 align-items-end">
-        <div class="col-md-4">
+
+        <!-- <div class="col-md-4">
           <label for="anio" class="form-label">Año</label>
           <select class="form-select" id="anio" [(ngModel)]="anioSeleccionado" name="anio" (change)="onAnioChange()">
             <option *ngFor="let anio of anios" [value]="anio">{{ anio }}</option>
           </select>
+        </div> -->
+        
+        <div class="col-auto">
+          <label for="anio" class="col-form-label me-2">Año</label>
+          <select class="form-select d-inline-block w-auto" id="anio" [(ngModel)]="anioSeleccionado" name="anio" (change)="onAnioChange()">
+            <option *ngFor="let anio of anios" [value]="anio">{{ anio }}</option>
+          </select>
         </div>
-  
-        <div class="col-md-4">
+
+        <!-- <div class="col-md-4">
           <label for="mes" class="form-label">Mes</label>
           <select class="form-select" id="mes" [(ngModel)]="mesSeleccionado" name="mes" (change)="onMesChange()">
             <option *ngFor="let mes of meses" [value]="mes.valor">{{ mes.nombre }}</option>
           </select>
+        </div> -->
+
+        <div class="col-auto">
+          <label for="mes" class="col-form-label me-2">Mes</label>
+          <select class="form-select d-inline-block w-auto" id="mes" [(ngModel)]="mesSeleccionado" name="mes" (change)="onMesChange()">
+            <option *ngFor="let mes of meses" [value]="mes.valor">{{ mes.nombre }}</option>
+          </select>
         </div>
   
-        <div class="col-md-4 text-end">
+        <div class="col-auto">
           <button type="button" class="btn btn-primary" (click)="agregar()">Agregar</button>
         </div>
       </div>
-    </form>
+    <!-- </form> -->
   
     <div class="row mt-3">
       <div class="col">
-        <p>Total registros: {{ totalRegistros }}</p>
+        <p class="mb-0">Total registros: {{ totalRegistros }}</p>
       </div>
       <div class="col text-end">
         <!-- Aquí podrías implementar paginación con Bootstrap -->
-        <nav *ngIf="totalPages > 1">
-          <ul class="pagination justify-content-center">
+        <nav *ngIf="totalPages > 1" class="mb-0">
+          <ul class="pagination justify-content-center mb-0">
             <li class="page-item" [class.disabled]="currentPage === 0">
-              <a class="page-link" href="#" (click)="goToPage(currentPage - 1); $event.preventDefault()">Anterior</a>
+              <button class="page-link" (click)="goToPage(0)" [disabled]="currentPage === 0">
+                <!-- « Primera -->
+                <i class="bi bi-chevron-double-left"></i>
+              </button>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === 0">
+              <!-- <a class="page-link" href="#" (click)="goToPage(currentPage - 1); $event.preventDefault()">Anterior</a> -->
+              <button class="page-link" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0">
+                <!-- Anterior -->
+                <i class="bi bi-chevron-left"></i>
+              </button>
             </li>
       
-            <li class="page-item"
-                *ngFor="let page of pages"
-                [class.active]="page === currentPage">
-              <a class="page-link" href="#" (click)="goToPage(page); $event.preventDefault()">{{ page+1 }}</a>
+            <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+              <!-- <a class="page-link" href="#" (click)="goToPage(page); $event.preventDefault()">{{ page+1 }}</a> -->
+              <button class="page-link" (click)="goToPage(page)" [disabled]="page === currentPage">{{ page + 1 }}</button>
             </li>
       
             <li class="page-item" [class.disabled]="currentPage === totalPages-1">
-              <a class="page-link" href="#" (click)="goToPage(currentPage + 1); $event.preventDefault()">Siguiente</a>
+              <!-- <a class="page-link" href="#" (click)="goToPage(currentPage + 1); $event.preventDefault()">Siguiente</a> -->
+              <button class="page-link" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages - 1">
+                <!-- Siguiente -->
+                <i class="bi bi-chevron-right"></i>
+              </button>
+            </li>
+
+            <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+              <button class="page-link" (click)="goToPage(totalPages - 1)" [disabled]="currentPage === totalPages - 1">
+                <!-- Última » -->
+                <i class="bi bi-chevron-double-right"></i>
+              </button>
             </li>
           </ul>
         </nav>
@@ -48,7 +102,7 @@
     </div>
   
     <div class="table-responsive mt-3">
-      <table class="table table-striped table-bordered">
+      <table class="table table-striped table-bordered table-sm">
         <thead>
           <tr>
             <th>Acciones</th>
@@ -63,7 +117,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let row of dataSource">
-            <td>
+            <td class="text-center">
               <button class="btn btn-sm btn-danger me-1" (click)="eliminar(row)">
                 <i class="bi bi-trash"></i> <!-- Icono de Bootstrap Icons -->
               </button>
@@ -71,12 +125,12 @@
                 <i class="bi bi-pencil"></i>
               </button>
             </td>
-            <td>{{ row.currCd }}</td>
-            <td>{{ row.currRtEffDt }}</td>
-            <td>{{ row.currRt }}</td>
-            <td>{{ row.rateVenDia }}</td>
-            <td>{{ row.rateComPub }}</td>
-            <td>{{ row.rateVenPub }}</td>
+            <td class="text-center">{{ row.currCd }}</td>
+            <td class="text-center">{{ row.currRtEffDt }}</td>
+            <td class="text-end">{{ row.currRt }}</td>
+            <td class="text-end">{{ row.rateVenDia }}</td>
+            <td class="text-end">{{ row.rateComPub }}</td>
+            <td class="text-end">{{ row.rateVenPub }}</td>
             <!-- Otras celdas -->
           </tr>
         </tbody>

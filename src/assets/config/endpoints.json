@@ -38,9 +38,9 @@
       "currencies": {
         "getExchangeRates": "/cm/exchange-rates/{periodo}",
         "getExchangeRateSunat": "/cm/exchange-rates/sunat",
-        "updateExchangeRate": "/cm/exchanges-rates",
-        "insertExchangeRate": "/cm/exchanges-rates",
-        "deleteExchangeRate": "/cm/exchanges-rates"
+        "updateExchangeRate": "/cm/exchange-rates",
+        "insertExchangeRate": "/cm/exchange-rates",
+        "deleteExchangeRate": "/cm/exchange-rates"
       },
       "generalAccounting": {
         "getAccounts": "/accounting/accounts",

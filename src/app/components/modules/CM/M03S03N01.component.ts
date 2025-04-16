@@ -9,12 +9,14 @@ import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/
 import { CurrenciesService } from '../../../services/currencies.service';
 import { ActivatedRoute } from '@angular/router';
 import { Cmcurrat } from '../../../models/currencies.model';
+import { MatDialog } from '@angular/material/dialog';
+import { M03S03N01EditComponent } from './M03S03N01-Edit.component';
 
 @Component({
   selector: 'app-m03-s03-n01',
-  imports: [FormsModule/*,MatFormField,MatLabel,MatPaginator,MatIcon,MatTable,MatOption*/,CommonModule,MatTableModule],
-  templateUrl: './m03s03n01.component.html',
-  styleUrl: './m03s03n01.component.css'
+  imports: [FormsModule,CommonModule,MatTableModule],
+  templateUrl: './M03S03N01.component.html',
+  styleUrl: './M03S03N01.component.css'
 })
 export class M03S03N01Component implements OnInit{
   anios:number[] = [];
@@ -42,13 +44,17 @@ export class M03S03N01Component implements OnInit{
   displayedColumns: string[] = ['acciones', 'curr_cd']; // agrega aquí tus campos
 
   currentPage = 0;
-  pageSize = 15;
+  pageSize = 10;
   totalItems = 0;
   totalPages = 0;
   pages: number[] = [];
-
-  constructor(private currencyService: CurrenciesService,private route: ActivatedRoute) { }
+  titulo='';
+  constructor(private currencyService: CurrenciesService,private route: ActivatedRoute,private dialog:MatDialog) { }
   ngOnInit(): void {
+    this.route.queryParamMap.subscribe(params=>{
+      //console.log("this.route.queryParamMap",this.route);
+      this.titulo=params.get('syMenuName')||'';
+    });
     const fechaActual = new Date();
     this.mesSeleccionado = fechaActual.getMonth() + 1;
     for (let i = 0; i < 10; i++) {
@@ -60,15 +66,16 @@ export class M03S03N01Component implements OnInit{
   listarTispoCambioPeriodo(){
     let periodo=`${this.anioSeleccionado}${this.mesSeleccionado.toString().padStart(2, '0')}`;
     this.currencyService.obtenerTiposCambioPeriodo(periodo,this.pageSize,this.currentPage,'').subscribe({next:(data: Cmcurrat[]) => {
-      if(data){
+      if(data && data.length > 0){
         this.dataSource=data;
         this.totalItems = data[0].totalReg;
         this.totalRegistros=this.totalItems;
         this.totalPages = Math.ceil(this.totalItems / this.pageSize);
         this.pages = Array.from({ length: this.totalPages }, (_, i) => i);
-        console.log("data[0].totalReg:"+data[0].totalReg);
-        console.log("this.totalPages:"+this.totalPages);
+        //console.log("data[0].totalReg:"+data[0].totalReg);
+        //console.log("this.totalPages:"+this.totalPages);
       }else{
+        this.dataSource=[];
         this.totalItems = 0;
         this.totalPages = 0;
         this.pages = [];
@@ -82,9 +89,11 @@ export class M03S03N01Component implements OnInit{
   });
   }
   onMesChange() {
+    this.currentPage=0;
     this.listarTispoCambioPeriodo();
   }
   onAnioChange() {
+    this.currentPage=0;
     this.listarTispoCambioPeriodo();
   }
   goToPage(page: number) {
@@ -93,7 +102,7 @@ export class M03S03N01Component implements OnInit{
     this.listarTispoCambioPeriodo();
   }
   agregar() {
-    console.log('Agregar clicked');
+    this.ModalDialogSearch();
   }
 
   eliminar(row: any) {
@@ -111,4 +120,26 @@ export class M03S03N01Component implements OnInit{
   onSubmit() {
     // lógica para enviar filtros
   }
+
+  
+  ModalDialogSearch(){
+      const dialogRef = this.dialog.open(M03S03N01EditComponent,{
+        disableClose:false,
+        autoFocus:true,
+        closeOnNavigation:false,
+        maxWidth: '60vw',
+        width: '60%',
+        height: 'auto',
+        data:{
+          
+        }
+      });//codigo que abre la ventana modal
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.listarTispoCambioPeriodo();
+        } else {
+          //console.log('El usuario canceló la selección.',result);
+        }
+      });
+    }
 }
